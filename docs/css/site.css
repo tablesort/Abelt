@@ -52,3 +52,54 @@ kbd {
 	margin: 0 .1em;
 	padding: .1em .6em;
 }
+
+
+#main .ui-accordion-header a,
+#main .ui-accordion-content {
+	font-size: 14px;
+}
+.accordion {
+	position: relative;
+}
+.accordion .accordion-link {
+	position: absolute;
+	right: 1%;
+	margin-top: 12px;
+	z-index: 1;
+	width: 12px;
+	height: 12px;
+}
+/* nested accordion */
+.accordion .accordion .accordion-link {
+	margin-top: 12px;
+}
+.abelt .accordion .accordion-link {
+	margin-top: 11px;
+}
+
+a.external {
+	background-image:url(images/external.png);
+	background-position:center right;
+	background-repeat:no-repeat;
+	padding-right:12px;
+}
+a.link {
+	background-image:url(images/link.png);
+	background-position:center right;
+	background-repeat:no-repeat;
+	padding-right:12px;
+}
+
+#group .ui-slider,
+#align .ui-slider {
+	width: 100px;
+	height: 3px;
+	font-size: 0.8em;
+	display: inline-block;
+	margin-left: 10px;
+}
+#group .demo-label,
+#align .demo-label {
+	display: inline-block;
+	min-width: 120px;
+}

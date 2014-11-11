@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-	<title>Basic Abelt Demo</title>
+	<title>Abelt - Basic Demo</title>
 
 	<!-- Demo styling -->
 	<link href="docs/css/semantic.min.css" rel="stylesheet">
@@ -27,7 +27,7 @@
 	<link class="theme metro-dark" rel="stylesheet" href="src/css/theme.metro-dark.css">
 
 	<!-- abelt core, modules, widgets & parsers -->
-	<script src="src/js/abelt.js"></script>
+	<script src="src/js/jquery.abelt.js"></script>
 
 	<script src="src/js/modules/module-storage.js"></script>
 	<script src="src/js/modules/module-utilities.js"></script>
@@ -71,6 +71,11 @@
 				// *******************************
 				textExtraction   : null,       // text extraction method/function - function(node, abelt, cellIndex){}
 				textAttribute    : 'data-text', // data-attribute that contains alternate cell text (used in textExtraction function)
+
+				// ***********************************
+				// *** MODULE-UTILITIES.js options ***
+				// ***********************************
+				usNumberFormat : false, // false for German '1.234.567,89' or French '1 234 567,89'
 
 				// *** extra css class names
 				css : {
