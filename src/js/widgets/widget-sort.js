@@ -4,11 +4,10 @@
 |__   | . |  _|  _|
 |_____|___|_| |_|  Widget
 
-add multi-column sorting
+Add multi-column natural sorting
 */
-/* Sort widget for abelt+ */
-/*jshint browser:true, jquery:true, unused:false */
-;( function( $ ){
+/*! Abelt Sort widget - updated 11/11/2014 */
+;( function( $, undefined ) {
 'use strict';
 
 var $abelt = $.abelt;
@@ -739,8 +738,8 @@ $.extend( true, $abelt, {
 				e = abelt.vars.string[ ( abelt.vars.empties[ col ] || o.emptyTo ) ];
 			if ( a === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? -1 : 1 ) : -e || -1; }
 			if ( b === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? 1 : -1 ) : e || 1; }
-			if ( isNaN( a ) ) { a = $abelt.sort.getTextValue( a, num, mx ); }
-			if ( isNaN( b ) ) { b = $abelt.sort.getTextValue( b, num, mx ); }
+			if ( isNaN( a ) ) { a = $abelt.sorters.getTextValue( a, num, mx ); }
+			if ( isNaN( b ) ) { b = $abelt.sorters.getTextValue( b, num, mx ); }
 			return a - b;
 		},
 
@@ -750,8 +749,8 @@ $.extend( true, $abelt, {
 				e = abelt.vars.string[ ( abelt.vars.empties[ col ] || o.emptyTo ) ];
 			if ( a === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? -1 : 1 ) : e || 1; }
 			if ( b === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? 1 : -1 ) : -e || -1; }
-			if ( isNaN( a ) ) { a = $abelt.sort.getTextValue( a, num, mx ); }
-			if ( isNaN( b ) ) { b = $abelt.sort.getTextValue( b, num, mx ); }
+			if ( isNaN( a ) ) { a = $abelt.sorters.getTextValue( a, num, mx ); }
+			if ( isNaN( b ) ) { b = $abelt.sorters.getTextValue( b, num, mx ); }
 			return b - a;
 		},
 
@@ -943,12 +942,8 @@ $abelt.widget.add({
 
 		// table specific Internal variables => abelt.vars
 		vars : {
-			parsers  : [],
-			cache    : [],
 			// digit column; sort text location
 			string   : { 'max': 1, 'min': -1, 'zero': 0, 'none': 0, 'null': 0, 'top': true, 'bottom': false },
-			strings  : {},
-			empties  : {},
 
 			// values previously stored in each header cell
 			sortDisabled : [],
@@ -980,4 +975,4 @@ $abelt.widget.add({
 	type: 'core'
 });
 
-})(jQuery);
+})( jQuery );

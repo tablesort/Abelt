@@ -44,6 +44,14 @@ $.extend( true, $abelt, {
 					// useWebWorkers    : true,       // ************* Still needs coding *************
 				},
 
+				vars : {
+					parsers  : [],
+					cache    : [],
+					strings  : {},
+					empties  : {}
+				},
+
+
 				flags : {
 					isUpdating: true
 				}
@@ -160,7 +168,7 @@ $.extend( true, $abelt, {
 	},
 
 	regex : {
-		nondigit : /[^\w,. \-()]/g
+		nonDigit : /[^\w,. \-()]/g
 	},
 
 	// essential default parsers
@@ -196,7 +204,7 @@ $.extend( true, $abelt, {
 		},
 		format: function( str, abelt ) {
 			var o = abelt.options,
-				numbr = $abelt.utility.formatFloat( ( str || '' ).replace( $abelt.regex.nondigit, '' ), abelt );
+				numbr = $abelt.utility.formatFloat( ( str || '' ).replace( $abelt.regex.nonDigit, '' ), abelt );
 			return str && typeof numbr === 'number' ?
 				numbr : str ? $.trim( str && o.sort && o.sort.ignoreCase ? str.toLocaleLowerCase() : str ) : str;
 		},
@@ -303,7 +311,9 @@ $.extend( true, $abelt, {
 					parsers: []
 				},
 				len = $tbodies.length;
-			if ( len === 0 ) {
+			if ( !$abelt.utility.getColumnData ) {
+				return $abelt.debug && o.debug ? console.warn( '-> The module-utilities.js file is required to parse the table' ) : '';
+			} else if ( len === 0 ) {
 				return $abelt.debug && o.debug ? console.warn( '-> Warning: *Empty table!* Not building a parser cache' ) : '';
 			} else if ( $abelt.debug && o.debug ) {
 				time = new Date();
@@ -323,7 +333,7 @@ $.extend( true, $abelt, {
 						noparser = $abelt.utility.getData( $cell, optionHeaders, 'parser' ) === 'false';
 						// empty cells behaviour - keeping emptyToBottom for backwards compatibility
 						v.empties[ columnIndex ] = ( $abelt.utility.getData( $cell, optionHeaders, 'empty') ||
-							o.sort.emptyTo || 'bottom' ).toLowerCase();
+							o.sort && o.sort.emptyTo || 'bottom' ).toLowerCase();
 						// text strings behaviour in numerical sorts
 						v.strings[ columnIndex ] = ( $abelt.utility.getData( $cell, optionHeaders, 'string') ||
 							'max' ).toLowerCase();
@@ -470,7 +480,7 @@ $.extend( true, $abelt, {
 			$abelt.build.cache( abelt );
 			abelt.flags.isUpdating = false;
 			// need to fix this; replace sort check when queue system is in place
-			if ( $abelt.sort.checkResort ) {
+			if ( $abelt.sort && $abelt.sort.checkResort ) {
 				$abelt.sort.checkResort( abelt, false, callback );
 			} else if ( $.isFunction( callback ) ) {
 				callback( abelt );

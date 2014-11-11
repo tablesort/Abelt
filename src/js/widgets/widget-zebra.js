@@ -4,8 +4,9 @@
 |   __| -_| . |  _| .'|
 |_____|___|___|_| |__,| Widget
 
-add table row zebra striping
+Add table row zebra striping
 */
+/*! Abelt Zebra widget - updated 11/11/2014 */
 ;( function( $ ) {
 'use strict';
 
@@ -26,7 +27,7 @@ $.abelt.widget.add({
 			row = 0;
 			$tbody = $tbodies.eq( tbodyIndex );
 			$trVisible = $tbody.children( 'tr:visible' ).not( o.selectors.remove );
-			// revered back to using jQuery each - strangely it's the fastest method
+			// reverted to using jQuery each - strangely it's the fastest method
 			/*jshint loopfunc:true */
 			$trVisible.each(function(){
 				$tr = $( this );

@@ -13,17 +13,17 @@ var $abelt = $.abelt;
 $.extend( true, $abelt, {
 
 	regex : {
-		// nonDigit = characters removed before isDigit is used
-		nonDigit     : /[,.'"\s]/g,
+		// nonDigitDetect = characters removed before isDigit is used
+		nonDigitDetect : /[,.'"\s]/g,
 		// determine if the string has a number value, ignore +-()
-		isDigit      : /^[\-+(]?\d+[)]?$/,
+		isDigit        : /^[\-+(]?\d+[)]?$/,
 		// detect (#) = negative number
-		isNegative   : /^\s*\([.\d]+\)/,
+		isNegative     : /^\s*\([.\d]+\)/,
 		// regex used by replace function to change () into a negative
-		makeNegative : /^\s*\(([.\d]+)\)/
+		makeNegative   : /^\s*\(([.\d]+)\)/
 	},
 
-	options :{
+	defaults : {
 		usNumberFormat : true // false for German '1.234.567,89' or French '1 234 567,89'
 	},
 
@@ -114,7 +114,7 @@ $.extend( true, $abelt, {
 
 		isDigit : function( str ) {
 			// replace all unwanted chars and match
-			return isNaN( str ) ? $abelt.regex.isDigit.test( str.toString().replace( $abelt.regex.nonDigit, '' ) ) : true;
+			return isNaN( str ) ? $abelt.regex.isDigit.test( str.toString().replace( $abelt.regex.nonDigitDetect, '' ) ) : true;
 		},
 
 		isValueInArray : function( value, arry ) {
