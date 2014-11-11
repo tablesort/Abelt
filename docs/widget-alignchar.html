@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
+	<title>Abelt - Align Character Widget (beta)</title>
+
+
+	<!-- jQuery -->
+	<script src="js/jquery-1.11.1.js"></script>
+
+	<!-- Demo stuff -->
+	<link href="css/jquery-ui.min.css" rel="stylesheet" class="ui-theme">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/site.css" rel="stylesheet">
+	<script src="js/jquery-ui-latest.min.js"></script>
+	<script src="js/site.js"></script>
+
+	<!-- abelt: required -->
+	<link href="../src/css/theme.blue.css" rel="stylesheet">
+	<script src="../src/js/jquery.abelt.js"></script>
+
+	<script src="../src/js/modules/module-cache.js"></script>
+	<script src="../src/js/modules/module-utilities.js"></script>
+
+	<script src="../src/js/widgets/widget-alignChar.js"></script>
+	<script src="../src/js/widgets/widget-zebra.js"></script>
+
+
+	<style>
+	#demo th {
+		width: 25%;
+	}
+	</style>
+
+	<style id="css">/* CSS needed for this widget */
+.abelt-align-wrap {
+	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+}
+.abelt-align-wrap, .abelt-align-left, .abelt-align-right {
+	display: inline-block;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.abelt-align-left {
+	text-align:right;
+}
+.abelt-align-right {
+	text-align:left;
+}
+/* optional - colorize alignment character in Animals column */
+td:nth-child(3) .abelt-align-right i {
+	color: red;
+}
+/* optional - restyle alignment character in Sites column */
+td:nth-child(4) .abelt-align-right i {
+	width: 8px;
+	margin: 0 2px;
+	background: #999;
+	color: #fff;
+	display: inline-block;
+	text-align: center;
+}</style>
+
+	<script id="js">$(function() {
+
+	$("table").abelt({debug: true,
+		theme: 'blue',
+		widgets: ['zebra', 'alignChar'],
+		alignChar : {
+			wrap         : '<i/>',
+			charAttrib   : 'data-align-char',
+			indexAttrib  : 'data-align-index',
+			adjustAttrib : 'data-align-adjust' // percentage width adjustments
+		}
+	});
+
+});
+</script>
+</head>
+<body id="align">
+
+<div id="banner">
+	<h1>Abelt</h1>
+	<h4>Align Character Widget</h4>
+</div>
+
+<div id="main">
+
+<span class="demo-label">Animals align index:</span> <div id="slider0"></div> <span class="bright">1</span> (only indexes of 1 or 2 will work)<br>
+<span class="demo-label">Sites align index:</span> <div id="slider1"></div> <span class="bright">1</span> (only indexes of 1 - 3 will work<br>
+<span class="demo-label">Sites adjust value:</span> <div id="slider2"></div> <span class="bright">0</span>
+
+	<div id="demo"><table class="abelt">
+	<thead>
+		<tr>
+			<th data-align-char="&nbsp;">AlphaNumeric</th>
+			<th data-align-char="." data-align-adjust="0">Numeric</th>
+			<th data-align-char="=" data-align-index="1">Animals</th>
+			<th data-align-char="." data-align-index="1">Sites</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>abc 123</td>
+			<td>.423475</td>
+			<td>Koala = cute = cudley</td>
+			<td>search.google.com</td>
+		</tr>
+		<tr>
+			<td>abc 1</td>
+			<td>23.4</td>
+			<td>Ox = stinky</td>
+			<td>mail.yahoo.com</td>
+		</tr>
+		<tr>
+			<td>abc 9</td>
+			<td>1.0</td>
+			<td>Girafee = tall</td>
+			<td>http://www.facebook.com</td>
+		</tr>
+		<tr>
+			<td>zyx 24</td>
+			<td>7.67</td>
+			<td>Bison = burger</td>
+			<td>http://internship.whitehouse.gov/</td>
+		</tr>
+		<tr>
+			<td>abc 11</td>
+			<td>3000</td>
+			<td>Chimp = banana lover</td>
+			<td>about.ucla.edu/</td>
+		</tr>
+		<tr>
+			<td>abc 2</td>
+			<td>56.5</td>
+			<td>Elephant = unforgetable</td>
+			<td>http://www.wikipedia.org/</td>
+		</tr>
+		<tr>
+			<td>abc 9</td>
+			<td>15.5</td>
+			<td>Lion = rawr</td>
+			<td>rental.nytimes.com/index.html</td>
+		</tr>
+		<tr>
+			<td>ABC 10</td>
+			<td>87.20000</td>
+			<td>Zebra = stripey</td>
+			<td>http://android.google.com</td>
+		</tr>
+		<tr>
+			<td>zyx 1</td>
+			<td>999.1</td>
+			<td>Koala = cute, again!</td>
+			<td>http://irsmrt.mit.edu/</td>
+		</tr>
+		<tr>
+			<td>zyx 12</td>
+			<td>0.2</td>
+			<td>Llama = llove it</td>
+			<td>http://aliens.nasa.gov/</td>
+		</tr>
+	</tbody>
+</table></div>
+
+<script>
+/* DEMO ONLY CODE */
+$(function(){
+	var $table = $('#demo table'),
+		abelt = $table[0].abelt,
+		$animals = abelt.$headers.eq(2),
+		$sites = abelt.$headers.eq(3);
+	$animals[0].innerHTML += ' ( "data-align-index" : <span></span> )';
+	$sites[0].innerHTML += ' ( "data-align-index" : <span></span>, "data-align-adjust" : <span>0</span> )';
+	$( "#slider0" ).slider({
+		value: 1,
+		min: 0,
+		max: 3,
+		step: 1,
+		create: function(){
+			$animals.find('span').html( $animals.attr('data-align-index') );
+		},
+		slide: function( event, ui ) {
+			$animals
+				.attr('data-align-index', ui.value)
+				.find('span').html( ui.value );
+			$('.bright:eq(0)').html( ui.value );
+			$table.trigger('refreshAlign');
+		}
+	});
+	$( "#slider1" ).slider({
+		value: 1,
+		min: 0,
+		max: 4,
+		step: 1,
+		create: function(){
+			$sites.find('span:eq(0)').html( $sites.attr('data-align-index') );
+		},
+		slide: function( event, ui ) {
+			$sites
+				.attr('data-align-index', ui.value)
+				.find('span:eq(0)').html( ui.value );
+			$('.bright:eq(1)').html( ui.value );
+			$table.trigger('refreshAlign');
+		}
+	});
+	$( "#slider2" ).slider({
+		value: 0,
+		min: -30,
+		max: 30,
+		step: 5,
+		slide: function( event, ui ) {
+			$sites
+				.attr('data-align-adjust', ui.value)
+				.find('span:eq(1)').html( ui.value );
+			$('.bright:eq(2)').html( ui.value );
+			$table.trigger('refreshAlign');
+		}
+	});
+
+});
+</script>
+
+</body>
+</html>
+
