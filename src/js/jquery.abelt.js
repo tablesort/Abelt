@@ -105,14 +105,14 @@ var $abelt = $.abelt = {
 		add : function( widget, replaceWidget ) {
 			if ( widget && widget.id ) {
 				var isNew = true;
-				widget.id = widget.id.toLowerCase();
+				widget.id = widget.id;
 				// set priority to 10, if not defined
 				if ( widget.priority === undefined ) {
 					widget.priority = 10;
 				}
 				// make sure widget doesn't already exist
 				$.each( $abelt.widgets, function( indx, storedWidget ) {
-					if ( storedWidget && storedWidget.id && storedWidget.id.toLowerCase() === widget.id ) {
+					if ( storedWidget && storedWidget.id && storedWidget.id === widget.id ) {
 						if ( replaceWidget ) {
 							$abelt.widgets[ indx ] = widget;
 							if ( $abelt.debug ) {
@@ -133,11 +133,11 @@ var $abelt = $.abelt = {
 
 		get : function( id ) {
 			var indx, widget,
-				name = id.toString().toLowerCase(),
+				name = id.toString(),
 				len = $abelt.widgets.length;
 			for ( indx = 0; indx < len; indx++ ) {
 				widget = $abelt.widgets[ indx ];
-				if ( widget && widget.id && widget.id.toLowerCase() === name ) {
+				if ( widget && widget.id && widget.id === name ) {
 					return widget;
 				}
 			}
@@ -156,7 +156,7 @@ var $abelt = $.abelt = {
 				// if named == string, then apply specific widget(s), otherwise apply them all
 				str = typeof named === 'string' && named !== '',
 				// add widget from table class name
-				tableClass = ' ' + abelt.table.className.toLowerCase() + ' ';
+				tableClass = ' ' + abelt.table.className + ' ';
 
 			// prevent numerous consecutive widget applications - ** isUpdating is added by module-cache.js **
 			if ( init !== false && abelt.flags.init && ( abelt.flags.isApplyingWidgets || abelt.flags.isUpdating ) ) {
@@ -189,7 +189,7 @@ var $abelt = $.abelt = {
 
 				// named can contain multiple widgets names, separated by spaces (or commas)
 				// if named is an empty string, apply all widgets
-				widgetsArray = str ? named.toLowerCase().split( $abelt.regex.lists ) : o.widgets;
+				widgetsArray = str ? named.split( $abelt.regex.lists ) : o.widgets;
 				len = widgetsArray.length;
 
 				// build widget array
@@ -278,7 +278,7 @@ var $abelt = $.abelt = {
 				index2 = name.length - 1;
 			while ( indx >= 0 && index2 > -1) {
 				// remove widget name(s) from options.widgets
-				indx = $.inArray( name[ index2 ].toLowerCase(), widget );
+				indx = $.inArray( name[ index2 ], widget );
 				if ( indx >= 0 ) {
 					widget.splice( indx, 1 );
 					if ( $abelt.debug && o.debug ) { console.log( 'removing widget :  ' + name[ index2 ] ); }
@@ -432,7 +432,7 @@ var $abelt = $.abelt = {
 				$colgroup = $( '<colgroup>' );
 				overallWidth = abelt.$table.width();
 				// only add col for visible columns - fixes #371
-				abelt.$tbodies.children( 'tr : visible' ).eq( 0 ).children( 'td : visible' ).each( function() {
+				abelt.$tbodies.children( 'tr:visible' ).eq( 0 ).children( 'td:visible' ).each( function() {
 					// saving percentage width to one decimal place (i.e. 33.3%)
 					calcW = parseInt( ( $( this ).width() / overallWidth ) * 1000, 10 ) / 10 + '%';
 					$colgroup.append( $( '<col>' ).css( 'width', calcW ) );
