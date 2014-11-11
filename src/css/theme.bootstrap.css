@@ -1,0 +1,153 @@
+/*************
+  Bootstrap theme
+ *************/
+/* jQuery Bootstrap Theme */
+.abelt-bootstrap {
+	width: 100%;
+}
+.abelt-bootstrap thead th,
+.abelt-bootstrap thead td,
+.abelt-bootstrap tfoot th,
+.abelt-bootstrap tfoot td {
+	font: bold 14px/20px Arial, Sans-serif;
+	padding: 4px;
+	margin: 0 0 18px;
+	background-color: #eee;
+}
+
+.abelt-bootstrap .abelt-header {
+	cursor: pointer;
+}
+
+.abelt-bootstrap .abelt-headerInner {
+	position: relative;
+	padding: 4px 18px 4px 4px;
+}
+
+/* bootstrap uses <i> for icons */
+.abelt-bootstrap .abelt-header i {
+	font-size: 11px;
+	position: absolute;
+	right: 2px;
+	top: 50%;
+	margin-top: -7px; /* half the icon height; older IE doesn't like this */
+	width: 14px;
+	height: 14px;
+	background-repeat: no-repeat;
+	line-height: 14px;
+	display: inline-block;
+}
+
+/* black unsorted icon */
+.abelt-bootstrap .bootstrap-icon-unsorted {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAMAAADOvxanAAAAVFBMVEUAAABCQkJZWVkZGRnJyckgICAZGRkZGRn8/PweHh4dHR0aGhoaGhpUVFQbGxvQ0NDc3NxMTExSUlIbGxvr6+s4ODhKSkogICAtLS00NDQzMzMnJydSEPrQAAAAGHRSTlMA1ssZRLgdAQbDyisqsZo8QdXUq0r9xPepSRwiAAAAX0lEQVQI13XHSQKAIAwEwQAKxn13Ev7/T2Pu9qmarJKPXIicI4PH4hxaKNrhm2S8bJK5h4YzKHrzJNtK6yYT/TdXzpS5zuYg4MSQYF6i4IHExdw1UVRi05HPrrvT53a+qyMFC9t04gcAAAAASUVORK5CYII=);
+}
+
+/* white unsorted icon */
+.abelt-bootstrap .icon-white.bootstrap-icon-unsorted {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOBAMAAAALT/umAAAAKlBMVEUAAAD///////////////////////////////////////////////////+Gu8ovAAAADXRSTlMA4EXKBtQqvR0+sxmalc142gAAAFdJREFUCNdjYGDoamAAAjZbMxCVfvd6AgMDd+3du9UMDKx3hWSvMjBwXZww8RYDGuC53NB8h4GB8a617UUGBs7Yu3cjGRhYVO9eVQFKOskKOQApFmUgBwBZ+xXRTttNdAAAAABJRU5ErkJggg==);
+}
+
+/* since bootstrap (table-striped) uses nth-child(), we just use this to add a zebra stripe color */
+.abelt-bootstrap > tbody > tr.odd > td,
+.abelt-bootstrap > tbody > tr.abelt-hasChildRow.odd:hover ~ tr.abelt-hasChildRow.odd ~ .abelt-childRow.odd > td {
+	background-color: #f9f9f9;
+}
+.abelt-bootstrap > tbody > tr.odd:hover > td,
+.abelt-bootstrap > tbody > tr.even:hover > td,
+.abelt-bootstrap > tbody > tr.abelt-hasChildRow.odd:hover ~ .abelt-childRow.odd > td,
+.abelt-bootstrap > tbody > tr.abelt-hasChildRow.even:hover ~ .abelt-childRow.even > td {
+	background-color: #f5f5f5;
+}
+.abelt-bootstrap > tbody > tr.even > td,
+.abelt-bootstrap > tbody > tr.abelt-hasChildRow.even:hover ~ tr.abelt-hasChildRow.even ~ .abelt-childRow.even > td {
+	background-color: #fff;
+}
+
+/* processing icon */
+.abelt-bootstrap .abelt-processing {
+	background-image: url('data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=');
+	background-position: center center !important;
+	background-repeat: no-repeat !important;
+}
+
+/* caption */
+.caption {
+	background: #fff;
+}
+
+/* filter widget */
+.abelt-bootstrap .abelt-filterRow input.abelt-filter,
+.abelt-bootstrap .abelt-filterRow select.abelt-filter {
+	width: 98%;
+	margin: 0 auto;
+	padding: 4px 6px;
+	color: #333;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transition: height 0.1s ease;
+	-moz-transition: height 0.1s ease;
+	-o-transition: height 0.1s ease;
+	transition: height 0.1s ease;
+}
+.abelt-bootstrap .abelt-filterRow .abelt-filter.disabled {
+	background-color: #eee;
+	color: #555;
+	cursor: not-allowed;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+	box-sizing: border-box;
+	transition: height 0.1s ease;
+}
+.abelt-bootstrap .abelt-filterRow td {
+	background: #efefef;
+	line-height: normal;
+	text-align: center;
+	padding: 4px 6px;
+	vertical-align: middle;
+	-webkit-transition: line-height 0.1s ease;
+	-moz-transition: line-height 0.1s ease;
+	-o-transition: line-height 0.1s ease;
+	transition: line-height 0.1s ease;
+}
+/* hidden filter row */
+.abelt-bootstrap .abelt-filterRow.hideme td {
+	padding: 2px; /* change this to modify the thickness of the closed border row */
+	margin: 0;
+	line-height: 0;
+}
+.abelt-bootstrap .abelt-filterRow.hideme * {
+	height: 1px;
+	min-height: 0;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	/* don't use visibility: hidden because it disables tabbing */
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+/* rows hidden by filtering (needed for child rows) */
+.abelt .filtered {
+	display: none;
+}
+
+/* pager plugin */
+.abelt-bootstrap .abelt-pager select {
+  padding: 4px 6px;
+}
+.abelt-bootstrap .abelt-pager .pagedisplay {
+	border: 0;
+}
+/* tfoot i for pager controls */
+.abelt-bootstrap tfoot i {
+	font-size: 11px;
+}
+
+/* ajax error row */
+.abelt .abelt-errorRow td {
+	text-align: center;
+	cursor: pointer;
+	background-color: #e6bf99;
+}

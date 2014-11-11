@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+	<title>Basic Abelt Demo</title>
+
+	<!-- Demo styling -->
+	<link href="docs/css/semantic.min.css" rel="stylesheet">
+	<link href="docs/css/jq.css" rel="stylesheet">
+
+	<!-- jQuery: required (Abelt needs jQuery 1.7+) http://code.jquery.com/jquery-1.11.1.js -->
+	<script src="docs/js/jquery-1.11.1.js"></script>
+	<script src="docs/js/semantic.min.js"></script>
+
+	<!-- Pick a theme, load the plugin & initialize plugin -->
+	<link class="theme default" rel="stylesheet" href="src/css/theme.default.css">
+	<link class="theme blue" rel="stylesheet" href="src/css/theme.blue.css">
+	<link class="theme green" rel="stylesheet" href="src/css/theme.green.css">
+	<link class="theme grey" rel="stylesheet" href="src/css/theme.grey.css">
+	<link class="theme ice" rel="stylesheet" href="src/css/theme.ice.css">
+	<link class="theme black-ice" rel="stylesheet" href="src/css/theme.black-ice.css">
+	<link class="theme dark" rel="stylesheet" href="src/css/theme.dark.css">
+	<link class="theme dropbox" rel="stylesheet" href="src/css/theme.dropbox.css">
+	<link class="theme metro-dark" rel="stylesheet" href="src/css/theme.metro-dark.css">
+
+	<!-- abelt core, modules, widgets & parsers -->
+	<script src="src/js/abelt.js"></script>
+
+	<script src="src/js/modules/module-storage.js"></script>
+	<script src="src/js/modules/module-utilities.js"></script>
+	<script src="src/js/modules/module-cache.js"></script>
+
+	<script src="src/js/parsers/parser-currency.js"></script>
+	<script src="src/js/parsers/parser-url.js"></script>
+
+	<script src="src/js/widgets/widget-zebra.js"></script>
+	<script src="src/js/widgets/widget-sort.js"></script>
+
+	<script>
+	$(function(){
+		$('table')
+			.on( 'update updateAll updateComplete abelt-init sortStart sortBegin sortEnd sort-init', function( e ) {
+				console.log( '--> ' + e.type );
+			})
+			.abelt({
+				// ********************
+				// *** CORE options ***
+				// ********************
+				debug            : false,
+				// *** appearance
+				theme            : 'metro-dark', // adds abelt-{theme} to the table for styling
+				widthFixed       : false,        // adds colgroup to fix widths of columns
+				showProcessing   : false,        // show an indeterminate timer icon in the header while the table is busy.
+				// *** functionality
+				cancelSelection  : true, // prevent text selection in the header
+				// *** widget options
+				initWidgets      : true,            // apply widgets on abelt initialization
+				widgetClass      : 'widget-{name}', // table class name template to match to include a widget
+				// method to add widgets, e.g. widgets :  'filter zebra columns'
+				widgets          : [ 'sort', 'zebra' ],
+				// *** parser options
+				parsers          : {},
+				// *** callbacks
+				initialized : null, // function(table){},
+
+				// *******************************
+				// *** MODULE-CACHE.js options ***
+				// *******************************
+				textExtraction   : null,       // text extraction method/function - function(node, abelt, cellIndex){}
+				textAttribute    : 'data-text', // data-attribute that contains alternate cell text (used in textExtraction function)
+
+				// *** extra css class names
+				css : {
+
+					// ********************
+					// *** CORE options ***
+					// ********************
+					table       : '',
+					header      : '',
+					headerRow   : '',
+					headerHover : '',
+					footerRow   : '',
+					footerCells : '',
+					processing  : '',                  // processing icon applied to header during sort/filter
+					info        : 'abelt-ignore',      // widgets ignore the contents of a tbody with this class name
+					childRow    : 'abelt-childRow',    // Rows to group with a parent
+					visible     : '',                   // class name added to visible rows
+
+					// ***************************
+					// *** SORT WIDGET options ***
+					// ***************************
+					sortNone    : '',
+					sortAsc     : '',
+					sortDesc    : '',
+					sortActive  : '', // applied with sortAsc or sortDesc
+					headerInner : '',
+					icon        : 'abelt-icon', //  an <i> will only be added to the header if this class exists & the headerTemplate has an {icon}
+					iconNone    : '', // class name added to the icon when there is no column sort
+					iconAsc     : '', // class name added to the icon when the column has an ascending sort
+					iconDesc    : '', // class name added to the icon when the column has a descending sort
+					allowClicks : 'abelt-allowClicks' // class name added to table header which allows clicks to bubble up
+
+				},
+
+				// selectors (jQuery selectors)
+				selectors : {
+					// ********************
+					// *** CORE options ***
+					// ********************
+					// children within the thead rows
+					headers   : 'th, td',
+					// elements (rows) to be removed when tablesorter updates (they shouldn't contain data, just info)
+					remove    : '.remove-me',
+
+					// ***************************
+					// *** SORT WIDGET options ***
+					// ***************************
+					sort       : 'th, td', // jQuery selector of content within selectorHeaders that is clickable to trigger a sort
+					sortTarget : 'th, td'  // target of sort classes (sortAsc, sortDec, sortActive & sortNone)
+
+				},
+
+				// event names
+				events : {
+
+					// ********************
+					// *** CORE options ***
+					// ********************
+					namespace        : 'abelt', // a random number is added after to make a unique table namespace
+					init             : 'abelt-init',
+					widgetUpdate     : 'widgetUpdate',
+					widgetApply      : 'widgetApply',
+					widgetApplyAll   : 'widgetApplyAll',
+					widgetRemove     : 'widgetRemove',
+					widgetsRefresh   : 'widgetsRefresh',
+					destroy          : 'destroy',
+					resetToLoadState : 'resetToLoadState',
+
+					// *******************************
+					// *** MODULE-CACHE.js options ***
+					// *******************************
+					addRows        : 'addRows',
+					appendCache    : 'appendCache',
+					updateCell     : 'updateCell',
+					// note that this 'update' replaces the core 'update' function; 'updateRows' event is included
+					// because of prototype - see issue #217 (https://github.com/Mottie/tablesorter/issues/217)
+					updateRows     : 'updateRows',
+					updateComplete : 'updateComplete',
+
+					// ***************************
+					// *** SORT WIDGET options ***
+					// ***************************
+					// updateAll is here & not in module-cache because this is like a normal update, but
+					// the headers need to be updated
+					updateAll      : 'updateAll',
+					// on table
+					sortDestroy    : 'sortDestroy',
+					sortStart      : 'sortStart',
+					sortBegin      : 'sortBegin',
+					sortEnd        : 'sortEnd',
+					sortReset      : 'sortReset',
+					sorton         : 'sorton',
+
+					// a sort is applied to header cells (th, td)
+					sort           : 'sorted',
+					// sort widget initialized
+					sortInit       : 'sort-init',
+					// applied to user defined objects within the header (using selectors.sort)
+					mouseup        : 'mouseup',
+					mousedown      : 'mousedown',
+					keyup          : 'keyup'
+
+				},
+
+				// widget options are now added within the widget name
+				// **********+*****************
+				// *** ZEBRA WIDGET options ***
+				// ****************************
+				zebra : [ 'even z-even', 'odd z-odd' ],
+
+				// ***************************
+				// *** SORT WIDGET options ***
+				// ***************************
+				sort : {
+					// *** appearance
+					headerTemplate   : '{content}{icon}',// header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
+					onRenderTemplate : null,       // function(index, template){ return template; }, (template is a string)
+					onRenderHeader   : null,       // function(index){}, (nothing to return)
+
+					// *** functionality
+					multiSortKey     : 'shiftKey', // key used to select additional columns
+					resetKey         : 'ctrlKey',  // key used to remove sorting on a column
+					serverSide       : false,      // if true, server-side sorting should be performed because client-side sorting will be disabled, but the ui and events will still be used.
+					tabIndex         : true,       // add tabindex to header for keyboard accessibility
+					delayInit        : false,      // if false, the parsed table contents will not update until the first sort
+					clickDelay       : 250,        // minimum click delay allowed (in milliseconds) between mousedown and mouseup (prevents resizable widget from initializing a sort)
+
+					// sort options
+					headers          : {},         // set sorter, string, empty, locked order, initialOrder, filter, etc.
+					ignoreCase       : true,       // ignore case while sorting
+					force            : null,       // column(s) first sorted; always applied
+					list             : [[0,0]],    // Initial sort order; applied initially; updated when manually sorted
+					append           : null,       // column(s) sorted last; always applied
+
+					initialOrder     : 'asc',      // sort direction on first click
+					localeCompare    : false,      // replace equivalent character (accented characters)
+					reset            : false,      // third click on the header will reset column to default - unsorted
+					restart          : false,      // restart sort to 'initialOrder' when clicking on previously unsorted columns
+					resort           : false,      // if true, all updates will resort the table using the current sort order
+
+					emptyTo          : 'bottom',   // sort empty cell to bottom, top, none, zero
+					stringTo         : 'max',      // sort strings in numerical column as max, min, top, bottom, zero
+					textSorter       : null,       // choose overall or specific column sorter function(a, b, direction, table, columnIndex) [alt: abelt.sortText]
+					numberSorter     : null,       // choose overall numeric sorter function(a, b, direction, maxColumnValue)
+
+					// sort widget initialized callbacks
+					initialized      : null        // function( abelt ){},
+
+				}
+
+			});
+	});
+	</script>
+
+<script>
+$(function() {
+	// add version #
+	$('#banner h1 a').html( $.abelt.version );
+
+	// removed jQuery UI theme because of the accordion!
+	$('link.theme').each(function(){ this.disabled = true; });
+
+	var themes = 'metro-dark blue default green grey ice black-ice dark dropbox',
+		i, o = '', t = themes.split(' ');
+	for (i = 0; i < t.length; i++) {
+		o += '<option value="' + t[i] + '">' + t[i] + '</option>';
+	}
+
+	$('select:first')
+		.append(o)
+		.change(function(){
+			var theme = $(this).val().toLowerCase(),
+				// ui-theme is added by the themeswitcher
+				files = $('link.theme').each(function(){
+					this.disabled = true;
+				})
+			files.filter('.' + theme).each(function(){
+				this.disabled = false;
+			});
+			$('table')
+				.removeClass('abelt-' + t.join(' abelt-'))
+				.addClass('abelt-' + (theme === 'black-ice' ? 'blackice' : theme) );
+		}).change();
+});
+</script>
+
+</head>
+<body>
+
+<div id="banner">
+	<h1>Abelt <a href="https://github.com/tablesort/Abelt">x</a></h1>
+	<p>By <a href="https://github.com/Mottie/">Rob G (Mottie)</a></p>
+</div>
+
+<div id="main">
+
+	Choose Theme:
+	<select></select>
+	<br><br>
+
+	<table class="abelt">
+		<caption class="dark-row">Abelt test</caption>
+		<thead>
+			<tr>
+				<th>AlphaNumeric Sort</th>
+				<th>Currency</th>
+				<th>Alphabetical</th>
+				<th>Sites</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>AlphaNumeric Sort</th>
+				<th>Currency</th>
+				<th>Alphabetical</th>
+				<th>Sites</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			<tr><td>abc 123</td><td>&#163;10,40</td><td>Koala</td><td>http://www.google.com</td></tr>
+			<tr><td>abc 1</td><td>&#163;234,10</td><td>Ox</td><td>http://www.yahoo.com</td></tr>
+			<tr><td>abc 9</td><td>&#163;10,33</td><td>Girafee</td><td>http://www.facebook.com</td></tr>
+			<tr><td>zyx 24</td><td>&#163;10</td><td>Bison</td><td>http://www.whitehouse.gov/</td></tr>
+			<tr><td>abc 11</td><td>&#163;3,20</td><td>Chimp</td><td>http://www.ucla.edu/</td></tr>
+			<tr><td>abc 2</td><td>&#163;56,10</td><td>Elephant</td><td>http://www.wikipedia.org/</td></tr>
+			<tr><td>abc 9</td><td>&#163;3,20</td><td>Lion</td><td>http://www.nytimes.com/</td></tr>
+			<tr><td>ABC 10</td><td>&#163;87,00</td><td>Zebra</td><td>http://www.google.com</td></tr>
+			<tr><td>zyx 1</td><td>&#163;99,90</td><td>Koala</td><td>http://www.mit.edu/</td></tr>
+			<tr><td>zyx 12</td><td>&#163;234,10</td><td>Llama</td><td>http://www.nasa.gov/</td></tr>
+		</tbody>
+	</table>
+
+</div>
+</body>
+</html>

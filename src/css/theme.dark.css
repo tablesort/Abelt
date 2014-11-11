@@ -1,0 +1,187 @@
+/*************
+  Dark Theme (by thezoggy)
+ *************/
+/* overall */
+.abelt-dark {
+	width: 100%;
+	font: 11px/18px Arial, Sans-serif;
+	color: #ccc;
+	text-align: left;
+	background-color: #000;
+	border-spacing: 0;
+}
+
+/* header */
+.abelt-dark th,
+.abelt-dark thead td {
+	padding: 4px;
+	font: bold 12px/20px Arial, Sans-serif;
+	color: #fff;
+	background-color: #000;
+	border-collapse: collapse;
+}
+.abelt-dark thead th {
+	border-bottom: #333 2px solid;
+}
+
+.abelt-dark .abelt-header,
+.abelt-dark thead th.sorter-false,
+.abelt-dark thead td.sorter-false {
+	background-image: none;
+	cursor: default;
+	padding: 4px;
+}
+
+.abelt-dark .abelt-unsorted, .abelt-dark .abelt-sorted {
+	background-repeat: no-repeat;
+	background-position: center right;
+	padding: 4px 20px 4px 4px;
+	white-space: normal;
+	cursor: pointer;
+}
+
+.abelt-dark thead.abelt-unsorted {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAAP///////yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+}
+.abelt-dark thead .abelt-sortAsc {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAAP///////yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+	border-bottom: #888 1px solid;
+}
+.abelt-dark thead .abelt-sortDesc {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAAP///////yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+	border-bottom: #888 1px solid;
+}
+
+/* tfoot */
+.abelt-dark tfoot .abelt-sortAsc,
+.abelt-dark tfoot .abelt-sortDesc {
+	border-top: #888 1px solid;
+}
+
+/* tbody */
+.abelt-dark td {
+	padding: 4px;
+	background-color: #000;
+	border-bottom: #333 1px solid;
+	color: #ccc;
+}
+
+/* hovered row colors */
+.abelt-dark tbody > tr:hover > td,
+.abelt-dark tbody > tr.even:hover > td,
+.abelt-dark tbody > tr.odd:hover > td {
+	background: #000;
+}
+
+/* table processing indicator */
+.abelt-dark .abelt-processing {
+	background-position: center center !important;
+	background-repeat: no-repeat !important;
+	/* background-image: url(../dist/css/images/loading.gif) !important; */
+	background-image: url('data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=') !important;
+}
+
+/* Zebra Widget - row alternating colors */
+.abelt-dark tr.odd > td {
+	background-color: #202020;
+}
+.abelt-dark tr.even > td {
+	background-color: #101010;
+}
+
+/* Column Widget - column sort colors */
+.abelt-dark td.primary,
+.abelt-dark tr.odd td.primary {
+	background-color: #0a0a0a;
+}
+.abelt-dark tr.even td.primary {
+	background-color: #050505;
+}
+.abelt-dark td.secondary,
+.abelt-dark tr.odd td.secondary {
+	background-color: #0f0f0f;
+}
+.abelt-dark tr.even td.secondary {
+	background-color: #0a0a0a;
+}
+.abelt-dark td.tertiary,
+.abelt-dark tr.odd td.tertiary {
+	background-color: #191919;
+}
+.abelt-dark tr.even td.tertiary {
+	background-color: #0f0f0f;
+}
+
+/* caption */
+caption {
+	background: #202020;
+}
+
+/* filter widget */
+.abelt-dark .abelt-filterRow td {
+	background: #202020;
+	line-height: normal;
+	text-align: center; /* center the input */
+	-webkit-transition: line-height 0.1s ease;
+	-moz-transition: line-height 0.1s ease;
+	-o-transition: line-height 0.1s ease;
+	transition: line-height 0.1s ease;
+}
+/* optional disabled input styling */
+.abelt-dark .abelt-filterRow .disabled {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	cursor: not-allowed;
+}
+
+/* hidden filter row */
+.abelt-dark .abelt-filterRow.hideme td {
+	/*** *********************************************** ***/
+	/*** change this padding to modify the thickness     ***/
+	/*** of the closed filter row (height = padding x 2) ***/
+	padding: 2px;
+	/*** *********************************************** ***/
+	margin: 0;
+	line-height: 0;
+	cursor: pointer;
+}
+.abelt-dark .abelt-filterRow.hideme * {
+	height: 1px;
+	min-height: 0;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	/* don't use visibility: hidden because it disables tabbing */
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+
+/* filters */
+.abelt-dark input.abelt-filter,
+.abelt-dark select.abelt-filter {
+	width: 98%;
+	height: auto;
+	margin: 4px;
+	padding: 4px;
+	background-color: #111;
+	border: 1px solid #222;
+	color: #ddd;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-transition: height 0.1s ease;
+	-moz-transition: height 0.1s ease;
+	-o-transition: height 0.1s ease;
+	transition: height 0.1s ease;
+}
+/* rows hidden by filtering (needed for child rows) */
+.abelt .filtered {
+	display: none;
+}
+
+/* ajax error row */
+.abelt .abelt-errorRow td {
+	text-align: center;
+	cursor: pointer;
+	background-color: #e6bf99;
+}

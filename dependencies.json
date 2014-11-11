@@ -1,0 +1,23 @@
+{
+	"widget-zebra.js" : {
+		"required" : []
+	},
+	"widget-sort.js" : {
+		"required" : [
+			"abelt.js",
+			"module-cache.js",
+			"module-utilities.js"
+		]
+	},
+	"widget-pager.js" : {
+		"required" : [
+			"abelt.js",
+			"module-cache.js",
+			"module-utilities.js",
+			"module-ajax.js"
+		],
+		"optional" : [
+			"widget-storage.js"
+		]
+	}
+}
