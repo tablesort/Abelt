@@ -89,6 +89,7 @@
 /* caption */
 .abelt-jui caption {
 	border: 0;
+	padding: 4px 10px;
 }
 
 /* filter widget */

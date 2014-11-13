@@ -103,3 +103,7 @@ a.link {
 	display: inline-block;
 	min-width: 120px;
 }
+#group .ui-slider .ui-slider-handle,
+#align .ui-slider .ui-slider-handle {
+	margin-top: -2px;
+}

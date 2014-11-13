@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Abelt - jQuery UI Theming</title>
+
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+
+	<!-- Demo stuff -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/site.css" rel="stylesheet">
+	<script src="js/site.js"></script>
+
+	<!-- abelt: required for bootstrap -->
+	<link href="../src/css/theme.bootstrap.css" rel="stylesheet">
+
+	<!-- abelt: required; also include any of the jQuery UI themes -->
+	<link id="ui-theme" href="css/jquery-ui.min.css" rel="stylesheet">
+	<link href="../src/css/theme.jui.css" rel="stylesheet">
+
+
+	<script src="../src/js/jquery.abelt.js"></script>
+	<script src="../src/js/modules/module-cache.js"></script>
+	<script src="../src/js/modules/module-utilities.js"></script>
+	<script src="../src/js/widgets/widget-zebra.js"></script>
+	<script src="../src/js/widgets/widget-sort.js"></script>
+
+	<!-- jQuery UI theme switcher: https://github.com/pontikis/jui_theme_switch/
+	<style>
+	.switcher_container { padding: 5px; }
+	.switcher_list { padding: 2px; }
+	.switcher_label { margin-right: 5px; }
+	</style>
+	<script src="js/jquery.jui_theme_switch.min.js"></script>
+ -->
+	<!-- abelt: optional -->
+	<!-- <script src="../addons/pager/jquery.abelt.pager.js"></script> -->
+
+	<script id="js">$(function() {
+
+	// call the abelt plugin and apply the ui theme widget
+	$('table').abelt({
+
+		theme : 'jui',
+		widgets : [ 'sort', 'zebra' ],
+
+		css : {
+			table       : 'ui-widget ui-widget-content ui-corner-all',
+			caption     : 'ui-widget-content',
+			headerRow   : '',
+			headerCells : 'ui-widget-header ui-corner-all ui-state-default',
+			headerHover : 'ui-state-hover',
+			footerRow   : '',
+			footerCells : '',
+			sortNone    : '',
+			sortAsc     : '',
+			sortDesc    : '',
+			sortActive  : 'ui-state-active', // applied with sortAsc or sortDesc
+			headerInner : '',
+			icon        : 'ui-icon', //  an <i> will only be added to the header if this class exists & the headerTemplate has an {icon}
+			iconNone    : 'ui-icon-carat-2-n-s', // class name added to the icon when there is no column sort
+			iconAsc     : 'ui-icon-carat-1-n', // class name added to the icon when the column has an ascending sort
+			iconDesc    : 'ui-icon-carat-1-s', // class name added to the icon when the column has a descending sort
+			odd         : 'odd ui-state-default',
+			even        : 'even ui-widget-content'
+		},
+
+		sort: {
+			headerTemplate : '{content} {icon}' // new in v2.7. Needed to add the bootstrap icon!
+		}
+
+
+	});
+
+});</script>
+
+<!--
+	<script>
+	$(function(){
+		$('#switcher').jui_theme_switch({
+			stylesheet_link_id : 'ui-theme',
+			datasource_url     : 'assets/theme_switcher.json'
+		});
+	});
+	</script>
+-->
+</head>
+<body>
+
+<div id="banner">
+	<h1>Abelt</h1>
+	<h4>jQuery UI Theme</h2>
+	We don't need the "uitheme" widget any more!
+</div>
+
+<div id="main">
+
+	jQuery UI Theme:
+	<div id="switcher"></div>
+	<br>
+
+	<div id="demo"><table class="abelt">
+	<caption>Some interesting caption</caption>
+	<thead>
+		<tr>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Age</th>
+			<th>Total</th>
+			<th>Discount</th>
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Age</th>
+			<th>Total</th>
+			<th>Discount</th>
+			<th>Date</th>
+		</tr>
+	</tfoot>
+	<tbody>
+		<tr>
+			<td>Peter</td>
+			<td>Parker</td>
+			<td>28</td>
+			<td>$9.99</td>
+			<td>20%</td>
+			<td>Jul 6, 2006 8:14 AM</td>
+		</tr>
+		<tr>
+			<td>John</td>
+			<td>Hood</td>
+			<td>33</td>
+			<td>$19.99</td>
+			<td>25%</td>
+			<td>Dec 10, 2002 5:14 AM</td>
+		</tr>
+		<tr>
+			<td>Clark</td>
+			<td>Kent</td>
+			<td>18</td>
+			<td>$15.89</td>
+			<td>44%</td>
+			<td>Jan 12, 2003 11:14 AM</td>
+		</tr>
+		<tr>
+			<td>Bruce</td>
+			<td>Almighty</td>
+			<td>45</td>
+			<td>$153.19</td>
+			<td>44%</td>
+			<td>Jan 18, 2001 9:12 AM</td>
+		</tr>
+		<tr>
+			<td>Bruce</td>
+			<td>Evans</td>
+			<td>22</td>
+			<td>$13.19</td>
+			<td>11%</td>
+			<td>Jan 18, 2007 9:12 AM</td>
+		</tr>
+	</tbody>
+</table></div>
+
+	<h3>Javascript</h3>
+	<div id="javascript">
+		<pre class="prettyprint lang-javascript"></pre>
+	</div>
+
+</div>
+
+</body>
+</html>
