@@ -41,13 +41,14 @@ var $abelt = $.abelt = {
 		css : {
 			// *** extra css class names
 			table       : '',
-			header      : '',
+			caption     : '',
 			headerRow   : '',
+			headerCells : '',
 			headerHover : '',
 			footerRow   : '',
 			footerCells : '',
 			processing  : '',                  // processing icon applied to header during sort/filter
-			info        : 'abelt-ignore',      // widgets ignore the contents of a tbody with this class name
+			ignore      : 'abelt-ignore',      // widgets ignore the contents of a tbody with this class name
 			childRow    : 'abelt-childRow',    // Rows to group with a parent
 			visible     : ''                   // class name added to visible rows
 		},
@@ -79,8 +80,8 @@ var $abelt = $.abelt = {
 	// the table and MUST only contain one class name
 	css : {
 		table       : 'abelt',
-		header      : 'abelt-header',
 		headerRow   : 'abelt-headerRow',
+		headerCells : 'abelt-header',
 		processing  : 'abelt-processing',
 		hasChild    : 'abelt-hasChildRow'
 	},
@@ -150,7 +151,7 @@ var $abelt = $.abelt = {
 
 		apply : function( abelt, named, init ) {
 			named = named || '';
-			var overall, time, applied, indx, name, widgetsArray, widget, regex, len,
+			var overall, time, applied, indx, name, widgetsArray, widget, regex, len, widgetSettings, blocks,
 				o = abelt.options,
 				widgets = [],
 				// if named == string, then apply specific widget(s), otherwise apply them all
@@ -228,10 +229,17 @@ var $abelt = $.abelt = {
 								// options are specific to the widget - ( abelt.options.{widget-name} )
 								o[ name ] = $.extend( true, {}, widget.options, o[ name ] );
 								// settings can be addded to the options, var, flags, etc
-								if ( widget.settings ) {
-									// extend abelt settings into widget settings then into abelt
-									// this should maintain user settings
-									$.extend( true, abelt, widget.settings, abelt );
+								widgetSettings = widget.settings;
+								if ( widgetSettings ) {
+									// trying to extend abelt, then replace it with itself
+									// abelt = $.extend( true, {}, widgetSettings, abelt ); // -> breaks a bunch of options
+									// it just works better to extend abelt settings into each block...
+									blocks = abelt.vars.allowedBlocks;
+									$.each( blocks, function( i, option ) {
+										if ( widgetSettings[ option ] ) {
+											abelt[ option ] = $.extend( true,  widgetSettings[ option ], abelt[option] );
+										}
+									});
 								}
 							}
 							if ( widget.init ) {
@@ -344,8 +352,8 @@ var $abelt = $.abelt = {
 		// add internal constants
 		setConstants : function( abelt ) {
 			var o = abelt.options,
-				// only grab the first class name from css.info; in case there are more than one
-				infoClass = '.' + o.css.info.split( $abelt.regex.lists )[0];
+				// only grab the first class name from css.ignore; in case there are more than one
+				ignoreClass = '.' + o.css.ignore.split( $abelt.regex.lists )[0];
 
 			// update 'constants'
 			abelt.$table = $( abelt.table );
@@ -354,7 +362,7 @@ var $abelt = $.abelt = {
 			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).children( o.selectors.headers ) ||
 				abelt.$table.find( o.selectors.headers );
 
-			abelt.$tbodies = abelt.$table.children( 'tbody' ).not( infoClass );
+			abelt.$tbodies = abelt.$table.children( 'tbody' ).not( ignoreClass );
 			abelt.$tfoot = abelt.$table.children( 'tfoot' );
 		},
 
@@ -377,8 +385,8 @@ var $abelt = $.abelt = {
 				// row accessibility
 				.children().children( 'tr' ).attr( 'role', 'row' );
 
-			if ( abelt.$table.children( 'caption' ).length) {
-				caption = abelt.$table.children( 'caption' )[0];
+			if ( abelt.$table.children( 'caption' ).length ) {
+				caption = abelt.$table.children( 'caption' ).addClass( o.css.caption )[0];
 				if ( !caption.id) {
 					caption.id = abelt.namespace.slice(1) + 'caption';
 				}
@@ -387,7 +395,7 @@ var $abelt = $.abelt = {
 
 			abelt.$headers
 				// add class to header cells
-				.addClass( $abelt.css.header + ' ' + o.css.header )
+				.addClass( $abelt.css.headerCells + ' ' + o.css.headerCells )
 				// add header class (cycles through all cells to capture rows with full colspan)
 				// not that efficient a method to add row class names, but it works
 				.each( function() {
@@ -544,7 +552,7 @@ var $abelt = $.abelt = {
 					// values saved to storage.
 					abelt.flags.init = false;
 					// setup the entire table again
-					abelt.init( o.vars.originalSettings );
+					abelt.init( abelt.vars.originalSettings );
 				});
 		}
 
@@ -591,7 +599,9 @@ var $abelt = $.abelt = {
 				// internal timer
 				timer : 0,
 				// save the original settings
-				originalSettings : options
+				originalSettings : options,
+				// blocks that can have widget settings merged into them
+				allowedBlocks : [ 'flags', 'functions', 'options', 'vars' ]
 			},
 			// indicator flags
 			flags : {
@@ -629,8 +639,8 @@ var $abelt = $.abelt = {
 		$rows = abelt.$table.children( 'thead:eq(0), tfoot' ).children('tr');
 		abelt.vars.columns = $abelt.utility.computeIndexes( $rows );
 
-		if ( $abelt.parser && $abelt.parser.init ) {
-			// initialize parser module
+		if ( $abelt.parser && $abelt.parser.init && !( o.sort && o.sort.delayInit ) ) {
+			// initialize parser module; but only if sort.delayInit isn't true, or doesn't exist
 			$abelt.parser.init( abelt );
 		}
 
@@ -722,13 +732,13 @@ var $abelt = $.abelt = {
 			.off( widgetEvents.join( abelt.namespace + ' ' ) );
 
 		abelt.$headers.add( $tfoot )
-			.removeClass( [ $abelt.css.header, o.css.header ].join(' ') )
+			.removeClass( [ $abelt.css.headerCells, o.css.headerCells ].join(' ') )
 			.removeAttr( 'data-column' );
 
 		$table.toggleClass( tableClasses, removeClasses === false );
 		// clear flag in case the plugin is initialized again
 		abelt.flags.init = false;
-		delete o.vars.cache;
+		delete abelt.vars.cache;
 		if ( $.isFunction( callback ) ) {
 			callback( abelt );
 		}

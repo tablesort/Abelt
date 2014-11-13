@@ -106,7 +106,14 @@
 					iconNone    : '', // class name added to the icon when there is no column sort
 					iconAsc     : '', // class name added to the icon when the column has an ascending sort
 					iconDesc    : '', // class name added to the icon when the column has a descending sort
-					allowClicks : 'abelt-allowClicks' // class name added to table header which allows clicks to bubble up
+					allowClicks : 'abelt-allowClicks', // class name added to table header which allows clicks to bubble up
+
+					// zebra widget options are now added straight to the css
+					// **********+*****************
+					// *** ZEBRA WIDGET options ***
+					// ****************************
+					even        : 'even z-even',
+					odd         : 'odd z-odd'
 
 				},
 
@@ -180,15 +187,11 @@
 
 				},
 
-				// widget options are now added within the widget name
-				// **********+*****************
-				// *** ZEBRA WIDGET options ***
-				// ****************************
-				zebra : [ 'even z-even', 'odd z-odd' ],
-
 				// ***************************
 				// *** SORT WIDGET options ***
 				// ***************************
+				// when a widget has an "options" section, the contents get added into a widget named block
+				// when a widget has a "settings" section (see zebra), the contents get added to the named block within abelt
 				sort : {
 					// *** appearance
 					headerTemplate   : '{content}{icon}',// header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)

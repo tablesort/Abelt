@@ -12,14 +12,17 @@ Add table row zebra striping
 
 $.abelt.widget.add({
 	id: 'zebra',
-	options : {
-		zebra : [ 'even', 'odd' ]
+	settings : {
+		css : {
+			even : 'even', // even row zebra striping
+			odd  : 'odd'   // odd row zebra striping
+		}
 	},
 	priority: 90,
 	update: function( abelt ) {
 		var $tbody, $trVisible, $tr, row, even, time, tbodyIndex,
 			o = abelt.options,
-			zebra = o.zebra,
+			zebra = [ o.css.even, o.css.odd ],
 			childRegex = new RegExp( o.css.childRow, 'i' ),
 			$tbodies = abelt.$tbodies;
 		for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
@@ -40,8 +43,9 @@ $.abelt.widget.add({
 	},
 	remove: function( abelt ) {
 		var tbodyIndex,
+			css = abelt.options.css,
 			$tb = c.$tbodies,
-			rmv = ( abelt.options.zebra.classes || [ 'even', 'odd' ] ).join( ' ' );
+			rmv = ( css.even + ' ' + css.odd );
 		for ( tbodyIndex = 0; tbodyIndex < $tb.length; tbodyIndex++  ){
 			$abelt.utility.processTbody( abelt, $tb.eq( tbodyIndex ), function( $tbody ) {
 				$tbody.children().removeClass( rmv );

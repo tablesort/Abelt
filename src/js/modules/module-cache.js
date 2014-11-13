@@ -303,7 +303,7 @@ $.extend( true, $abelt, {
 				o = abelt.options,
 				v = abelt.vars,
 				// update table bodies in case we start with an empty table
-				$tbodies = abelt.$tbodies = abelt.$table.children(' tbody:not(.' + o.css.info + ')' ),
+				$tbodies = abelt.$tbodies = abelt.$table.children(' tbody:not(.' + o.css.ignore + ')' ),
 				tbodyIndex = 0,
 				debug = [],
 				list = {
@@ -336,7 +336,7 @@ $.extend( true, $abelt, {
 							o.sort && o.sort.emptyTo || 'bottom' ).toLowerCase();
 						// text strings behaviour in numerical sorts
 						v.strings[ columnIndex ] = ( $abelt.utility.getData( $cell, optionHeaders, 'string') ||
-							'max' ).toLowerCase();
+							o.sort && o.sort.stringTo || 'max' ).toLowerCase();
 						if ( noparser ) {
 							parser = $abelt.parser.get( 'no-parser' );
 						}
@@ -382,7 +382,7 @@ $.extend( true, $abelt, {
 			v.cache = {};
 			v.totalRows = 0;
 			// if no parsers found, return - it's an empty table.
-			if ( !parsers ) {
+			if ( !parsers.length ) {
 				return $abelt.debug && o.debug ? console.warn( 'Warning: *Empty table!* Not building a cache' ) : '';
 			}
 			if ( $abelt.debug && o.debug ) { time = new Date(); }
@@ -397,8 +397,8 @@ $.extend( true, $abelt, {
 					// colMax: #   // added at the end
 				};
 
-				// ignore tbodies with class name from o.css.info
-				if ( !$tbodies.eq( tbodyIndex ).hasClass( o.css.info ) ) {
+				// ignore tbodies with class name from o.css.ignore
+				if ( !$tbodies.eq( tbodyIndex ).hasClass( o.css.ignore ) ) {
 					totalRows = ( $tbodies[ tbodyIndex ] && $tbodies[ tbodyIndex ].rows.length ) || 0;
 					for ( rowIndex = 0; rowIndex < totalRows; ++rowIndex ) {
 						rowData = {
@@ -508,7 +508,7 @@ $.extend( true, $abelt, {
 			}
 			for ( tbodyIndex = 0; tbodyIndex < len; tbodyIndex++ ) {
 				$tbody = $tbodies.eq( tbodyIndex );
-				if ( $tbody.length && !$tbody.hasClass( o.css.info ) ) {
+				if ( $tbody.length && !$tbody.hasClass( o.css.ignore ) ) {
 					// get tbody
 					$abelt.utility.processTbody( abelt, $tbody, function( $tb ) {
 						var rowIndex,
