@@ -54,15 +54,24 @@ $.extend( true, $abelt, {
 		init : function( abelt ) {
 			var o = abelt.options;
 
+			if ( $abelt.build.parserCache ) {
+				// attempt to auto detect column type, and store in abelt.parsers
+				$abelt.build.parserCache( abelt );
+			} else {
+				if ( $abelt.debug && o.debug ) {
+					console.warn( 'Cache not found (missing module-cache.js). Can not continue sort widget setup' );
+				}
+				return;
+			}
+
 			$abelt.sort.appearance( abelt );
 
 			// build headers
 			$abelt.build.headers( abelt );
-			// attempt to auto detect column type, and store in abelt.parsers
-			$abelt.build.parserCache( abelt );
+
 			// build the cache for the tbody cells
 			// delayInit will delay building the cache until the user starts a sort
-			if ( !o.delayInit ) { $abelt.build.cache( abelt ); }
+			if ( !o.sort.delayInit ) { $abelt.build.cache( abelt ); }
 
 		},
 
@@ -206,6 +215,7 @@ $.extend( true, $abelt, {
 				active = $abelt.css.sortActive + ' ' + o.css.sortActive,
 				none = $abelt.css.sortNone + ' ' + o.css.sortNone,
 				css = [ $abelt.css.sortAsc + ' ' + o.css.sortAsc, $abelt.css.sortDesc + ' ' + o.css.sortDesc ],
+				cssIcon = [ o.css.iconAsc, o.css.iconDesc, o.css.iconNone ],
 				aria = [ 'ascending', 'descending' ],
 				// find the footer
 				$footer = abelt.$tfoot.children( 'tr' ).children( 'th, td' ).add( abelt.$extraHeaders ).removeClass( css.join(' ') );
@@ -213,7 +223,10 @@ $.extend( true, $abelt, {
 			abelt.$headers
 				.removeClass( css.join(' ') + ' ' + active )
 				.addClass( none )
-				.attr( 'aria-sort', 'none' );
+				.attr( 'aria-sort', 'none' )
+				.find( '.' + $abelt.css.icon )
+				.removeClass( cssIcon.join( ' ' ) )
+				.addClass( cssIcon[ 2 ] );
 
 			for ( listIndex = 0; listIndex < len; listIndex++ ) {
 				// direction = 2 means reset!
@@ -228,7 +241,10 @@ $.extend( true, $abelt, {
 								$cell.eq( cellIndex )
 									.removeClass( none )
 									.addClass( css[ list[ listIndex ][ 1 ] ] + ' ' + active )
-									.attr( 'aria-sort', aria[ list[ listIndex ][ 1 ] ] );
+									.attr( 'aria-sort', aria[ list[ listIndex ][ 1 ] ] )
+									.find( '.' + $abelt.css.icon )
+									.removeClass( cssIcon.join( ' ' ) )
+									.addClass( cssIcon[ list[ listIndex ][ 1 ] ] );
 							}
 						}
 						// add sorted class to footer & extra headers, if they exist
@@ -661,7 +677,7 @@ $.extend( true, $abelt, {
 
 		naturalAsc : function( a, b, col, abelt ) {
 			if ( a === b ) { return 0; }
-			var e = abelt.vars.string[ ( abelt.vars.empties[ col ] || abelt.options.emptyTo ) ];
+			var e = abelt.vars.string[ ( abelt.vars.empties[ col ] || abelt.options.sort.emptyTo ) ];
 			if ( a === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? -1 : 1 ) : -e || -1; }
 			if ( b === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? 1 : -1 ) : e || 1; }
 			return $abelt.sorters.natural( a, b );
@@ -669,7 +685,7 @@ $.extend( true, $abelt, {
 
 		naturalDesc : function( a, b, col, abelt ) {
 			if ( a === b ) { return 0; }
-			var e = abelt.vars.string[ ( abelt.vars.empties[ col ] || abelt.options.emptyTo ) ];
+			var e = abelt.vars.string[ ( abelt.vars.empties[ col ] || abelt.options.sort.emptyTo ) ];
 			if ( a === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? -1 : 1 ) : e || 1; }
 			if ( b === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? 1 : -1 ) : -e || -1; }
 			return $abelt.sorters.natural( b, a );
@@ -734,8 +750,7 @@ $.extend( true, $abelt, {
 		// Sort which gives numerical value to any text within the column
 		numericAsc : function( a, b, num, mx, col, abelt ) {
 			if ( a === b ) { return 0; }
-			var o = abelt.options,
-				e = abelt.vars.string[ ( abelt.vars.empties[ col ] || o.emptyTo ) ];
+			var e = abelt.vars.string[ ( abelt.vars.empties[ col ] || abelt.options.sort.emptyTo ) ];
 			if ( a === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? -1 : 1 ) : -e || -1; }
 			if ( b === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? 1 : -1 ) : e || 1; }
 			if ( isNaN( a ) ) { a = $abelt.sorters.getTextValue( a, num, mx ); }
@@ -745,8 +760,7 @@ $.extend( true, $abelt, {
 
 		numericDesc : function( a, b, num, mx, col, abelt ) {
 			if ( a === b ) { return 0; }
-			var o = abelt.options,
-				e = abelt.vars.string[ ( abelt.vars.empties[ col ] || o.emptyTo ) ];
+			var e = abelt.vars.string[ ( abelt.vars.empties[ col ] || abelt.options.sort.emptyTo ) ];
 			if ( a === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? -1 : 1 ) : e || 1; }
 			if ( b === '' && e !== 0 ) { return typeof e === 'boolean' ? ( e ? 1 : -1 ) : -e || -1; }
 			if ( isNaN( a ) ) { a = $abelt.sorters.getTextValue( a, num, mx ); }
@@ -816,7 +830,7 @@ $.extend( true, $abelt, {
 				if ( lock !== undefined && lock !== false ) {
 					v.sortOrder[ columnIndex ] = v.lockedOrder = $abelt.sort.formatOrder( lock ) ? [ 1,1,1 ] : [ 0,0,0 ];
 				}
-				$cell.addClass( $abelt.css.header + ' ' + o.css.header );
+				$cell.addClass( $abelt.css.headerCells + ' ' + o.css.headerCells );
 				// add to parent in case there are multiple rows
 				$cell.parent().addClass( $abelt.css.headerRow + ' ' + o.css.headerRow ).attr( 'role', 'row' );
 				// allow keyboard cursor to focus on element
