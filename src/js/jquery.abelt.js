@@ -1,4 +1,4 @@
-/*! jQuery Abelt plugin - updated 11/10/2014 (v1.0.0-alpha.1)
+/*! jQuery Abelt plugin - updated 11/13/2014 (v1.0.0-alpha.3)
  _____ _____ _____ __  _____
 |  _  | __  |   __|  ||_   _|
 |     | __ -|   __|  |__| |

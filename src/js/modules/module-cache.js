@@ -1,4 +1,4 @@
-/* jQuery Abelt cache module - updated 11/3/2014 (v1.0.0-alpha.1)
+/* jQuery Abelt cache module - updated 11/13/2014 (v1.0.0-alpha.3)
  _____ _____ _____ __  _____
 |  _  | __  |   __|  ||_   _|
 |     | __ -|   __|  |__| |

@@ -7,7 +7,7 @@
 Turning columns on and off like a champ
 by by Justin Hallett & Rob Garrison
 */
-/*! Abelt columnSelector widget - updated 11/11/2014 */
+/*! Abelt columnSelector widget - updated 11/11/2014 (v1.0.0-alpha.2) */
 ;( function( $, undefined ) {
 'use strict';
 

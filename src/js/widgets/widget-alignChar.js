@@ -7,7 +7,7 @@
 
 Align characters vertically by R.Garrison
 */
-/*! Abelt AlignChar widget - updated 11/11/2014 */
+/*! Abelt AlignChar widget - updated 11/11/2014 (v1.0.0-alpha.2) */
 ;( function( $, undefined ) {
 'use strict';
 var $abelt = $.abelt,

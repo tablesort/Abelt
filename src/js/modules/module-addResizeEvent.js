@@ -6,7 +6,7 @@
 |    -| -_|_ -| |- _| -_|  | -_| | | -_|   |  _|
 |__|__|___|___|_|___|___|  |___|\_/|___|_|_|_|
 
-add resize event to table headers
+add resize event to table headers - updated 11/10/2014 (v1.0.0-alpha.1)
 */
 $.abelt.utility.addHeaderResizeEvent = function( $table, disable, settings ) {
 	$table = $( $table ); // make sure we have a jQuery object

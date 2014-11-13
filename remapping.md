@@ -62,7 +62,9 @@ Tablesorter to Abelt
     config.textAttribute       => [Cache] abelt.options.textAttribute
 
     // *** zebra widget options
-    config.widgetOptions.zebra => [Zebra]  abelt.options.zebra = [ 'even', 'odd' ]
+    config.widgetOptions.zebra => [Zebra] - abelt.options.zebra = [ 'even', 'odd' ] ** REMOVED in v1.0.0-alpha.3 **
+                                  [Zebra] - abelt.options.css.even ** new in v1.0.0-alpha.3 **
+                                  [Zebra] - abelt.options.css.odd  ** new in v1.0.0-alpha.3 **
 
     // *** widget options
     config.widgets             => [Core]  abelt.options.widgets
@@ -77,12 +79,13 @@ Tablesorter to Abelt
 
     // *** extra css class names
     config.tableClass          => [Core]  abelt.options.css.table
-    config.cssHeader           => [Core]  abelt.options.css.header
+    config.cssHeader           => [Core]  abelt.options.css.headerCells ** changed in v1.0.0-alpha.3 **
     config.cssHeaderRow        => [Core]  abelt.options.css.headerRow
     config.cssProcessing       => [Core]  abelt.options.css.processing
     ** NEW **                  => [Core]  abelt.options.css.headerHover
     ** NEW **                  => [Core]  abelt.options.css.footerRow
     ** NEW **                  => [Core]  abelt.options.css.footerCells
+    ** NEW **                  => [Core]  abelt.options.css.caption ** new in v1.0.0-alpha.3 **
 
     config.cssAsc              => [Sort]  abelt.options.css.sortAsc
     config.cssDesc             => [Sort]  abelt.options.css.sortDesc
@@ -94,7 +97,7 @@ Tablesorter to Abelt
     ** NEW **                  => [Sort]  abelt.options.css.sortActive
 
     config.cssChildRow         => [Core]  abelt.options.childRow
-    config.cssInfoBlock        => [Core]  abelt.options.css.info
+    config.cssInfoBlock        => [Core]  abelt.options.css.ignore ** changed in v1.0.0-alpha.3 **
     config.cssAllowClicks      => [Sort]  abelt.options.css.allowClicks
     ** NEW **                  => [Core]  abelt.options.css.visible
 

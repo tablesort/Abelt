@@ -6,7 +6,7 @@
 
 Add table row zebra striping
 */
-/*! Abelt Zebra widget - updated 11/11/2014 */
+/*! Abelt Zebra widget - updated 11/13/2014 (v1.0.0-alpha.3) */
 ;( function( $ ) {
 'use strict';
 

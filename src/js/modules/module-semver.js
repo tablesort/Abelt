@@ -1,5 +1,5 @@
 /**
- Modified semver.js for node.js by R.Garrison (@Mottie)
+ Modified semver.js for node.js by R.Garrison (@Mottie) - updated 11/10/2014 (v1.0.0-alpha.1)
  Original by @isaacs: https://github.com/isaacs/node-semver
  ( all modifications have been labeled )
  */
