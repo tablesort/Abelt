@@ -421,7 +421,6 @@ $.extend( true, $abelt, {
 				o = abelt.options,
 				v = abelt.vars,
 				key = !event[ o.sort.multiSortKey ],
-				hasSort = '.' + $abelt.css.sortDesc + ',.' + $abelt.css.sortAsc,
 				$table = abelt.$table,
 				cell = $( event.target ).closest( 'th, td' )[ 0 ];
 
@@ -435,7 +434,7 @@ $.extend( true, $abelt, {
 				abelt.$headers.each( function() {
 					var $this = $( this );
 					// only reset counts on columns that weren't just clicked on and if not included in a multisort
-					if ( this !== cell && ( key || !$this.is( hasSort ) ) ) {
+					if ( this !== cell && ( key || !$this.is( '.' + $abelt.css.sortActive ) ) ) {
 						v.sortCount[ $this.data('column') ] = -1;
 					}
 				});
@@ -786,7 +785,10 @@ $.extend( true, $abelt, {
 		headers : function( abelt ) {
 			var icon, lock, time,
 				o = abelt.options,
-				v = abelt.vars;
+				v = abelt.vars,
+				// only grab the first class name from css.ignore; in case there are more than one
+				ignoreClass = '.' + o.css.ignore.split( $abelt.regex.lists )[0];
+
 			abelt.vars.originalHeaders = [];
 			if ( $abelt.debug && o.debug ) {
 				time = new Date();
@@ -797,7 +799,7 @@ $.extend( true, $abelt, {
 			icon = o.css.icon ? '<i class="' +
 				( o.css.icon === $abelt.css.icon ? $abelt.css.icon : o.css.icon + ' ' + $abelt.css.icon ) + '"></i>' : '';
 			// redefine abelt.$headers here in case of an updateAll that replaces or adds an entire header cell - see #683
-			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).children( o.selectors.headers ).each( function( columnIndex ) {
+			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).not( ignoreClass ).children( o.selectors.headers ).each( function( columnIndex ) {
 				var header, template,
 					$cell = $(this),
 					// make sure to get header cell & not column indexed cell
@@ -873,7 +875,7 @@ $abelt.widget.add({
 	// => 'abelt.options.sort'
 	options: {
 		// *** appearance
-		headerTemplate   : '{content}',// header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
+		headerTemplate   : '{content} {icon}', // header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
 		onRenderTemplate : null,       // function(index, template){ return template; }, (template is a string)
 		onRenderHeader   : null,       // function(index){}, (nothing to return)
 

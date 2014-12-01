@@ -51,26 +51,24 @@
 			caption     : 'ui-widget-content',
 			headerRow   : '',
 			headerCells : 'ui-widget-header ui-corner-all ui-state-default',
+			headerInner : '',
 			headerHover : 'ui-state-hover',
 			footerRow   : '',
 			footerCells : '',
+			// class names added to the header cell that has sorting enabled
 			sortNone    : '',
 			sortAsc     : '',
 			sortDesc    : '',
-			sortActive  : 'ui-state-active', // applied with sortAsc or sortDesc
-			headerInner : '',
+			sortActive  : 'ui-state-active', // applied to header cell with either sortAsc or sortDesc
+			// class names applied to the icon (<i>) in the header
 			icon        : 'ui-icon', //  an <i> will only be added to the header if this class exists & the headerTemplate has an {icon}
 			iconNone    : 'ui-icon-carat-2-n-s', // class name added to the icon when there is no column sort
 			iconAsc     : 'ui-icon-carat-1-n', // class name added to the icon when the column has an ascending sort
 			iconDesc    : 'ui-icon-carat-1-s', // class name added to the icon when the column has a descending sort
+			// zebra striping
 			odd         : 'odd ui-state-default',
 			even        : 'even ui-widget-content'
-		},
-
-		sort: {
-			headerTemplate : '{content} {icon}' // new in v2.7. Needed to add the bootstrap icon!
 		}
-
 
 	});
 

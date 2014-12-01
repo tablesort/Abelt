@@ -38,24 +38,23 @@
 			caption     : '',
 			headerRow   : '',
 			headerCells : 'bootstrap-header',
+			headerInner : '',
 			headerHover : '',
 			footerRow   : '',
 			footerCells : '',
+			// class names added to the header cell that has sorting enabled
 			sortNone    : '',
 			sortAsc     : '',
 			sortDesc    : '',
 			sortActive  : '', // applied with sortAsc or sortDesc
-			headerInner : '',
+			// class names applied to the icon (<i>) in the header
 			icon        : 'glyphicon', //  an <i> will only be added to the header if this class exists & the headerTemplate has an {icon}
 			iconNone    : 'bootstrap-icon-unsorted', // class name added to the icon when there is no column sort
 			iconAsc     : 'icon-chevron-up glyphicon-chevron-up', // class name added to the icon when the column has an ascending sort
 			iconDesc    : 'icon-chevron-down glyphicon-chevron-down', // class name added to the icon when the column has a descending sort
+			// zebra striping
 			odd         : 'odd',
 			even        : 'even'
-		},
-
-		sort: {
-			headerTemplate : '{content} {icon}' // new in v2.7. Needed to add the bootstrap icon!
 		}
 
 	});
@@ -75,7 +74,8 @@
 
 	<div id="demo"><table class="abelt">
 	<thead>
-		<tr class="abelt->
+		<!-- add "abelt-ignore" to ignore the contents of this header row -->
+		<tr class="abelt-ignore">
 			<th colspan="7" class="ts-pager form-horizontal">
 				<button type="button" class="btn first"><i class="icon-step-backward glyphicon glyphicon-step-backward"></i></button>
 				<button type="button" class="btn prev"><i class="icon-arrow-left glyphicon glyphicon-backward"></i></button>
@@ -98,7 +98,7 @@
 			<th>English</th>
 			<th>Japanese</th>
 			<th>Calculus</th>
-			<th>Geometry</th></tr>
+			<th class="sorter-false">Geometry</th></tr>
 	</thead>
 	<tfoot>
 		<tr>
