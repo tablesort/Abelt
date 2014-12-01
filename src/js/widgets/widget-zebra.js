@@ -13,9 +13,11 @@ Add table row zebra striping
 $.abelt.widget.add({
 	id: 'zebra',
 	settings : {
-		css : {
-			even : 'even', // even row zebra striping
-			odd  : 'odd'   // odd row zebra striping
+		options : {
+			css : {
+				even : 'even', // even row zebra striping
+				odd  : 'odd'   // odd row zebra striping
+			}
 		}
 	},
 	priority: 90,
