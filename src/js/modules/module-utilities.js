@@ -69,7 +69,7 @@ $.extend( true, $abelt, {
 		// indx = current column index
 		// getCell = flag to return resulting object
 		getColumnData : function( abelt, obj, indx, getCell ) {
-			if ( obj === undefined || obj === null ) { return; }
+			if ( $.isEmptyObject( obj ) ) { return indx; }
 			var $header, key;
 			if ( obj[ indx ] ) {
 				return getCell ?
@@ -88,7 +88,7 @@ $.extend( true, $abelt, {
 					}
 				}
 			}
-			return;
+			return indx;
 		},
 
 		formatFloat : function( str, abelt ) {
