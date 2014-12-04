@@ -36,8 +36,7 @@
 	padding: 4px 18px 4px 4px;
 }
 
-/* bootstrap uses <i> for icons */
-.abelt-bootstrap .abelt-header i {
+.abelt-bootstrap .abelt-header .abelt-icon {
 	position: absolute;
 	right: 2px;
 	top: 50%;
@@ -51,12 +50,12 @@
 
 /* black unsorted icon */
 .abelt-bootstrap .bootstrap-icon-unsorted {
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWVJREFUeNqUUL9Lw2AUTGP8mqGlpBQkNeCSRcckEBcHq1jImMElToKuDvpHFMGhU0BQcHBwLji6CE1B4uB/INQsDi4d2jQ/fPeZxo764OV6915f7lLJ81xot9tCURXqdVEUr7IsO6ffH9Q5BlEUCaLwWxWqTcbYnaIoh0Dw4gAvcWlxq1qt9hqNxg6hUGAP+uIPUrGs0qXLer2+v/pTX6QpxLtkc2U2m53ACb8sSdIDXerSEms2m6+DweAICA4d89KGbduf9MpEVdXQ9/2LVqv1CASHjjn3iq/x1xKFfxQPqGnada1W86bT6SiO42OS3qk3KPStLMvbk8nkfjwen/LLuq6blFymMB0KdUPSGhAcOualjX6/f0bCiC7NaWGPQr0BwaFjzn0gYJqmLAiCA8/zni3LmhuGkQPBoWPOPwQeaPIqD4fDruu6L6Zp5kBw6IudchmdJAkLw3DXcZwnIPjy/FuAAQCiqqWWCAFKcwAAAABJRU5ErkJggg==);
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTEgMTAuNSAzLjIgOC40IDYuNSAxMS43IDkuOSA4LjQgMTIgMTAuNSA2LjUgMTZ6TTEgNS41IDYuNSAwIDEyIDUuNSA5LjggNy42IDYuNSA0LjMgMy4yIDcuNnoiIGZpbGw9IiMyMjIiLz48L3N2Zz4=);
 }
 
 /* white unsorted icon */
 .abelt-bootstrap .icon-white.bootstrap-icon-unsorted {
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOBAMAAAALT/umAAAAKlBMVEUAAAD///////////////////////////////////////////////////+Gu8ovAAAADXRSTlMA4EXKBtQqvR0+sxmalc142gAAAFdJREFUCNdjYGDoamAAAjZbMxCVfvd6AgMDd+3du9UMDKx3hWSvMjBwXZww8RYDGuC53NB8h4GB8a617UUGBs7Yu3cjGRhYVO9eVQFKOskKOQApFmUgBwBZ+xXRTttNdAAAAABJRU5ErkJggg==);
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTEgMTAuNSAzLjIgOC40IDYuNSAxMS43IDkuOSA4LjQgMTIgMTAuNSA2LjUgMTZ6TTEgNS41IDYuNSAwIDEyIDUuNSA5LjggNy42IDYuNSA0LjMgMy4yIDcuNnoiIGZpbGw9IiNkZGQiLz48L3N2Zz4=);
 }
 
 /* since bootstrap (table-striped) uses nth-child(), we just use this to add a zebra stripe color */
@@ -73,7 +72,8 @@
 
 /* processing icon */
 .abelt-bootstrap .abelt-processing {
-	background-image: url('data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=');
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTEwIDJDMTAgMy4xIDggNiA4IDYgOCA2IDYgMy4xIDYgMiA2IDAuOSA2LjkgMCA4IDBjMS4xIDAgMiAwLjkgMiAyek0xNiA4YzAgMS4xLTAuOSAyLTIgMi0xLjEgMC00LTItNC0yIDAgMCAyLjktMiA0LTIgMS4xIDAgMiAwLjkgMiAyek0xMCAxNGMwIDEuMS0wLjkgMi0yIDItMS4xIDAtMi0wLjktMi0yIDAtMS4xIDItNCAyLTQgMCAwIDIgMi45IDIgNHpNNiA4QzYgOCAzLjEgMTAgMiAxMCAwLjkgMTAgMCA5LjEgMCA4IDAgNi45IDAuOSA2IDIgNiAzLjEgNiA2IDggNiA4eiIgc3R5bGU9ImZpbGw6IzMzMztvcGFjaXR5Oi41Ij48YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InJvdGF0ZSIgZnJvbT0iMCA4IDgiIHRvPSIzNjAgOCA4IiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgZHVyPSIxLjVzIi8+PC9wYXRoPjwvc3ZnPg==);
+	background-size: auto 20px;
 	position: absolute;
 	z-index: 1000;
 }

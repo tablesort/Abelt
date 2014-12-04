@@ -262,6 +262,13 @@ $(function() {
 				.removeClass('abelt-' + t.join(' abelt-'))
 				.addClass('abelt-' + (theme === 'black-ice' ? 'blackice' : theme) );
 		}).change();
+
+	$('#processing').click(function(){
+		var $this = $(this),
+			showing = $this.text() === 'Show';
+		$('table thead th').toggleClass('abelt-processing', showing);
+		$this.text( showing ? 'Hide' : 'Show' );
+	});
 });
 </script>
 
@@ -269,7 +276,7 @@ $(function() {
 <body>
 
 <div id="banner">
-	<h1>Abelt <a href="https://github.com/tablesort/Abelt">x</a></h1>
+	<h1>Abelt <a href="https://github.com/tablesort/Abelt"></a></h1>
 	<p>By <a href="https://github.com/Mottie/">Rob G (Mottie)</a></p>
 </div>
 
@@ -277,16 +284,18 @@ $(function() {
 
 	Choose Theme:
 	<select></select>
+	<br>
+	<button id="processing" type="button">Show</button> (toggle processing icon)
 	<br><br>
 
 	<table class="abelt">
 		<caption class="dark-row">Abelt test</caption>
 		<thead>
 			<tr>
-				<th>AlphaNumeric Sort</th>
+				<th width="25%">AlphaNumeric Sort & and really really big header so we can see what happens on the next line; both with the icon and the text wrapping</th>
 				<th>Currency</th>
 				<th>Alphabetical</th>
-				<th>Sites</th>
+				<th class="sorter-false">Sites</th>
 			</tr>
 		</thead>
 		<tfoot>
