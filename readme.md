@@ -2,11 +2,15 @@
 
 ### A utility belt for tables
 
-This plugin is similiar but completely rewritten from [this forked version of tablesorter](https://github.com/Mottie/tablesorter).
+This plugin is similiar but completely rewritten from [this forked version of tablesorter](//github.com/Mottie/tablesorter).
+
+It is still a work-in-progress!
 
 ### Browser support
 
-Abelt will work with jquery 1.9+ but we don't plan on making any effort to support older versions of Internet Explorer... it may work, but there will not be any active testing done to ensure support.
+We don't plan on making any effort to support older browser versions, especially Internet Explorer... it may work, but there will not be any active testing done to ensure support.
+
+Abelt will work with jquery 1.9+.
 
 ### Licensing
 

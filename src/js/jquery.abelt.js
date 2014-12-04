@@ -12,7 +12,7 @@ Requires : jQuery v1.7+ */
 'use strict';
 var $abelt = $.abelt = {
 
-	version : '1.0.0-alpha.3',
+	version : '1.0.0-alpha.4',
 
 	// development mode. If false, the grunt build uglify will remove all extra development code
 	debug :  true,
