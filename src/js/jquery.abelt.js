@@ -12,7 +12,7 @@ Requires : jQuery v1.7+ */
 'use strict';
 var $abelt = $.abelt = {
 
-	version : '1.0.0-alpha.1',
+	version : '1.0.0-alpha.3',
 
 	// development mode. If false, the grunt build uglify will remove all extra development code
 	debug :  true,
@@ -228,19 +228,19 @@ var $abelt = $.abelt = {
 							if ( widget.options ) {
 								// options are specific to the widget - ( abelt.options.{widget-name} )
 								o[ name ] = $.extend( true, {}, widget.options, o[ name ] );
-								// settings can be addded to the options, var, flags, etc
-								widgetSettings = widget.settings;
-								if ( widgetSettings ) {
-									// trying to extend abelt, then replace it with itself
-									// abelt = $.extend( true, {}, widgetSettings, abelt ); // -> breaks a bunch of options
-									// it just works better to extend abelt settings into each block...
-									blocks = abelt.vars.allowedBlocks;
-									$.each( blocks, function( i, option ) {
-										if ( widgetSettings[ option ] ) {
-											abelt[ option ] = $.extend( true,  widgetSettings[ option ], abelt[option] );
-										}
-									});
-								}
+							}
+							// settings can be addded to the options, var, flags, etc
+							widgetSettings = widget.settings;
+							if ( widgetSettings ) {
+								// trying to extend abelt, then replace it with itself
+								// abelt = $.extend( true, {}, widgetSettings, abelt ); // -> breaks a bunch of options
+								// it just works better to extend abelt settings into each block...
+								blocks = abelt.vars.allowedBlocks;
+								$.each( blocks, function( i, option ) {
+									if ( widgetSettings[ option ] ) {
+										abelt[ option ] = $.extend( true,  widgetSettings[ option ], abelt[option] );
+									}
+								});
 							}
 							if ( widget.init ) {
 								applied = true;
@@ -358,9 +358,8 @@ var $abelt = $.abelt = {
 			// update 'constants'
 			abelt.$table = $( abelt.table );
 
-			// default selectors.headers no longer has '> thead'; but fallback to use old default just in case
-			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).children( o.selectors.headers ) ||
-				abelt.$table.find( o.selectors.headers );
+			// selectors.headers should only contain 'th' or 'td', or both
+			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).not( ignoreClass ).children( o.selectors.headers );
 
 			abelt.$tbodies = abelt.$table.children( 'tbody' ).not( ignoreClass );
 			abelt.$tfoot = abelt.$table.children( 'tfoot' );
@@ -654,7 +653,7 @@ var $abelt = $.abelt = {
 
 		// cancel text selection of header cells
 		if ( o.cancelSelection ) {
-			abelt.$headers
+			abelt.$table.children( 'thead' ).children( 'tr' ).children( o.selectors.headers )
 				.addClass( 'cancelSelection' )
 				.attr( 'unselectable', 'on' )
 				.on( 'selectstart', false );
