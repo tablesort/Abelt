@@ -595,12 +595,12 @@ $.extend( true, $abelt, {
 			}
 		},
 
-		checkResort: function( abelt, flag, callback ) {
+		checkResort: function( abelt, resort, callback ) {
 			var o = abelt.options,
-				list = o.sort.list;
+				list = $.isArray(resort) ? resort : o.sort.list;
 			// don't try to resort if the table is still processing
 			// this will catch spamming of the updateCell method
-			if ( flag !== false && !abelt.flags.isProcessing && list.length ) {
+			if ( resort !== false && !abelt.flags.isProcessing && $.isArray( list ) ) {
 				// sorton
 				$abelt.sort.start( abelt, list, function(){
 					$abelt.sort.complete( abelt, callback );
