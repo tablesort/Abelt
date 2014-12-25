@@ -48,7 +48,7 @@ var $abelt = $.abelt = {
 			footerRow   : '',
 			footerCells : '',
 			processing  : '',                  // processing icon applied to header during sort/filter
-			ignore      : 'abelt-ignore',      // widgets ignore the contents of a tbody with this class name
+			ignore      : 'abelt-ignore',      // widgets ignore the contents of a thead row and tbody with this class name
 			childRow    : 'abelt-childRow',    // Rows to group with a parent
 			visible     : ''                   // class name added to visible rows
 		},
@@ -352,8 +352,8 @@ var $abelt = $.abelt = {
 		// add internal constants
 		setConstants : function( abelt ) {
 			var o = abelt.options,
-				// only grab the first class name from css.ignore; in case there are more than one
-				ignoreClass = '.' + o.css.ignore.split( $abelt.regex.lists )[0];
+				// join ignore class names
+				ignoreClass = '.' + o.css.ignore.split( $abelt.regex.lists ).join( ',.' );
 
 			// update 'constants'
 			abelt.$table = $( abelt.table );
@@ -513,7 +513,7 @@ var $abelt = $.abelt = {
 					// empty so joining with namespace works
 					''
 					// add namespace to all events
-				].join( abelt.namespace + ',' ).split(',');
+				].join( abelt.namespace + ',' ).split( ',' );
 			abelt.$table
 				.off( widgetEvents.join( ' ' ) )
 				.on( events.widgetUpdate, function( e, callback ) {
