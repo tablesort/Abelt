@@ -72,8 +72,8 @@ $abeltColSel = $abelt.columnSelector = {
 			$container = colSel.$container,
 			useStorage =  o.columnSelector.saveColumns && $abelt.storage,
 			// get stored column states
-			saved = useStorage ? $abelt.storage( abelt.table, 'tablesorter-columnSelector' ) : [],
-			state = useStorage ? $abelt.storage( abelt.table, 'tablesorter-columnSelector-auto' ) : {};
+			saved = useStorage ? $abelt.storage( abelt.table, 'abelt-columnSelector' ) : [],
+			state = useStorage ? $abelt.storage( abelt.table, 'abelt-columnSelector-auto' ) : {};
 
 		// initial states
 		colSel.auto = $.isEmptyObject( state ) || $.type( state.auto ) !== 'boolean' ?
@@ -113,6 +113,7 @@ $abeltColSel = $abelt.columnSelector = {
 					// input may not be wrapped within the layout template
 					.find( 'input' ).add( colSel.$wrapper[ colId ].filter( 'input' ) )
 					.attr( 'data-column', colId )
+					.toggleClass( o.columnSelector.cssChecked, colSel.states[ colId ] )
 					.prop( 'checked', colSel.states[ colId ] )
 					.on( 'change', function() {
 						colSel.states[ colId ] = this.checked;
@@ -149,6 +150,7 @@ $abeltColSel = $abelt.columnSelector = {
 					// needed in case the input in the layout is not wrapped
 					.find( 'input' ).add( colSel.$auto.filter( 'input' ) )
 					.attr( 'data-column', 'auto' )
+					.toggleClass( o.columnSelector.cssChecked, colSel.auto )
 					.prop( 'checked', colSel.auto )
 					.on( 'change', function() {
 						colSel.auto = this.checked;
@@ -164,7 +166,7 @@ $abeltColSel = $abelt.columnSelector = {
 						$abeltColSel.updateCols( abelt );
 						// copy the column selector to a popup/tooltip
 						if ( colSel.$popup ) {
-							colSel.$popup.find( '.tablesorter-column-selector' )
+							colSel.$popup.find( '.abelt-column-selector' )
 								.html( colSel.$container.html() )
 								.find( 'input' ).each( function() {
 									var $this = $( this ),
@@ -173,7 +175,7 @@ $abeltColSel = $abelt.columnSelector = {
 								});
 						}
 						if ( o.columnSelector.saveColumns && $abelt.storage ) {
-							$abelt.storage( abelt.$table[ 0 ], 'tablesorter-columnSelector-auto', { auto : colSel.auto } );
+							$abelt.storage( abelt.$table[ 0 ], 'abelt-columnSelector-auto', { auto : colSel.auto } );
 						}
 					}).change();
 			}
@@ -243,12 +245,14 @@ $abeltColSel = $abelt.columnSelector = {
 			.find( 'input[data-column]' )
 			.filter( '[data-column!="auto"]' )
 			.each( function() {
+				var $this = $( this );
 				if ( !this.checked ) {
-					column = $( this ).data( 'column' ) + 1;
+					column = $this.data( 'column' ) + 1;
 					styles.push( prefix + ' col:nth-child(' + column + ')' );
 					styles.push( prefix + ' tr th:nth-child(' + column + ')' );
 					styles.push( prefix + ' tr td:nth-child(' + column + ')' );
 				}
+				$this.toggleClass( o.columnSelector.cssChecked, this.checked );
 			});
 		if ( o.columnSelector.mediaquery ) {
 			colSel.$breakpoints.prop( 'disabled', true );
@@ -259,7 +263,7 @@ $abeltColSel = $abelt.columnSelector = {
 				.html( styles.length ? styles.join( ',' ) + ' { display: none; }' : '' );
 		}
 		if ( o.columnSelector.saveColumns && $abelt.storage ) {
-			$abelt.storage( abelt.table, 'tablesorter-columnSelector', colSel.states );
+			$abelt.storage( abelt.table, 'abelt-columnSelector', colSel.states );
 		}
 	},
 
@@ -269,16 +273,19 @@ $abeltColSel = $abelt.columnSelector = {
 			colSel = $table[ 0 ].abelt.vars.columnSelector,
 			$popup = $( elm );
 		if ( $popup.length ) {
-			if ( !$popup.find( '.tablesorter-column-selector' ).length ) {
+			if ( !$popup.find( '.abelt-column-selector' ).length ) {
 				// add a wrapper to add the selector into, in case the popup has other content
-				$popup.append( '<span class="tablesorter-column-selector"></span>' );
+				$popup.append( '<span class="abelt-column-selector"></span>' );
 			}
-			$popup.find( '.tablesorter-column-selector' )
+			$popup.find( '.abelt-column-selector' )
 				.html( colSel.$container.html() )
 				.find( 'input' ).each( function() {
 					var $this = $( this ),
-						indx = $this.data( 'column' );
-					$this.prop( 'checked', indx === 'auto' ? colSel.auto : colSel.states[ indx ] );
+						indx = $this.data( 'column' ),
+						isChecked = indx === 'auto' ? colSel.auto : colSel.states[indx];
+					$this
+						.toggleClass( o.columnSelector.cssChecked, isChecked )
+						.prop( 'checked', isChecked );
 				});
 			colSel.$popup = $popup.on( 'change', 'input', function() {
 				// data input
@@ -324,8 +331,10 @@ $abelt.widget.add({
 		// data attribute containing column priority
 		// duplicates how jQuery mobile uses priorities:
 		// http://view.jquerymobile.com/1.3.2/dist/demos/widgets/table-column-toggle/
-		priority : 'data-priority'
-
+		priority : 'data-priority',
+		// class name added to checked checkboxes - this fixes an issue with Chrome not updating FontAwesome
+		// applied icons; use this class name (input.checked) instead of input:checked
+		cssChecked : 'checked'
 	},
 	init: function( abelt ) {
 		$abeltColSel.init( abelt );
