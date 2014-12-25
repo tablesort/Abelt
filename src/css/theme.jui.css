@@ -32,7 +32,7 @@
 .abelt-jui .abelt-headerInner {
 	padding-right: 20px;
 }
-.abelt-jui thead tr th .ui-icon {
+.abelt-jui thead tr th i.ui-icon {
 	position: absolute;
 	right: 3px;
 	top: 50%;
@@ -42,7 +42,7 @@
 .abelt-jui thead .sorter-false {
 	cursor: default;
 }
-.abelt-jui thead tr .sorter-false .ui-icon {
+.abelt-jui thead tr .sorter-false i.ui-icon {
 	display: none;
 }
 

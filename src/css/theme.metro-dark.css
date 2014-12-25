@@ -39,7 +39,7 @@ Metro Dark Theme
 .abelt-metro-dark .abelt-header,
 .abelt-metro-dark thead .sorter-false,
 .abelt-metro-dark thead .sorter-false .abelt-headerInner,
-.abelt-metro-dark thead .sorter-false .abelt-icon {
+.abelt-metro-dark thead .sorter-false i.abelt-icon {
 	background-image: none;
 	cursor: default;
 }
@@ -50,8 +50,8 @@ Metro Dark Theme
 	cursor: pointer;
 }
 
-.abelt-metro-dark .abelt-unsorted .abelt-icon,
-.abelt-metro-dark .abelt-sorted .abelt-icon {
+.abelt-metro-dark .abelt-unsorted i.abelt-icon,
+.abelt-metro-dark .abelt-sorted i.abelt-icon {
 	width: 12px;
 	height: 12px;
 	position: absolute;
@@ -65,7 +65,7 @@ Metro Dark Theme
 	background-size: auto 100%;
 }
 
-.abelt-metro-dark .abelt-unsorted .abelt-icon {
+.abelt-metro-dark .abelt-unsorted i.abelt-icon {
 	/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M15 8 1 8 8 0zM15 9 1 9 8 16z" style="fill:#ddd;opacity:0.2"/></svg> */
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTE1IDggMSA4IDggMHpNMTUgOSAxIDkgOCAxNnoiIHN0eWxlPSJmaWxsOiNkZGQ7b3BhY2l0eTowLjIiLz48L3N2Zz4=');
 	cursor: pointer;
@@ -75,11 +75,11 @@ Metro Dark Theme
 	padding: 0 18px 0 4px;
 }
 
-.abelt-metro-dark .abelt-sortAsc .abelt-icon {
+.abelt-metro-dark .abelt-sortAsc i.abelt-icon {
 	/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M15 8 1 8 8 0z" style="fill:#ddd"/><path d="M15 9 1 9 8 16z" style="fill:#ddd;opacity:0.2"/></svg> */
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTE1IDggMSA4IDggMHoiIHN0eWxlPSJmaWxsOiNkZGQiLz48cGF0aCBkPSJNMTUgOSAxIDkgOCAxNnoiIHN0eWxlPSJmaWxsOiNkZGQ7b3BhY2l0eTowLjIiLz48L3N2Zz4=');
 }
-.abelt-metro-dark .abelt-sortDesc .abelt-icon {
+.abelt-metro-dark .abelt-sortDesc i.abelt-icon {
 	/* <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M15 8 1 8 8 0z" style="fill:#ddd;opacity:0.2"/><path d="M15 9 1 9 8 16z" style="fill:#ddd"/></svg> */
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiI+PHBhdGggZD0iTTE1IDggMSA4IDggMHoiIHN0eWxlPSJmaWxsOiNkZGQ7b3BhY2l0eTowLjIiLz48cGF0aCBkPSJNMTUgOSAxIDkgOCAxNnoiIHN0eWxlPSJmaWxsOiNkZGQiLz48L3N2Zz4=');
 }
