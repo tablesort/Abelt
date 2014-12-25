@@ -68,21 +68,22 @@ $.extend( true, $abelt, {
 		// obj = options.headers, filter.functions, filter.defaultFilter, etc
 		// indx = current column index
 		// getCell = flag to return resulting object
-		getColumnData : function( abelt, obj, indx, getCell ) {
+		getColumnData : function( abelt, obj, indx, getCell, $headers ) {
 			if ( $.isEmptyObject( obj ) ) { return indx; }
-			var $header, key;
+			var $header, key
+				$cells = ( $headers || abelt.$headers );
 			if ( obj[ indx ] ) {
 				return getCell ?
 					obj[ indx ] :
-					obj[ abelt.$headers.index( abelt.$headers.filter( '[data-column="' + indx + '"]:last' ) ) ];
+					obj[ $cells.index( $cells.filter( '[data-column="' + indx + '"]:last' ) ) ];
 			}
 			for ( key in obj ) {
 				if ( typeof key === 'string' ) {
-					$header = abelt.$headers.filter( '[data-column="' + indx + '"]:last' )
+					$header = $cells.filter( '[data-column="' + indx + '"]:last' )
 						// header cell with class/id
 						.filter( key )
 						// find elements within the header cell with cell/id
-						.add( abelt.$headers.filter( '[data-column="' + indx + '"]:last' ).find( key ) );
+						.add( $cells.filter( '[data-column="' + indx + '"]:last' ).find( key ) );
 					if ( $header.length ) {
 						return obj[ key ];
 					}
