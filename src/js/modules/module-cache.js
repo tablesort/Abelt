@@ -226,21 +226,18 @@ $.extend( true, $abelt, {
 				o = abelt.options,
 				$node = $( node ),
 				txtExtract = o.textExtraction || '',
-				text = '';
-			if ( txtExtract === 'basic' ) {
-				// check data-attribute first
-				text = $node.attr( o.textAttribute ) || node.textContent || node.innerText || $node.text() || '';
+			if ( typeof txtExtract === 'string' ) {
+				// check data-attribute first when set to "basic"; don't use node.innerText - it's really slow!
+				return $.trim( ( txtExtract === 'basic' ? $node.attr( o.textAttribute ) || node.textContent : node.textContent ) || $node.text() || '' );
 			} else {
-				if ( $.isFunction( txtExtract ) ) {
-					text = txtExtract( node, abelt, cellIndex );
-				} else if ( typeof txtExtract === 'object' && $.isFunction( columnExtract = $abelt.getColumnData( abelt, txtExtract, cellIndex ) ) ) {
-					text = columnExtract( node, abelt, cellIndex );
-				} else {
-					// previous 'simple' method
-					text = node.textContent || node.innerText || $node.text() || '';
+				if ( typeof txtExtract === 'function' ) {
+					return $.trim( txtExtract( node, abelt, cellIndex ) );
+				} else if ( typeof ( columnExtract = $abelt.getColumnData( abelt, txtExtract, cellIndex ) ) === 'function' ) {
+					return $.trim( columnExtract( node, abelt, cellIndex ) );
 				}
 			}
-			return $.trim( text );
+			// fallback
+			return $.trim( node.textContent || $node.text() || '' );
 		},
 
 		// used when replacing accented characters for sorting & filtering
