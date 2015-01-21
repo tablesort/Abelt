@@ -762,7 +762,7 @@ if ( $abelt.debug ) {
 		$abelt.logs = [];
 		/*jshint -W020 */
 		console = {};
-		console.log = console.warn = console.error = function() {
+		console.log = console.warn = console.error = console.table = function() {
 			$abelt.logs.push( [ Date.now(), arguments ] );
 		};
 	}

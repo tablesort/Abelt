@@ -305,7 +305,7 @@ $.extend( true, $abelt, {
 				// update table bodies in case we start with an empty table
 				$tbodies = abelt.$tbodies = abelt.$table.children(' tbody:not(.' + o.css.ignore + ')' ),
 				tbodyIndex = 0,
-				debug = [],
+				debug = {},
 				list = {
 					extractors: [],
 					parsers: []
@@ -348,8 +348,12 @@ $.extend( true, $abelt, {
 							parser = $abelt.parser.detect( abelt, rows, -1, columnIndex );
 						}
 						if ( $abelt.debug && o.debug ) {
-							debug.push( 'column:' + columnIndex + '; extractor:' + ( extractor ? extractor.id : 'none' ) + '; parser:' + parser.id + '; string:' +
-								v.strings[ columnIndex ] + '; empty: ' + v.empties[ columnIndex ] );
+							debug[ '(' + columnIndex + ') ' + $cell.text() ] = {
+								extractor : extractor ? extractor.id : 'none',
+								parser : parser.id,
+								string : v.strings[ columnIndex ],
+								empty  : v.empties[ columnIndex ]
+							};
 						}
 						list.parsers[ columnIndex ] = parser;
 						list.extractors[ columnIndex ] = extractor;
@@ -358,8 +362,8 @@ $.extend( true, $abelt, {
 				tbodyIndex += ( list.parsers.length ) ? len : 1;
 			}
 			if ( $abelt.debug && o.debug ) {
-				if ( debug.length ) {
-					console.log( debug.join('\n') );
+				if ( !$.isEmptyObject( debug ) ) {
+					console[ console.table ? 'table' : 'log' ]( debug );
 				} else {
 					console.warn( '  No parsers detected!' );
 				}
