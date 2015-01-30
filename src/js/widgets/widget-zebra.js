@@ -43,7 +43,8 @@ $.abelt.widget.add({
 			});
 		}
 	},
-	remove: function( abelt ) {
+	remove: function( abelt, refreshing ) {
+		if ( refreshing ) { return; }
 		var tbodyIndex,
 			css = abelt.options.css,
 			$tb = c.$tbodies,

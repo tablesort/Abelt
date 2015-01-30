@@ -314,7 +314,8 @@ var $abelt = $.abelt = {
 					if ( $abelt.debug && o.debug ) {
 					}
 					if ( 'remove' in widget ) {
-						widget.remove( abelt );
+						// pass true flag to indicate the widget will be refreshed
+						widget.remove( abelt, true );
 						abelt.flags.widgetInit[ widget.id ] = false;
 					}
 				}

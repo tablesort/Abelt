@@ -981,7 +981,8 @@ $abelt.widget.add({
 		}
 	},
 
-	remove: function( abelt ) {
+	remove: function( abelt, refreshing ) {
+		if ( refreshing ) { return; }
 		$abelt.sort.destroy( abelt );
 	},
 

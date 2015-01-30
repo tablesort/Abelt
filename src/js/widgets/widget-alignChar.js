@@ -161,7 +161,8 @@ $abelt.widget.add({
 			abelt.$table.trigger( 'refreshAlign' );
 		}
 	},
-	remove : function( abelt ) {
+	remove : function( abelt, refreshing ) {
+		if ( refreshing ) { return; }
 		var o = abelt.options;
 		abelt.$headers.filter( '[' + o.alignChar.charAttrib + ']' ).each( function() {
 			$abeltAlignChar.remove( abelt, this.column );
