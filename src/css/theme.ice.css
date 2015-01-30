@@ -152,6 +152,9 @@ caption {
 }
 
 /* filter widget */
+.abelt-ice .abelt-filterRow {
+	background: #eee;
+}
 .abelt-ice .abelt-filterRow td {
 	background: #eee;
 	line-height: normal;

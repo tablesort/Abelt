@@ -291,8 +291,8 @@ Test out these custom less files live
 	}
 
 	/* filter widget */
-	.abelt-filter-row input,
-	.abelt-filter-row select {
+	.abelt-filterRow input,
+	.abelt-filterRow select {
 		width: 98%;
 		height: auto;
 		margin: 0;
@@ -305,7 +305,10 @@ Test out these custom less files live
 		box-sizing: border-box;
 		.filterWidgetTransition;
 	}
-	.abelt-filter-row td {
+	.abelt-filterRow {
+		background: @filterCellBackground;
+	}
+	.abelt-filterRow td {
 		text-align: center;
 		background: @filterCellBackground;
 		line-height: normal;
@@ -313,13 +316,13 @@ Test out these custom less files live
 		.filterWidgetTransition;
 	}
 	/* hidden filter row */
-	.abelt-filter-row.hideme td {
+	.abelt-filterRow.hideme td {
 		padding: @filterRowHiddenHeight / 2;
 		margin: 0;
 		line-height: 0;
 		cursor: pointer;
 	}
-	.abelt-filter-row.hideme * {
+	.abelt-filterRow.hideme * {
 		height: 1px;
 		min-height: 0;
 		border: 0;

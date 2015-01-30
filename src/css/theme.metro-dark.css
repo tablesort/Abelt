@@ -150,6 +150,9 @@ Metro Dark Theme
 }
 
 /* filter widget */
+.abelt-metro-dark .abelt-filterRow {
+	background: #eee;
+}
 .abelt-metro-dark .abelt-filterRow td {
 	background: #eee;
 	line-height: normal;

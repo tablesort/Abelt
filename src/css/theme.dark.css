@@ -135,6 +135,9 @@ caption {
 }
 
 /* filter widget */
+.abelt-dark .abelt-filterRow {
+	background: #202020;
+}
 .abelt-dark .abelt-filterRow td {
 	background: #202020;
 	line-height: normal;

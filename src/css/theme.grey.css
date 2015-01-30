@@ -180,6 +180,9 @@ caption {
 }
 
 /* filter widget */
+.abelt-grey .abelt-filterRow {
+	background: #3c3c3c;
+}
 .abelt-grey .abelt-filterRow td {
 	background: #3c3c3c;
 	line-height: normal;

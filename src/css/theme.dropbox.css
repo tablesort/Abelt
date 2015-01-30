@@ -136,6 +136,9 @@ caption {
 }
 
 /* Filter Widget */
+.abelt-dropbox .abelt-filterRow {
+	background: #fff;
+}
 .abelt-dropbox .abelt-filterRow td {
 	background: #fff;
 	line-height: normal;

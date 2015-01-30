@@ -130,6 +130,9 @@ caption {
 }
 
 /* filter widget */
+.abelt-blackice .abelt-filterRow {
+	background: #222;
+}
 .abelt-blackice .abelt-filterRow td {
 	background: #222;
 	line-height: normal;

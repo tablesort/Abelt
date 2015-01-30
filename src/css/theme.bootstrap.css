@@ -102,6 +102,9 @@
 	box-sizing: border-box;
 	transition: height 0.1s ease;
 }
+.abelt-bootstrap .abelt-filterRow {
+	background: #efefef;
+}
 .abelt-bootstrap .abelt-filterRow td {
 	background: #efefef;
 	line-height: normal;

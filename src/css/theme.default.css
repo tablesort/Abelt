@@ -142,6 +142,9 @@ caption {
 }
 
 /* filter widget */
+.abelt-default .abelt-filterRow {
+	background: #eee;
+}
 .abelt-default .abelt-filterRow td {
 	background: #eee;
 	border-bottom: #ccc 1px solid;
