@@ -8,9 +8,19 @@ by Rob Garrison (Mottie)
 MIT License
 Requires : jQuery v1.7+ */
 /*jshint browser:true, jquery:true */
-;( function ( $, window, document, undefined ) {
+/*global require:false, define:false, module:false */
+;( function ( factory ) {
+	if ( typeof define === 'function' && define.amd ) {
+		define( [ 'jquery' ], factory );
+	} else if ( typeof module === 'object' && typeof module.exports === 'object' ) {
+		module.exports = factory( require( 'jquery' ) );
+	} else {
+		factory( jQuery );
+	}
+}( function( $ ) {
 'use strict';
-var $abelt = $.abelt = {
+var undef,
+$abelt = $.abelt = {
 
 	version : '1.0.0-alpha.4',
 
@@ -109,7 +119,7 @@ var $abelt = $.abelt = {
 				var isNew = true;
 				widget.id = widget.id;
 				// set priority to 10, if not defined
-				if ( widget.priority === undefined ) {
+				if ( widget.priority === undef ) {
 					widget.priority = 10;
 				}
 				// make sure widget doesn't already exist
@@ -485,12 +495,12 @@ var $abelt = $.abelt = {
 					cellId = rowIndex + '-' + $cell.index();
 					rowSpan = cell.rowSpan || 1;
 					colSpan = cell.colSpan || 1;
-					if ( matrix[ rowIndex ] === undefined ) {
+					if ( matrix[ rowIndex ] === undef ) {
 						matrix[ rowIndex ] = [];
 					}
 					// Find first available column in the first row
 					for ( indexMatrix = 0; indexMatrix < matrix[ rowIndex ].length + 1; indexMatrix++ ) {
-						if ( matrix[ rowIndex ][ indexMatrix ] === undefined ) {
+						if ( matrix[ rowIndex ][ indexMatrix ] === undef ) {
 							firstAvailCol = indexMatrix;
 							break;
 						}
@@ -501,7 +511,7 @@ var $abelt = $.abelt = {
 					$cell.attr({ 'data-column' : firstAvailCol });
 					cell.column = firstAvailCol;
 					for ( indexMatrix = rowIndex; indexMatrix < rowIndex + rowSpan; indexMatrix++ ) {
-						if ( matrix[ indexMatrix ] === undefined ) {
+						if ( matrix[ indexMatrix ] === undef ) {
 							matrix[ indexMatrix ] = [];
 						}
 						matrixrow = matrix[ indexMatrix ];
@@ -800,4 +810,6 @@ $.fn.abelt = function( settings, callback ) {
 	});
 };
 
-})( jQuery, window, document );
+return $abelt;
+
+}));
