@@ -211,6 +211,10 @@ $abeltColSel = $abelt.columnSelector = {
 		if ( o.columnSelector.saveColumns && $abelt.storage ) {
 			$abelt.storage( abelt.$table[ 0 ], 'abelt-columnSelector-auto', { auto : colSel.auto } );
 		}
+		// trigger columnUpdate if auto is true - it gets skipped in updateCols()
+		if ( colSel.auto ) {
+			abelt.$table.trigger( 'columnUpdate' );
+		}
 	},
 
 	updateBreakpoints: function( abelt ) {
@@ -290,6 +294,7 @@ $abeltColSel = $abelt.columnSelector = {
 		if ( o.columnSelector.saveColumns && $abelt.storage ) {
 			$abelt.storage( abelt.table, 'abelt-columnSelector', colSel.states );
 		}
+		abelt.$table.trigger('columnUpdate');
 	},
 
 	attachTo : function( $table, elm ) {
@@ -308,7 +313,7 @@ $abeltColSel = $abelt.columnSelector = {
 				.find( 'input' ).each( function() {
 					var $this = $( this ),
 						indx = $this.data( 'column' ),
-						isChecked = indx === 'auto' ? colSel.auto : colSel.states[indx];
+						isChecked = indx === 'auto' ? colSel.auto : colSel.states[ indx ];
 					$this
 						.toggleClass( abelt.options.columnSelector.cssChecked, isChecked )
 						.prop( 'checked', isChecked );
