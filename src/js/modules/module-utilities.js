@@ -70,7 +70,7 @@ $.extend( true, $abelt, {
 		// getCell = flag to return resulting object
 		getColumnData : function( abelt, obj, indx, getCell, $headers ) {
 			if ( $.isEmptyObject( obj ) ) { return indx; }
-			var $header, key
+			var $header, key,
 				$cells = ( $headers || abelt.$headers );
 			if ( obj[ indx ] ) {
 				return getCell ?

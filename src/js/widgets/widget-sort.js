@@ -300,7 +300,7 @@ $.extend( true, $abelt, {
 				v = abelt.vars,
 				newSort = list || o.sort.list;
 			o.sort.list = [];
-			$.each( newSort, function( i, set ) {
+			$.each( newSort, function( index, set ) {
 				// ensure all sortList values are numeric - fixes #127
 				column = parseInt( set[ 0 ], 10 );
 
@@ -333,7 +333,7 @@ $.extend( true, $abelt, {
 							direction = 0;
 							break;
 					}
-					primary = i === 0 ? direction : primary;
+					primary = index === 0 ? direction : primary;
 					sort = [ column, parseInt( direction, 10 ) || 0 ];
 					o.sort.list.push( sort );
 					direction = $.inArray( sort[ 1 ], order ); // fixes issue #167
@@ -347,7 +347,7 @@ $.extend( true, $abelt, {
 		},
 
 		// called by 'sorton' & 'sortReset' events
-		start : function( abelt, list, callback, init ) {
+		start: function( abelt, list, callback, init ) {
 			var o = abelt.options;
 			o.sort.list = list || [];
 			abelt.$table.trigger( o.events.sortStart, [ abelt ] );
@@ -367,11 +367,11 @@ $.extend( true, $abelt, {
 
 			abelt.$table.trigger( o.events.sortEnd, [ abelt ] );
 
-//			$abelt.widget.apply( abelt );
+			// $abelt.widget.apply( abelt );
 
-//			if (typeof callback === 'function') {
-//				callback( abelt );
-//			}
+			if (typeof callback === 'function') {
+				callback( abelt );
+			}
 		},
 
 		// called when a user interacts with the header

@@ -22,7 +22,7 @@ $.abelt.widget.add({
 	},
 	priority: 90,
 	update: function( abelt ) {
-		var $tbody, $trVisible, $tr, row, even, time, tbodyIndex,
+		var $tbody, $trVisible, $tr, row, even, tbodyIndex,
 			o = abelt.options,
 			zebra = [ o.css.even, o.css.odd ],
 			childRegex = new RegExp( o.css.childRow, 'i' ),
@@ -47,10 +47,11 @@ $.abelt.widget.add({
 		if ( refreshing ) { return; }
 		var tbodyIndex,
 			css = abelt.options.css,
-			$tb = c.$tbodies,
+			$tb = abelt.$tbodies,
 			rmv = ( css.even + ' ' + css.odd );
 		for ( tbodyIndex = 0; tbodyIndex < $tb.length; tbodyIndex++  ){
-			$abelt.utility.processTbody( abelt, $tb.eq( tbodyIndex ), function( $tbody ) {
+			/*jshint loopfunc : true */
+			$.abelt.utility.processTbody( abelt, $tb.eq( tbodyIndex ), function( $tbody ) {
 				$tbody.children().removeClass( rmv );
 			});
 		}

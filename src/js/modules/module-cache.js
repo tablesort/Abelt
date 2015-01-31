@@ -85,7 +85,7 @@ $.extend( true, $abelt, {
 					$abelt.build.updateCell( abelt, cell, callback );
 				})
 				// updateRows
-				.on( events[ 3 ], function( e, cell, callback ) {
+				.on( events[ 3 ], function( e, callback ) {
 					e.stopPropagation();
 					abelt.flags.isUpdating = true;
 					$abelt.build.update( abelt, callback );
@@ -225,7 +225,7 @@ $.extend( true, $abelt, {
 			var columnExtract,
 				o = abelt.options,
 				$node = $( node ),
-				txtExtract = o.textExtraction || '',
+				txtExtract = o.textExtraction || '';
 			if ( typeof txtExtract === 'string' ) {
 				// check data-attribute first when set to "basic"; don't use node.innerText - it's really slow!
 				return $.trim( ( txtExtract === 'basic' ? $node.attr( o.textAttribute ) || node.textContent : node.textContent ) || $node.text() || '' );
@@ -491,7 +491,7 @@ $.extend( true, $abelt, {
 
 		// init flag (true) used by pager plugin to prevent widget application
 		append : function( abelt, callback, init ) {
-			var totalRows, $tbody, tbodyIndex, time,
+			var $tbody, tbodyIndex, time,
 				o = abelt.options,
 				v = abelt.vars,
 				$tbodies = abelt.$table.children( 'tbody' ),
@@ -511,6 +511,7 @@ $.extend( true, $abelt, {
 				$tbody = $tbodies.eq( tbodyIndex );
 				if ( $tbody.length && !$tbody.hasClass( o.css.ignore ) ) {
 					// get tbody
+					/*jshint loopfunc : true */
 					$abelt.utility.processTbody( abelt, $tbody, function( $tb ) {
 						var rowIndex,
 							normalized = cache[ tbodyIndex ].normalized,
@@ -538,6 +539,9 @@ $.extend( true, $abelt, {
 			if ( abelt.flags.isUpdating ) {
 				abelt.$table.trigger( o.events.updateComplete, abelt );
 			}
+			if ( $.isFunction( callback ) ) {
+				callback( abelt );
+			}
 		},
 
 		addRows : function( abelt, $row, callback ) {
@@ -551,6 +555,7 @@ $.extend( true, $abelt, {
 				var rowIndex, cellIndex, len, text, value, rowData, cells,
 					o = abelt.options,
 					v = abelt.vars,
+					$table = abelt.$table,
 					rows = $row.filter( 'tr' ).length,
 					tbodyIndex = $table.children( 'tbody' ).index( $row.closest( 'tbody' ) );
 
@@ -571,10 +576,10 @@ $.extend( true, $abelt, {
 					for ( cellIndex = 0; cellIndex < len; cellIndex++ ) {
 						text = $abelt.utility.getText( abelt, $row[ rowIndex ].cells[ cellIndex ], cellIndex );
 						if ( v.extractors[ cellIndex ].id !== undefined ) {
-							text = v.extractors[ cellIndex ].format( text, table, $row[ rowIndex ].cells[ cellIndex ], cellIndex );
+							text = v.extractors[ cellIndex ].format( text, abelt.table, $row[ rowIndex ].cells[ cellIndex ], cellIndex );
 						}
 						value = v.parsers[ cellIndex ].id === 'no-parser' ? '' :
-							v.parsers[ cellIndex ].format( text, table, $row[ rowIndex ].cells[ cellIndex ], cellIndex );
+							v.parsers[ cellIndex ].format( text, abelt.table, $row[ rowIndex ].cells[ cellIndex ], cellIndex );
 						cells[ cellIndex ] = o.sort && o.sort.ignoreCase && typeof value === 'string' ? value.toLowerCase() : value;
 						if ( ( v.parsers[ cellIndex ].type || '').toLowerCase() === 'numeric' ) {
 							// update column max value (ignore sign)
@@ -606,7 +611,7 @@ $.extend( true, $abelt, {
 			var value, text, row, cellIndex,
 				o = abelt.options,
 				v = abelt.vars,
-				$tbody = $table.children( 'tbody' ),
+				$tbody = abelt.$table.children( 'tbody' ),
 				$cell = $( cell ),
 				// update cache - format: function(s, table, cell, cellIndex)
 				tbodyIndex = $tbody.index( $cell.closest( 'tbody' ) ),

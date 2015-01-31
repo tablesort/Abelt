@@ -366,6 +366,7 @@ $abelt.widget.add({
 		$abeltColSel.init( abelt );
 	},
 	remove: function( abelt, refreshing ) {
+		if ( refreshing ) { return; }
 		var colSel = abelt.vars.columnSelector;
 		colSel.$container.empty();
 		if ( colSel.$popup ) { colSel.$popup.empty(); }
