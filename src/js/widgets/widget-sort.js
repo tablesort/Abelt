@@ -595,9 +595,11 @@ $.extend( true, $abelt, {
 			}
 		},
 
-		checkResort: function( abelt, resort, callback ) {
+		checkResort: function( abelt, resrt, callback ) {
 			var o = abelt.options,
-				list = $.isArray( resort ) ? resort : o.sort.list;
+				list = $.isArray( resrt ) ? resrt : o.sort.list,
+				// if no resort parameter is passed, fallback to config.resort (true by default)
+				resort = typeof resrt === 'undefined' ? o.sort.resort : resrt;
 			// don't try to resort if the table is still processing
 			// this will catch spamming of the updateCell method
 			if ( resort !== false && !o.sort.serverSide && !abelt.flags.isProcessing && $.isArray( list ) ) {
@@ -883,6 +885,7 @@ $abelt.widget.add({
 		multiSortKey     : 'shiftKey', // key used to select additional columns
 		resetKey         : 'ctrlKey',  // key used to remove sorting on a column
 		serverSide       : false,      // if true, server-side sorting should be performed because client-side sorting will be disabled, but the ui and events will still be used.
+		resort           : true,       // default setting to trigger a resort after an "updateRows", "addRows", "updateCell", etc has completed
 		tabIndex         : true,       // add tabindex to header for keyboard accessibility
 		delayInit        : false,      // if false, the parsed table contents will not update until the first sort
 		clickDelay       : 250,        // minimum click delay allowed (in milliseconds) between mousedown and mouseup (prevents resizable widget from initializing a sort)

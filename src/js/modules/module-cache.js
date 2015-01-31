@@ -80,9 +80,9 @@ $.extend( true, $abelt, {
 					$abelt.build.append( abelt, callback, init );
 				})
 				// updateCell
-				.on( events[ 2 ], function( e, cell, callback ) {
+				.on( events[ 2 ], function( e, cell, resort, callback ) {
 					e.stopPropagation();
-					$abelt.build.updateCell( abelt, cell, callback );
+					$abelt.build.updateCell( abelt, cell, resort, callback );
 				})
 				// updateRows
 				.on( events[ 3 ], function( e, callback ) {
@@ -603,7 +603,7 @@ $.extend( true, $abelt, {
 			}
 		},
 
-		updateCell : function( abelt, cell, callback ) {
+		updateCell : function( abelt, cell, resort, callback ) {
 			abelt.flags.isUpdating = true;
 			abelt.$table.find( abelt.options.selectors.remove ).remove();
 
@@ -639,7 +639,18 @@ $.extend( true, $abelt, {
 				}
 				// resort using current settings - need to fix this; replace sort check when queue system is in place
 				if ( $abelt.sort.checkResort ) {
-					$abelt.sort.checkResort( abelt, false, callback );
+					value = resort !== 'undefined' ? resort : o.resort;
+					if ( !value ) {
+						// widgets will be reapplied
+						$abelt.sort.checkResort( abelt, value, callback );
+					} else {
+						// don't reapply widgets is resort is false, just in case it causes
+						// problems with element focus
+						if ( $.isFunction( callback ) ) {
+							callback( abelt );
+						}
+						abelt.$table.trigger('updateComplete', c.table);
+					}
 				}
 			}
 			if ( $.isFunction( callback ) ) {
