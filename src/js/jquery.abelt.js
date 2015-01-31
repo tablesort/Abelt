@@ -149,7 +149,7 @@ var $abelt = $.abelt = {
 			return abelt.flags.widgetInit[ name ] || false;
 		},
 
-		apply : function( abelt, named, init ) {
+		apply : function( abelt, named, init, callback ) {
 			named = named || '';
 			var overall, time, applied, indx, name, widgetsArray, widget, regex, len, widgetSettings, blocks,
 				o = abelt.options,
@@ -275,6 +275,12 @@ var $abelt = $.abelt = {
 					o.widgets + ' widget' ) ) + $abelt.benchmark(overall ) );
 				if ( console.groupEnd ) { console.groupEnd(); }
 			}
+
+			// callback executed on init only
+			if ( !init && $.isFunction( callback ) ) {
+				callback( abelt );
+			}
+
 		},
 
 		remove : function( abelt, named, callRemove ) {
