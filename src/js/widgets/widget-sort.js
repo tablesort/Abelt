@@ -901,7 +901,6 @@ $abelt.widget.add({
 		localeCompare    : false,      // replace equivalent character (accented characters)
 		reset            : false,      // third click on the header will reset column to default - unsorted
 		restart          : false,      // restart sort to 'initialOrder' when clicking on previously unsorted columns
-		resort           : false,      // if true, all updates will resort the table using the current sort order
 
 		emptyTo          : 'bottom',   // sort empty cell to bottom, top, none, zero
 		stringTo         : 'max',      // sort strings in numerical column as max, min, top, bottom, zero
