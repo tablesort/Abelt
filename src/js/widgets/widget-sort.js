@@ -823,7 +823,12 @@ $.extend( true, $abelt, {
 					$cell.html( '<div class="' + $abelt.css.headerInner + '">' + template + '</div>' ); // faster than wrapInner
 				} else {
 					// starting to not care about IE... this works fine
-					$cell.wrapInner( '<div class="' + $abelt.css.headerInner + '"/>' );
+					$cell.each( function() {
+						var $this = $( this );
+						if ( !$this.find( '.' + $abelt.css.headerInner ).length ) {
+							$this.wrapInner( '<div class="' + $abelt.css.headerInner + '"/>' );
+						}
+					});
 				}
 				if ( $.isFunction( o.sort.onRenderHeader ) ) {
 					o.sort.onRenderHeader.apply( $cell, [ columnIndex, abelt ] );
