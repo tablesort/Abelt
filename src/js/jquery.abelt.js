@@ -543,7 +543,7 @@ $abelt = $.abelt = {
 					// add namespace to all events
 				].join( abelt.namespace + ',' ).split( ',' );
 			abelt.$table
-				.off( widgetEvents.join( ' ' ) )
+				.off( widgetEvents.join( ' ' ).replace( /\s+/g, ' ' ) )
 				.on( events.widgetUpdate, function( e, callback ) {
 					e.stopPropagation();
 					$abelt.widget.update( abelt, callback );
@@ -756,7 +756,7 @@ $abelt = $.abelt = {
 		// disable tablesorter
 		$table
 			.removeData( 'abelt' )
-			.off( widgetEvents.join( abelt.namespace + ' ' ) );
+			.off( widgetEvents.join( abelt.namespace + ' ' ).replace( /\s+/, ' ' ) );
 
 		abelt.$headers.add( $tfoot )
 			.removeClass( [ $abelt.css.headerCells, o.css.headerCells ].join(' ') )

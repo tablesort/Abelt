@@ -88,7 +88,7 @@ $.extend( true, $abelt, {
 			// show processesing icon
 			if ( o.showProcessing && $abelt.utility.isProcessing ) {
 				$table
-					.off( events )
+					.off( events.replace( /\s+/g, ' ' ) )
 					.on( events, function( e ) {
 						$abelt.utility.isProcessing( abelt, e.type === o.events.sortBegin );
 					});
@@ -137,7 +137,7 @@ $.extend( true, $abelt, {
 					o.events.mouseup,
 					o.events.keyup,
 					'' // add namespace to all events
-				].join( abelt.namespace + 'sort ' );
+				].join( abelt.namespace + 'sort ' ).replace( /\s+/g, ' ' );
 
 			abelt.vars.downTime = 0;
 
@@ -146,7 +146,7 @@ $.extend( true, $abelt, {
 			}
 
 			// remove listeners
-			abelt.$table.off( sortEvents.join(' ') );
+			abelt.$table.off( sortEvents.join( ' ' ).replace( /\s+/g, ' ' ) );
 			// target user selected sort objects
 			$headers
 				.off( userEvents, o.selectors.sort )
