@@ -383,7 +383,7 @@ $.extend( true, $abelt, {
 				$row, rows, cols, time, totalRows, rowData, colMax,
 				o = abelt.options,
 				v = abelt.vars,
-				$tbodies = abelt.$table.children( 'tbody' ),
+				$tbodies = abelt.$tbodies,
 				extractors = v.extractors,
 				parsers = v.parsers;
 			v.cache = {};
@@ -403,71 +403,66 @@ $.extend( true, $abelt, {
 					normalized: [] // array of normalized row data; last entry contains 'rowData' above
 					// colMax: #   // added at the end
 				};
-
-				// ignore tbodies with class name from o.css.ignore
-				if ( !$tbodies.eq( tbodyIndex ).hasClass( o.css.ignore ) ) {
-					totalRows = ( $tbodies[ tbodyIndex ] && $tbodies[ tbodyIndex ].rows.length ) || 0;
-					for ( rowIndex = 0; rowIndex < totalRows; ++rowIndex ) {
-						rowData = {
-							// order: original row order #
-							// $row : jQuery Object[]
-							child: [], // child row text (filter widget)
-							raw: [] // original cell text
-						};
-						/** Add the table data to main data array */
-						$row = $( $tbodies[ tbodyIndex ].rows[ rowIndex ] );
-						rows = [ new Array( v.columns ) ];
-						cols = [];
-						// if this is a child row, add it to the last row's children and continue to the next row
-						// ignore child row class, if it is the first row
-						if ( $row.hasClass( o.css.childRow ) && rowIndex !== 0 ) {
-							cacheIndex = cache.normalized.length - 1;
-							cache.normalized[ cacheIndex ][ v.columns ].$row =
-								cache.normalized[ cacheIndex ][ v.columns ].$row.add( $row );
-							// add 'hasChild' class name to parent row
-							if ( !$row.prev().hasClass( o.css.childRow ) ) {
-								$row.prev().addClass( abelt.css.hasChild );
+				totalRows = ( $tbodies[ tbodyIndex ] && $tbodies[ tbodyIndex ].rows.length ) || 0;
+				for ( rowIndex = 0; rowIndex < totalRows; ++rowIndex ) {
+					rowData = {
+						// order: original row order #
+						// $row : jQuery Object[]
+						child: [], // child row text (filter widget)
+						raw: [] // original cell text
+					};
+					/** Add the table data to main data array */
+					$row = $( $tbodies[ tbodyIndex ].rows[ rowIndex ] );
+					cols = [];
+					// if this is a child row, add it to the last row's children and continue to the next row
+					// ignore child row class, if it is the first row
+					if ( $row.hasClass( o.css.childRow ) && rowIndex !== 0 ) {
+						cacheIndex = cache.normalized.length - 1;
+						cache.normalized[ cacheIndex ][ v.columns ].$row =
+							cache.normalized[ cacheIndex ][ v.columns ].$row.add( $row );
+						// add 'hasChild' class name to parent row
+						if ( !$row.prev().hasClass( o.css.childRow ) ) {
+							$row.prev().addClass( abelt.css.hasChild );
+						}
+						// save child row content (un-parsed!)
+						rowData.child[ cacheIndex ] =
+							$.trim( $row[ 0 ].textContent || $row[ 0 ].innerText || $row.text() || '' );
+						// go to the next for loop
+						continue;
+					}
+					rowData.$row = $row;
+					rowData.order = rowIndex; // add original row position to rowCache
+					for ( cellIndex = 0; cellIndex < v.columns; ++cellIndex ) {
+						if ( parsers[ cellIndex ] === undefined ) {
+							if ( $abelt.debug && o.debug ) {
+								console.warn( 'No parser found for cell:', $row[ 0 ].cells[ cellIndex ], 'does it have a header?' );
 							}
-							// save child row content (un-parsed!)
-							rowData.child[ cacheIndex ] =
-								$.trim( $row[ 0 ].textContent || $row[ 0 ].innerText || $row.text() || '' );
-							// go to the next for loop
 							continue;
 						}
-						rowData.$row = $row;
-						rowData.order = rowIndex; // add original row position to rowCache
-						for ( cellIndex = 0; cellIndex < v.columns; ++cellIndex ) {
-							if ( parsers[ cellIndex ] === undefined ) {
-								if ( $abelt.debug && o.debug ) {
-									console.warn( 'No parser found for cell:', $row[ 0 ].cells[ cellIndex ], 'does it have a header?' );
-								}
-								continue;
-							}
-							text = $abelt.utility.getText( abelt, $row[ 0 ].cells[ cellIndex ], cellIndex );
-							rowData.raw.push( text ); // save original cell text
-							// do extract before parsing if there is one
-							if ( extractors[ cellIndex ].id === undefined ) {
-								txt = text;
-							} else {
-								txt = extractors[ cellIndex ].format( text, abelt, $row[ 0 ].cells[ cellIndex ], cellIndex );
-							}
-							// allow parsing if the string is empty, previously parsing would change it to zero,
-							// in case the parser needs to extract data from the table cell attributes
-							parsed = parsers[ cellIndex ].id === 'no-parser' ? '' : parsers[ cellIndex ].format( txt, abelt, $row[ 0 ].cells[ cellIndex ], cellIndex );
-							cols.push( o.sort && o.sort.ignoreCase && typeof parsed === 'string' ? parsed.toLowerCase() : parsed );
-							if ( ( parsers[ cellIndex ].type || '' ).toLowerCase() === 'numeric' ) {
-								// determine column max value (ignore sign)
-								colMax[ cellIndex ] = Math.max( Math.abs( parsed ) || 0, colMax[ cellIndex ] || 0 );
-							}
+						text = $abelt.utility.getText( abelt, $row[ 0 ].cells[ cellIndex ], cellIndex );
+						rowData.raw.push( text ); // save original cell text
+						// do extract before parsing if there is one
+						if ( extractors[ cellIndex ].id === undefined ) {
+							txt = text;
+						} else {
+							txt = extractors[ cellIndex ].format( text, abelt, $row[ 0 ].cells[ cellIndex ], cellIndex );
 						}
-						// ensure rowData is always in the same location (after the last column)
-						cols[ v.columns ] = rowData;
-						cache.normalized.push( cols );
+						// allow parsing if the string is empty, previously parsing would change it to zero,
+						// in case the parser needs to extract data from the table cell attributes
+						parsed = parsers[ cellIndex ].id === 'no-parser' ? '' : parsers[ cellIndex ].format( txt, abelt, $row[ 0 ].cells[ cellIndex ], cellIndex );
+						cols.push( o.sort && o.sort.ignoreCase && typeof parsed === 'string' ? parsed.toLowerCase() : parsed );
+						if ( ( parsers[ cellIndex ].type || '' ).toLowerCase() === 'numeric' ) {
+							// determine column max value (ignore sign)
+							colMax[ cellIndex ] = Math.max( Math.abs( parsed ) || 0, colMax[ cellIndex ] || 0 );
+						}
 					}
-					cache.colMax = colMax;
-					// total up rows, not including child rows
-					v.totalRows += cache.normalized.length;
+					// ensure rowData is always in the same location (after the last column)
+					cols[ v.columns ] = rowData;
+					cache.normalized.push( cols );
 				}
+				cache.colMax = colMax;
+				// total up rows, not including child rows
+				v.totalRows += cache.normalized.length;
 			}
 			if ( o.showProcessing ) {
 				$abelt.utility.isProcessing( abelt ); // remove processing icon
@@ -502,7 +497,7 @@ $.extend( true, $abelt, {
 			var $tbody, tbodyIndex, time,
 				o = abelt.options,
 				v = abelt.vars,
-				$tbodies = abelt.$table.children( 'tbody' ),
+				$tbodies = abelt.$tbodies,
 				len = $tbodies.length,
 				rows = [],
 				cache = v.cache;
@@ -517,7 +512,7 @@ $.extend( true, $abelt, {
 			}
 			for ( tbodyIndex = 0; tbodyIndex < len; tbodyIndex++ ) {
 				$tbody = $tbodies.eq( tbodyIndex );
-				if ( $tbody.length && !$tbody.hasClass( o.css.ignore ) ) {
+				if ( $tbody.length ) {
 					// get tbody
 					/*jshint loopfunc : true */
 					$abelt.utility.processTbody( abelt, $tbody, function( $tb ) {
@@ -565,7 +560,7 @@ $.extend( true, $abelt, {
 					v = abelt.vars,
 					$table = abelt.$table,
 					rows = $row.filter( 'tr' ).length,
-					tbodyIndex = $table.children( 'tbody' ).index( $row.closest( 'tbody' ) );
+					tbodyIndex = abelt.$tbodies.index( $row.closest( 'tbody' ) );
 
 				// fixes adding rows to an empty table - see issue #179
 				if ( !( v.parsers && v.parsers.length ) ) {
@@ -619,7 +614,7 @@ $.extend( true, $abelt, {
 			var value, text, row, cellIndex,
 				o = abelt.options,
 				v = abelt.vars,
-				$tbody = abelt.$table.children( 'tbody' ),
+				$tbody = abelt.$tbodies,
 				$cell = $( cell ),
 				// update cache - format: function(s, table, cell, cellIndex)
 				tbodyIndex = $tbody.index( $cell.closest( 'tbody' ) ),

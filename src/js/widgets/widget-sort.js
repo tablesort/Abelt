@@ -541,7 +541,7 @@ $.extend( true, $abelt, {
 				customTextSort = o.sort.textSorter || '',
 				list = o.sort.list,
 				len = list.length,
-				tbodyLen = abelt.table.tBodies.length;
+				tbodyLen = abelt.$tbodies.length;
 
 			if (o.sort.serverSide || $.isEmptyObject( v.cache ) ) {
 				return;
