@@ -318,7 +318,7 @@ $.extend( true, $abelt, {
 			}
 			while ( tbodyIndex < len ) {
 				rows = $tbodies[ tbodyIndex ].rows;
-				if ( rows[ 0 ] ) {
+				if ( rows.length ) {
 					cols = v.columns; // rows[j].cells.length;
 					for ( columnIndex = 0; columnIndex < cols; columnIndex++ ) {
 						$cell = abelt.$headers.filter( '[data-column="' + columnIndex + '"]:last' );
