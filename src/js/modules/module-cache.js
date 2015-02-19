@@ -411,7 +411,8 @@ $.extend( true, $abelt, {
 						rowData = {
 							// order: original row order #
 							// $row : jQuery Object[]
-							child: [] // child row text (filter widget)
+							child: [], // child row text (filter widget)
+							raw: [] // original cell text
 						};
 						/** Add the table data to main data array */
 						$row = $( $tbodies[ tbodyIndex ].rows[ rowIndex ] );
@@ -443,6 +444,7 @@ $.extend( true, $abelt, {
 								continue;
 							}
 							text = $abelt.utility.getText( abelt, $row[ 0 ].cells[ cellIndex ], cellIndex );
+							rowData.raw.push( text ); // save original cell text
 							// do extract before parsing if there is one
 							if ( extractors[ cellIndex ].id === undefined ) {
 								txt = text;
