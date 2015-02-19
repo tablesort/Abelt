@@ -379,7 +379,8 @@ $.extend( true, $abelt, {
 			var columnIndex,
 				o = abelt.options,
 				events = o.events,
-				$cell = $( event.target ),
+				$target = $( event.target ),
+				$cell = $target.closest( 'th, td' ),
 				type = event.type;
 			// only recognize left clicks or enter
 			if ( ( ( event.which || event.button ) !== 1 && ( type !== events.keyup || type !== events.sort ) ) ||
@@ -394,14 +395,22 @@ $.extend( true, $abelt, {
 			// set timer on mousedown
 			if ( type === o.events.mousedown ) {
 				abelt.vars.downTime = new Date().getTime();
-				return /(input|select|button|textarea)/i.test( event.target.tagName ) ||
-					// allow clicks on contents of select cells
-					$cell.closest( 'td, th' ).hasClass( o.css.allowClicks ) ? '' : !o.cancelSelection;
+				return;
 			}
+
+			// prevent sort being triggered on form elements
+			if ( /(input|select|button|textarea)/i.test( event.target.tagName ) ||
+				// noSort class name, or elements within a noSort container
+				$target.hasClass( o.css.noSort ) || $target.parents( '.' + o.css.noSort).length > 0 ||
+				// elements within a button
+				$target.parents( 'button' ).length > 0 ) {
+				return !o.cancelSelection;
+			}
+
 			if ( o.sort.delayInit && $.isEmptyObject( abelt.vars.cache ) ) {
 				$abelt.build.cache( abelt );
 			}
-			columnIndex = $cell.closest( 'th, td' ).data('column');
+			columnIndex = $cell.data('column');
 
 			if ( !abelt.vars.sortDisabled[ columnIndex ] ) {
 				$abelt.sort.initSort( abelt, columnIndex, event );
@@ -931,7 +940,7 @@ $abelt.widget.add({
 				iconNone    : '', // class name added to the icon when there is no column sort
 				iconAsc     : '', // class name added to the icon when the column has an ascending sort
 				iconDesc    : '', // class name added to the icon when the column has a descending sort
-				allowClicks : 'abelt-allowClicks' // class name added to table header which allows clicks to bubble up
+				noSort      : 'abelt-noSort' // class name added to element inside header; clicking on it won't cause a sort
 			},
 
 			// selectors => abelt.options.selectors
