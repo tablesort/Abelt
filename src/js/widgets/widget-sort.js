@@ -785,7 +785,7 @@ $.extend( true, $abelt, {
 	build : {
 
 		headers : function( abelt ) {
-			var icon, lock, time,
+			var icon, hasIcon, lock, time,
 				o = abelt.options,
 				v = abelt.vars,
 				// only grab the first class name from css.ignore; in case there are more than one
@@ -800,7 +800,7 @@ $.extend( true, $abelt, {
 			// only add icon if css.icon option exists
 			icon = o.css.icon ? '<i class="' +
 				( o.css.icon === $abelt.css.icon ? $abelt.css.icon : o.css.icon + ' ' + $abelt.css.icon ) + '"></i>' : '';
-			// redefine abelt.$headers here in case of an updateAll that replaces or adds an entire header cell - see #683
+			// redefine abelt.$headers here in case of an updateAll that replaces or adds an entire header cell
 			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).not( ignoreClass ).children( o.selectors.headers ).each( function( columnIndex ) {
 				var header, template,
 					$cell = $(this),
@@ -810,8 +810,9 @@ $.extend( true, $abelt, {
 				abelt.vars.originalHeaders[ columnIndex ] = $cell.html();
 				// if headerTemplate is empty, don't reformat the header cell
 				if ( o.sort.headerTemplate !== '{content}' ) {
+					hasIcon = $cell.find( '.' + $abelt.css.icon ).length;
 					// set up header template
-					template = o.sort.headerTemplate.replace( /\{content\}/g, $cell.html() ).replace( /\{icon\}/g, icon );
+					template = o.sort.headerTemplate.replace( /\{content\}/g, $cell.html() ).replace( /\{icon\}/g, hasIcon ? '' : icon );
 					if ( $.isFunction( o.sort.onRenderTemplate ) ) {
 						header = o.sort.onRenderTemplate.apply( $cell, [ columnIndex, template ] );
 						// only change t if something is returned
