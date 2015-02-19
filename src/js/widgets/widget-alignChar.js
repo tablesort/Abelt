@@ -102,11 +102,11 @@ $abeltAlignChar = $abelt.alignChar = {
 			for ( rowIndex = 0; rowIndex < len; rowIndex++ ) {
 				alignChar = $( o.alignChar.wrap ).length ? $( o.alignChar.wrap ).html( data.align )[ 0 ].outerHTML : data.align;
 				$row = rows.normalized[ rowIndex ][ v.columns ].$row;
+				last = right[ rowIndex ].slice( data.align.length );
 				$row.find( 'td' ).eq( data.column ).html(
 					'<span class="abelt-align-wrap abelt-align-column-' + data.column + '">' +
 						'<span class="abelt-align-left" style="' + wLeft + '">' + left[ rowIndex ] + '</span>' +
-						'<span class="abelt-align-right" style="' + wRight + '">' +
-							alignChar + right[ rowIndex ].slice( data.align.length ) +
+						'<span class="abelt-align-right" style="' + wRight + '">' + ( last.length ? alignChar + last : '' ) +
 						'</span></span>'
 				);
 			}
