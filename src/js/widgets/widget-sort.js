@@ -626,13 +626,15 @@ $.extend( true, $abelt, {
 
 		// restore headers
 		restoreHeaders: function( abelt ){
-			var o = abelt.options;
+			var $cell,
+				o = abelt.options;
 			// don't use abelt.$headers here in case header cells were swapped
 			abelt.$table.children( 'thead' ).children( 'tr' ).children( o.selectors.headers ).each( function( indx ) {
+				$cell = $( this );
 				// only restore header cells if it is still wrapped
 				// because this is also used by the updateAll method
-				if ( $(this).find( '.' + $abelt.css.headerInner ).length ) {
-					$(this).html( abelt.vars.originalHeaders[ indx ] );
+				if ( $cell.find( '.' + $abelt.css.headerInner ).length ) {
+					$cell.html( abelt.vars.originalHeaders[ indx ] );
 				}
 			});
 		},
@@ -809,7 +811,7 @@ $.extend( true, $abelt, {
 				// save original header content
 				abelt.vars.originalHeaders[ columnIndex ] = $cell.html();
 				// if headerTemplate is empty, don't reformat the header cell
-				if ( o.sort.headerTemplate !== '{content}' ) {
+				if ( o.sort.headerTemplate !== '{content}{icon}' && !$cell.find( '.' + $abelt.css.headerInner).length ) {
 					hasIcon = $cell.find( '.' + $abelt.css.icon ).length;
 					// set up header template
 					template = o.sort.headerTemplate.replace( /\{content\}/g, $cell.html() ).replace( /\{icon\}/g, hasIcon ? '' : icon );
@@ -857,8 +859,6 @@ $.extend( true, $abelt, {
 		updateAll : function( abelt, callback ) {
 			abelt.flags.isUpdating = true;
 			$abelt.widgets.refresh( abelt, true, true );
-			// restore then rebuild headers
-			$abelt.sort.restoreHeaders( abelt );
 			$abelt.build.headers( abelt );
 			// rebind abelt widget methods
 			$abelt.utility.bindMethods( abelt );
@@ -878,7 +878,7 @@ $abelt.widget.add({
 	// => 'abelt.options.sort'
 	options: {
 		// *** appearance
-		headerTemplate   : '{content} {icon}', // header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
+		headerTemplate   : '{content}{icon}', // header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> (class from cssIcon)
 		onRenderTemplate : null,       // function(index, template){ return template; }, (template is a string)
 		onRenderHeader   : null,       // function(index){}, (nothing to return)
 
