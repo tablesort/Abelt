@@ -26,8 +26,10 @@ $.extend( true, $abelt, {
 			$.extend( true, abelt, {
 
 				options : {
-					textExtraction   : null,       // text extraction method/function - function(node, abelt, cellIndex){}
-					textAttribute    : 'data-text', // data-attribute that contains alternate cell text (used in textExtraction function)
+					// text extraction method/function - function(node, abelt, cellIndex){}
+					textExtraction   : null,
+					// data-attribute that contains alternate cell text (used in textExtraction function)
+					textAttribute    : 'data-text',
 
 					events : {
 						addRows        : 'addRows',
@@ -38,12 +40,16 @@ $.extend( true, $abelt, {
 						// because of prototype - see issue #217 (https://github.com/Mottie/tablesorter/issues/217)
 						updateRows     : 'updateRows',
 						updateComplete : 'updateComplete'
-					}
+					},
+
+					// a place for parser options
+					parsers : {}
 
 					// to do
 					// useWebWorkers    : true,       // ************* Still needs coding *************
 				},
 
+				// internal variables
 				vars : {
 					parsers  : [],
 					cache    : [],
@@ -51,7 +57,7 @@ $.extend( true, $abelt, {
 					empties  : {}
 				},
 
-
+				// internal flags
 				flags : {
 					isUpdating: true
 				}
@@ -66,7 +72,7 @@ $.extend( true, $abelt, {
 					o.events.updateRows,
 					o.events.updateComplete,
 					''
-				].join( abelt.namespace + ',' ).split(',');
+				].join( abelt.namespace + ',' ).split( ',' );
 
 			abelt.$table
 				// addRows
