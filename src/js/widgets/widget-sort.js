@@ -261,7 +261,7 @@ $.extend( true, $abelt, {
 				var $this = $(this),
 					columnIndex = $this.data( 'column' ),
 					nextSort = v.sortOrder[ columnIndex ][ ( v.sortCount[ columnIndex ] + 1 ) % ( o.sort.reset ? 3 : 2 ) ],
-					text = $this.text() + ': ' +
+					text = $.trim( $this.text() ) + ': ' +
 						$abelt.language[ $this.hasClass( $abelt.css.sortAsc ) ? 'sortAsc' : $this.hasClass( $abelt.css.sortDesc ) ? 'sortDesc' : 'sortNone' ] +
 						$abelt.language[ nextSort === 0 ? 'nextAsc' : nextSort === 1 ? 'nextDesc' : 'nextNone' ];
 				$this.attr('aria-label', text );
