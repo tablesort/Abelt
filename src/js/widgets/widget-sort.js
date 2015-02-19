@@ -796,7 +796,7 @@ $.extend( true, $abelt, {
 	build : {
 
 		headers : function( abelt ) {
-			var icon, hasIcon, lock, time,
+			var icon, lock, time,
 				o = abelt.options,
 				v = abelt.vars,
 				// only grab the first class name from css.ignore; in case there are more than one
@@ -813,32 +813,46 @@ $.extend( true, $abelt, {
 				( o.css.icon === $abelt.css.icon ? $abelt.css.icon : o.css.icon + ' ' + $abelt.css.icon ) + '"></i>' : '';
 			// redefine abelt.$headers here in case of an updateAll that replaces or adds an entire header cell
 			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).not( ignoreClass ).children( o.selectors.headers ).each( function( columnIndex ) {
-				var header, template,
+				var header,
+					template = o.sort.headerTemplate,
 					$cell = $(this),
+					$icon = $cell.find( '.' + $abelt.css.icon ),
+					$inner = $cell.find( '.' + $abelt.css.headerInner ),
+					// if $inner exists, get its contents (probably updating)
+					contents = $inner.length ? $inner.html() : $cell.html(),
 					// make sure to get header cell & not column indexed cell
 					data = $abelt.utility.getColumnData( abelt, o.sort.headers, columnIndex, true );
+
 				// save original header content
-				abelt.vars.originalHeaders[ columnIndex ] = $cell.html();
-				// if headerTemplate is empty, don't reformat the header cell
-				if ( o.sort.headerTemplate !== '{content}{icon}' && !$cell.find( '.' + $abelt.css.headerInner).length ) {
-					hasIcon = $cell.find( '.' + $abelt.css.icon ).length;
+				abelt.vars.originalHeaders[ columnIndex ] = contents;
+
+				if ( template === '{content}{icon}' && !$icon.length ) {
+					// if only adding an icon, just append it (bypasses onRenderTemplate execution)
+					$cell.append( icon );
+				} else if ( template !== '{content}' ) {
+					// if headerTemplate is empty, don't reformat the header cell
 					// set up header template
-					template = o.sort.headerTemplate.replace( /\{content\}/g, $cell.html() ).replace( /\{icon\}/g, hasIcon ? '' : icon );
+					template = template.replace( /\{content\}/g, contents ).replace( /\{icon\}/g, hasIcon ? '' : icon );
 					if ( $.isFunction( o.sort.onRenderTemplate ) ) {
 						header = o.sort.onRenderTemplate.apply( $cell, [ columnIndex, template ] );
 						// only change t if something is returned
 						if ( header && typeof header === 'string' ) { template = header; }
 					}
-					$cell.html( '<div class="' + $abelt.css.headerInner + '">' + template + '</div>' ); // faster than wrapInner
-				} else {
-					// starting to not care about IE... this works fine
-					$cell.each( function() {
-						var $this = $( this );
-						if ( !$this.find( '.' + $abelt.css.headerInner ).length ) {
-							$this.wrapInner( '<div class="' + $abelt.css.headerInner + '"/>' );
-						}
-					});
+					$cell.html( template );
 				}
+
+				/*************************************************************
+					Considering completely removing headerInner as Firefox now
+					allows position:relative to be set on table cells
+				**************************************************************/
+				// starting to not care about IE... this works fine
+				$cell.each( function() {
+					var $this = $( this );
+					if ( !$this.find( '.' + $abelt.css.headerInner ).length ) {
+						$this.wrapInner( '<div class="' + $abelt.css.headerInner + '"/>' );
+					}
+				});
+
 				if ( $.isFunction( o.sort.onRenderHeader ) ) {
 					o.sort.onRenderHeader.apply( $cell, [ columnIndex, abelt ] );
 				}
