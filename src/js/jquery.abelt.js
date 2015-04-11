@@ -595,7 +595,7 @@ $abelt = $.abelt = {
 			// build options list
 			options = $.extend( true, {}, $abelt.defaults, settings );
 		// create a table from data (build table widget)
-		if ( table.tagName !== 'TABLE' && !abelt.flags.init && abelt.build.table ) {
+		if ( table.nodeName !== 'TABLE' && !abelt.flags.init && abelt.build.table ) {
 			// return the table (in case the original target is the table's container)
 			$abelt.build.table( table, options );
 		}
