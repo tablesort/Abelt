@@ -167,23 +167,27 @@
 					// ***************************
 					// updateAll is here & not in module-cache because this is like a normal update, but
 					// the headers need to be updated
-					updateAll      : 'updateAll',
+					updateAll   : 'updateAll',
 					// on table
-					sortDestroy    : 'sortDestroy',
-					sortStart      : 'sortStart',
-					sortBegin      : 'sortBegin',
-					sortEnd        : 'sortEnd',
-					sortReset      : 'sortReset',
-					sorton         : 'sorton',
+					sortDestroy : 'sortDestroy',
+					sortStart   : 'sortStart',
+					sortBegin   : 'sortBegin',
+					sortEnd     : 'sortEnd',
+					sortReset   : 'sortReset',
+					sorton      : 'sorton',
 
 					// a sort is applied to header cells (th, td)
-					sort           : 'sorted',
+					sort        : 'sort',
+
+					// applied to user defined objects within the header ( using selectors.sort )
+					// only one event name allowed
+					mouseup     : 'mouseup',
+					mousedown   : 'mousedown',
+					keyup       : 'keyup',
+					click       : 'click',
+
 					// sort widget initialized
-					sortInit       : 'sort-init',
-					// applied to user defined objects within the header (using selectors.sort)
-					mouseup        : 'mouseup',
-					mousedown      : 'mousedown',
-					keyup          : 'keyup'
+					sortInit    : 'sort-init'
 
 				},
 

@@ -90,7 +90,7 @@ $.extend( true, $abelt, {
 				$table
 					.off( events.replace( /\s+/g, ' ' ) )
 					.on( events, function( e ) {
-						$abelt.utility.isProcessing( abelt, e.type === o.events.sortBegin );
+						$abelt.utility.isProcessing( abelt, events.type === o.events.sortBegin );
 					});
 			}
 
@@ -124,6 +124,7 @@ $.extend( true, $abelt, {
 
 		bindEvents : function( abelt, $headers, core, remove ) {
 			var o = abelt.options,
+				namespace = abelt.namespace + 'sort',
 				sortEvents = [
 					o.events.sorton,
 					o.events.sortReset,
@@ -131,15 +132,17 @@ $.extend( true, $abelt, {
 					o.events.updateComplete,
 					o.events.sortDestroy,
 					''
-				].join( abelt.namespace + 'sort,' ).split( ',' ),
+				].join( namespace + ',' ).split( ',' ),
+
 				userEvents = [
 					o.events.mousedown,
 					o.events.mouseup,
 					o.events.keyup,
+					o.events.click,
 					'' // add namespace to all events
-				].join( abelt.namespace + 'sort ' ).replace( /\s+/g, ' ' );
+				].join( namespace + ' ' ).replace( /\s+/g, ' ' );
 
-			abelt.vars.downTime = 0;
+			abelt.vars.downTarget = null;
 
 			if ( core !== true ) {
 				abelt.$extraHeaders = abelt.$extraHeaders ? abelt.$extraHeaders.add( $headers ) : $headers;
@@ -149,54 +152,57 @@ $.extend( true, $abelt, {
 			abelt.$table.off( sortEvents.join( ' ' ).replace( /\s+/g, ' ' ) );
 			// target user selected sort objects
 			$headers
-				.off( userEvents, o.selectors.sort )
-				.off( o.events.sort + abelt.namespace + 'sort', o.selectors.headers );
+				.off( o.events.sort )
+				// http://stackoverflow.com/questions/5312849/jquery-find-self;
+				.find( o.selectors.sort ).add( $headers.filter( o.selectors.sort ) )
+				.off( ( userEvents ).replace( /\s+/g, ' ' ) );
 
 			// remove is true when the destroy method calls this function
 			if ( !remove ) {
 				// apply sort methods
 				abelt.$table
 				// sort on (sorton)
-				.on( sortEvents[0], function( e, list, callback, init ) {
-					e.stopPropagation();
+				.on( sortEvents[0], function( event, list, callback, init ) {
+					event.stopPropagation();
 					$abelt.sort.start( abelt, list, callback, init );
 				})
 				// sort reset (sortReset)
-				.on( sortEvents[1], function( e, callback ) {
-					e.stopPropagation();
+				.on( sortEvents[1], function( event, callback ) {
+					event.stopPropagation();
 					$abelt.sort.start( abelt, [], callback );
 				})
 				// updateAll
-				.on( sortEvents[2], function( e, resort, callback ) {
-					e.stopPropagation();
+				.on( sortEvents[2], function( event, resort, callback ) {
+					event.stopPropagation();
 					$abelt.build.updateAll( abelt );
 					$abelt.sort.checkResort( abelt, resort, callback );
 				})
 				// updateComplete
-				.on( sortEvents[3], function( e, abelt, internal ) {
-					e.stopPropagation();
+				.on( sortEvents[3], function( event, abelt, internal ) {
+					event.stopPropagation();
 					if ( internal ) { return; }
 					// update sorting (if enabled/disabled)
 					$abelt.sort.updateHeader( abelt );
 					$abelt.sort.checkResort( abelt, o.sort.resort );
 				})
 				// sort destroy
-				.on( sortEvents[4], function( e, removeClasses, callback ) {
-					e.stopPropagation();
+				.on( sortEvents[4], function( event, removeClasses, callback ) {
+					event.stopPropagation();
 					$abelt.sort.destroy( abelt, removeClasses, callback );
 				});
 
 				// *** apply event handling to headers ***
-				$headers.find( o.selectors.sort ).add( $headers.filter( o.selectors.sort ) )
-				.on( userEvents, function( e, external ) {
-					e.stopPropagation();
-					$abelt.sort.triggerSort( abelt, e, external );
-				})
-				// trigger 'sort' on th/td
-				.on( o.events.sort + abelt.namespace + 'sort', function( e, external ) {
-					e.stopPropagation();
-					$abelt.sort.triggerSort( abelt, e, external );
-				});
+				$headers
+					// "sort" triggered on header cell
+					.on( o.events.sort, function( event, external ) {
+						$abelt.sort.triggerSort( abelt, event, external );
+					})
+					// other events triggered on sort selector
+					.find( o.selectors.sort ).add( $headers.filter( o.selectors.sort ) )
+					.on( userEvents, function( event, external ) {
+						event.stopPropagation();
+						$abelt.sort.triggerSort( abelt, event, external );
+					});
 			}
 
 		},
@@ -380,28 +386,33 @@ $.extend( true, $abelt, {
 		triggerSort: function( abelt, event, external ) {
 			var columnIndex,
 				o = abelt.options,
+				v = abelt.vars,
 				events = o.events,
+				regex = new RegExp( [ events.sort, events.keyup, events.click ].join( '|' ) ),
 				$target = $( event.target ),
 				$cell = $target.closest( 'th, td' ),
 				type = event.type;
-			// only recognize left clicks or enter
-			if ( ( ( event.which || event.button ) !== 1 && ( type !== events.keyup || type !== events.sort ) ) ||
-				( type === events.keyup && event.which !== 13 ) ) {
-				return;
-			}
-			// ignore long clicks (prevents resizable widget from initializing a sort)
-			if ( type === o.events.mouseup && external !== true &&
-				( new Date().getTime() - abelt.vars.downTime > o.sort.clickDelay ) ) {
-				return;
-			}
-			// set timer on mousedown
-			if ( type === o.events.mousedown ) {
-				abelt.vars.downTime = new Date().getTime();
+
+			// only recognize left clicks
+			if ( ( ( event.which || event.button ) !== 1 && !regex.test(type) ) ||
+				// allow pressing enter
+				( type === events.keyup && events.which !== 13 ) ||
+				// allow triggering a click event ( event.which is undefined ) & ignore physical clicks
+				( type === events.click && typeof event.which !== 'undefined' ) ||
+				// ignore mouseup if mousedown wasn't on the same target
+				( type === events.mouseup && v.downTarget !== event.target && external !== true ) ) {
 				return;
 			}
 
+			// set target on mousedown
+			if ( type === events.mousedown ) {
+				v.downTarget = event.target;
+				return;
+			}
+			v.downTarget = null;
+
 			// prevent sort being triggered on form elements
-			if ( /(input|select|button|textarea)/i.test( event.target.tagName ) ||
+			if ( /(input|select|button|textarea)/i.test( event.target.nodeName ) ||
 				// noSort class name, or elements within a noSort container
 				$target.hasClass( o.css.noSort ) || $target.parents( '.' + o.css.noSort).length > 0 ||
 				// elements within a button
@@ -412,7 +423,8 @@ $.extend( true, $abelt, {
 			if ( o.sort.delayInit && $.isEmptyObject( abelt.vars.cache ) ) {
 				$abelt.build.cache( abelt );
 			}
-			columnIndex = $cell.data('column');
+			// jQuery data does not update if columns rearranged
+			columnIndex = parseInt( $cell.attr( 'data-column' ), 10 );
 
 			if ( !abelt.vars.sortDisabled[ columnIndex ] ) {
 				$abelt.sort.initSort( abelt, columnIndex, event );
@@ -972,23 +984,28 @@ $abelt.widget.add({
 			events : {
 				// updateAll is here & not in module-cache because this is like a normal update, but
 				// the headers need to be updated
-				updateAll      : 'updateAll',
+				updateAll   : 'updateAll',
 				// on table
-				sortDestroy    : 'sortDestroy',
-				sortStart      : 'sortStart',
-				sortBegin      : 'sortBegin',
-				sortEnd        : 'sortEnd',
-				sortReset      : 'sortReset',
-				sorton         : 'sorton',
+				sortDestroy : 'sortDestroy',
+				sortStart   : 'sortStart',
+				sortBegin   : 'sortBegin',
+				sortEnd     : 'sortEnd',
+				sortReset   : 'sortReset',
+				sorton      : 'sorton',
 
 				// a sort is applied to header cells (th, td)
-				sort           : 'sorted',
+				sort        : 'sort',
+
+				// applied to user defined objects within the header ( using selectors.sort )
+				// only one event name allowed
+				mouseup     : 'mouseup',
+				mousedown   : 'mousedown',
+				keyup       : 'keyup',
+				click       : 'click',
+
 				// sort widget initialized
-				sortInit       : 'sort-init',
-				// applied to user defined objects within the header (using selectors.sort)
-				mouseup        : 'mouseup',
-				mousedown      : 'mousedown',
-				keyup          : 'keyup'
+				sortInit    : 'sort-init'
+
 			}
 		},
 
