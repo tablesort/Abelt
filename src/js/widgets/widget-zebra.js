@@ -26,7 +26,7 @@ $.abelt.widget.add({
 			o = abelt.options,
 			zebra = [ o.css.even, o.css.odd ],
 			childRegex = new RegExp( o.css.childRow, 'i' ),
-			$tbodies = abelt.$tbodies;
+			$tbodies = abelt.$tbodies.add( $( abelt.namespace + '_extra_table' ).children( 'tbody' ) );
 		for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
 			// loop through the visible rows
 			row = 0;

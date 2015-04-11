@@ -123,7 +123,8 @@ $.extend( true, $abelt, {
 		},
 
 		bindEvents : function( abelt, $headers, core, remove ) {
-			var o = abelt.options,
+			var $table,
+				o = abelt.options,
 				namespace = abelt.namespace + 'sort',
 				sortEvents = [
 					o.events.sorton,
@@ -145,7 +146,11 @@ $.extend( true, $abelt, {
 			abelt.vars.downTarget = null;
 
 			if ( core !== true ) {
-				abelt.$extraHeaders = abelt.$extraHeaders ? abelt.$extraHeaders.add( $headers ) : $headers;
+				$headers.addClass( abelt.namespace.slice( 1 ) + '_extra_headers' );
+				$table = $headers.closest( 'table' );
+				if ( $table && $table[0] !== abelt.table ) {
+					$table.addClass( abelt.namespace.slice(1) + '_extra_table' );
+				}
 			}
 
 			// remove listeners
@@ -224,7 +229,9 @@ $.extend( true, $abelt, {
 				cssIcon = [ o.css.iconAsc, o.css.iconDesc, o.css.iconNone ],
 				aria = [ 'ascending', 'descending' ],
 				// find the footer
-				$footer = abelt.$tfoot.children( 'tr' ).children( 'th, td' ).add( abelt.$extraHeaders ).removeClass( css.join(' ') );
+				$footer = abelt.$tfoot.children( 'tr' ).children( 'th, td' )
+					.add( $( abelt.namespace + '_extra_headers' ) )
+					.removeClass( css.join(' ') );
 			// remove all header information
 			abelt.$headers
 				.removeClass( css.join(' ') + ' ' + active )
@@ -677,7 +684,7 @@ $.extend( true, $abelt, {
 					abelt.css.sortDesc, o.css.sortDesc ];
 
 			// the last true parameter prevents rebinding of listeners
-			$abelt.sort.bindEvents( abelt, abelt.$headers.add( abelt.$extraHeaders ), true, true );
+			$abelt.sort.bindEvents( abelt, abelt.$headers.add( $( abelt.namespace + '_extra_headers' ) ), true, true );
 
 			abelt.$table
 				.children('thead').children( 'tr' ).children( 'th, td' )
