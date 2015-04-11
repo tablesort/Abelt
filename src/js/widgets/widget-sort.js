@@ -838,7 +838,7 @@ $.extend( true, $abelt, {
 			.children( o.selectors.headers )
 			.each( function( columnIndex ) {
 				var header,
-					template = o.sort.headerTemplate,
+					template = $.trim( o.sort.headerTemplate ),
 					$cell = $(this),
 					$icon = $cell.find( '.' + $abelt.css.icon ),
 					$inner = $cell.find( '.' + $abelt.css.headerInner ),
@@ -856,7 +856,7 @@ $.extend( true, $abelt, {
 				} else if ( template !== '{content}' ) {
 					// if headerTemplate is empty, don't reformat the header cell
 					// set up header template
-					template = template.replace( /\{content\}/g, contents ).replace( /\{icon\}/g, hasIcon ? '' : icon );
+					template = template.replace( /\{content\}/g, contents ).replace( /\{icon\}/g, $icon.length ? '' : icon );
 					if ( $.isFunction( o.sort.onRenderTemplate ) ) {
 						header = o.sort.onRenderTemplate.apply( $cell, [ columnIndex, template ] );
 						// only change t if something is returned
