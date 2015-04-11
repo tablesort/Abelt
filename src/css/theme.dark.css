@@ -88,7 +88,7 @@
 .abelt-dark tbody > tr:hover > td,
 .abelt-dark tbody > tr.even:hover > td,
 .abelt-dark tbody > tr.odd:hover > td {
-	background: #000;
+	background-color: #000;
 }
 
 /* table processing indicator */
@@ -132,15 +132,15 @@
 
 /* caption */
 caption {
-	background: #202020;
+	background-color: #202020;
 }
 
 /* filter widget */
 .abelt-dark .abelt-filterRow {
-	background: #202020;
+	background-color: #202020;
 }
 .abelt-dark .abelt-filterRow td {
-	background: #202020;
+	background-color: #202020;
 	line-height: normal;
 	text-align: center; /* center the input */
 	-webkit-transition: line-height 0.1s ease;

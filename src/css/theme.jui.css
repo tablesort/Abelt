@@ -95,7 +95,7 @@
 
 /* filter widget */
 .abelt-jui .abelt-filterRow td {
-	background: transparent;
+	background-color: transparent;
 	line-height: normal;
 	text-align: center; /* center the input */
 	-webkit-transition: line-height 0.1s ease;

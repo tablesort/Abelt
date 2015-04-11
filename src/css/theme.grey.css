@@ -122,13 +122,13 @@
 .abelt-grey tbody > tr.even:hover > td,
 .abelt-grey tbody > tr.even:hover + tr.abelt-childRow > td,
 .abelt-grey tbody > tr.even:hover + tr.abelt-childRow + tr.abelt-childRow > td {
-	background: #134b78;
+	background-color: #134b78;
 }
 .abelt-grey tbody > tr.odd.hover > td,
 .abelt-grey tbody > tr.odd:hover > td,
 .abelt-grey tbody > tr.odd:hover + tr.abelt-childRow > td,
 .abelt-grey tbody > tr.odd:hover + tr.abelt-childRow + tr.abelt-childRow > td {
-	background: #134b78;
+	background-color: #134b78;
 }
 
 /* table processing indicator */
@@ -179,15 +179,15 @@
 
 /* caption */
 caption {
-	background: #fff;
+	background-color: #fff;
 }
 
 /* filter widget */
 .abelt-grey .abelt-filterRow {
-	background: #3c3c3c;
+	background-color: #3c3c3c;
 }
 .abelt-grey .abelt-filterRow td {
-	background: #3c3c3c;
+	background-color: #3c3c3c;
 	line-height: normal;
 	text-align: center; /* center the input */
 	-webkit-transition: line-height 0.1s ease;

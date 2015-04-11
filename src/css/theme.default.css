@@ -94,7 +94,7 @@ Default Theme
 .abelt-default tbody > tr:hover > td,
 .abelt-default tbody > tr.even:hover > td,
 .abelt-default tbody > tr.odd:hover > td {
-	background: #fff;
+	background-color: #fff;
 	color: #000;
 }
 
@@ -139,15 +139,15 @@ Default Theme
 
 /* caption */
 caption {
-	background: #fff;
+	background-color: #fff;
 }
 
 /* filter widget */
 .abelt-default .abelt-filterRow {
-	background: #eee;
+	background-color: #eee;
 }
 .abelt-default .abelt-filterRow td {
-	background: #eee;
+	background-color: #eee;
 	border-bottom: #ccc 1px solid;
 	line-height: normal;
 	text-align: center; /* center the input */

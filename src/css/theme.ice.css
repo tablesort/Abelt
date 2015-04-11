@@ -65,7 +65,7 @@
 
 .abelt-ice .abelt-sorted {
 	color: #333;
-	background: #ebedee;
+	background-color: #ebedee;
 }
 
 .abelt-ice .abelt-unsorted i.abelt-icon {
@@ -86,7 +86,7 @@
 /* tfoot */
 .abelt-ice tfoot .abelt-sortAsc,
 .abelt-ice tfoot .abelt-sortDesc {
-	background: #ebedee;
+	background-color: #ebedee;
 }
 
 /* tbody */
@@ -99,7 +99,7 @@
 .abelt-ice tbody > tr:hover > td,
 .abelt-ice tbody > tr.even:hover > td,
 .abelt-ice tbody > tr.odd:hover > td {
-	background: #ebf2fa;
+	background-color: #ebf2fa;
 }
 
 /* table processing indicator */
@@ -149,15 +149,15 @@
 
 /* caption */
 caption {
-	background: #fff;
+	background-color: #fff;
 }
 
 /* filter widget */
 .abelt-ice .abelt-filterRow {
-	background: #eee;
+	background-color: #eee;
 }
 .abelt-ice .abelt-filterRow td {
-	background: #eee;
+	background-color: #eee;
 	line-height: normal;
 	text-align: center; /* center the input */
 	-webkit-transition: line-height 0.1s ease;

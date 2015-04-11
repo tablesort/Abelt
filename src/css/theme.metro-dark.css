@@ -96,7 +96,7 @@ Metro Dark Theme
 .abelt-metro-dark tbody > tr:hover > td,
 .abelt-metro-dark tbody > tr.even:hover > td,
 .abelt-metro-dark tbody > tr.odd:hover > td {
-	background: #bbb;
+	background-color: #bbb;
 	color: #000;
 }
 
@@ -152,10 +152,10 @@ Metro Dark Theme
 
 /* filter widget */
 .abelt-metro-dark .abelt-filterRow {
-	background: #eee;
+	background-color: #eee;
 }
 .abelt-metro-dark .abelt-filterRow td {
-	background: #eee;
+	background-color: #eee;
 	line-height: normal;
 	text-align: center; /* center the input */
 	-webkit-transition: line-height 0.1s ease;

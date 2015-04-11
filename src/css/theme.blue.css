@@ -99,13 +99,13 @@
 .abelt-blue tbody > tr.even:hover > td,
 .abelt-blue tbody > tr.even:hover + tr.abelt-childRow > td,
 .abelt-blue tbody > tr.even:hover + tr.abelt-childRow + tr.abelt-childRow > td {
-	background: #d9d9d9;
+	background-color: #d9d9d9;
 }
 .abelt-blue tbody > tr.odd.hover > td,
 .abelt-blue tbody > tr.odd:hover > td,
 .abelt-blue tbody > tr.odd:hover + tr.abelt-childRow > td,
 .abelt-blue tbody > tr.odd:hover + tr.abelt-childRow + tr.abelt-childRow > td {
-	background: #bfbfbf;
+	background-color: #bfbfbf;
 }
 
 /* table processing indicator */
@@ -149,15 +149,15 @@
 
 /* caption */
 caption {
-	background: #fff;
+	background-color: #fff;
 }
 
 /* filter widget */
 .abelt-blue .abelt-filterRow {
-	background: #eee;
+	background-color: #eee;
 }
 .abelt-blue .abelt-filterRow td {
-	background: #eee;
+	background-color: #eee;
 	line-height: normal;
 	text-align: center; /* center the input */
 	-webkit-transition: line-height 0.1s ease;

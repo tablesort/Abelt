@@ -75,7 +75,7 @@
 
 /* caption */
 .caption {
-	background: #fff;
+	background-color: #fff;
 }
 
 /* filter widget */
@@ -104,10 +104,10 @@
 	transition: height 0.1s ease;
 }
 .abelt-bootstrap .abelt-filterRow {
-	background: #efefef;
+	background-color: #efefef;
 }
 .abelt-bootstrap .abelt-filterRow td {
-	background: #efefef;
+	background-color: #efefef;
 	line-height: normal;
 	text-align: center;
 	padding: 4px 6px;

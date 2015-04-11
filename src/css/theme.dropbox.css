@@ -133,15 +133,15 @@
 
 /* caption */
 caption {
-	background: #fff;
+	background-color: #fff;
 }
 
 /* Filter Widget */
 .abelt-dropbox .abelt-filterRow {
-	background: #fff;
+	background-color: #fff;
 }
 .abelt-dropbox .abelt-filterRow td {
-	background: #fff;
+	background-color: #fff;
 	line-height: normal;
 	text-align: center; /* center the input */
 	-webkit-transition: line-height 0.1s ease;
