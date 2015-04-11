@@ -82,7 +82,7 @@
 .abelt-bootstrap .abelt-filterRow input.abelt-filter,
 .abelt-bootstrap .abelt-filterRow select.abelt-filter {
 	width: 98%;
-	margin: 0 auto;
+	margin: 0;
 	padding: 4px 6px;
 	color: #333;
 	-webkit-box-sizing: border-box;

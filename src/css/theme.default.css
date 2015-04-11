@@ -188,7 +188,7 @@ caption {
 .abelt-default select.abelt-filter {
 	width: 95%;
 	height: auto;
-	margin: 4px;
+	margin: 4px auto;
 	padding: 4px;
 	background-color: #fff;
 	border: 1px solid #bbb;

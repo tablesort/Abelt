@@ -182,7 +182,7 @@ caption {
 .abelt-dark select.abelt-filter {
 	width: 98%;
 	height: auto;
-	margin: 4px;
+	margin: 0;
 	padding: 4px;
 	background-color: #111;
 	border: 1px solid #222;
