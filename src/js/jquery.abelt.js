@@ -114,6 +114,70 @@ $abelt = $.abelt = {
 
 	widget : {
 
+		// get widgets from table class name & add options
+		setup : function( abelt, callback ) {
+			var index, name, len,
+				o = abelt.options,
+
+			// add widget from table class name
+			tableClass = ' ' + abelt.table.className + ' ',
+			// look for widgets to apply from in table class
+			// don't use \b otherwise this regex matches 'ui-widget-content' & adds a 'content' widget
+			regex = new RegExp( '\\s' + o.widgetClass.replace( /\{name\}/i, '([\\w-]+)' )+ '\\s', 'g' ),
+			// extract out the widget id from the table class (widget id's can include dashes)
+			widget = tableClass.match( regex );
+			if ( widget ) {
+				len = widget.length;
+				for ( index = 0; index < len; index++ ) {
+					name = ( widget[ index ] || '' ).replace( regex, '$1' );
+					o.widgets.push( name );
+				}
+			}
+
+			// ensure unique widget ids
+			o.widgets = $.grep( o.widgets, function( val, index ) {
+				return o.widgets.indexOf( val ) === index;
+			});
+			len = o.widgets.length;
+			for ( index = 0; index < len; index++ ) {
+				$abelt.widget.addOptions( abelt, o.widgets[ index ] );
+			}
+
+			// callback executed on init only
+			if ( $.isFunction( callback ) ) {
+				callback( abelt );
+			}
+
+		},
+
+		addOptions : function( abelt, name ) {
+			var index, len, option, settings, blocks,
+				o = abelt.options,
+				widget = $abelt.widget.get( name );
+			if ( widget.id ) {
+				if ( widget.options ) {
+					// options are specific to the widget - ( abelt.options.{widget-name} )
+					o[ name ] = $.extend( true, {}, widget.options, o[ name ] );
+				}
+				// settings can be addded to the options, var, flags, etc
+				settings = widget.settings;
+				if ( settings ) {
+					// trying to extend abelt, then replace it with itself
+					// abelt = $.extend( true, {}, widgetSettings, abelt ); // -> breaks a bunch of options
+					// it just works better to extend abelt settings into each block...
+					blocks = abelt.vars.allowedBlocks;
+					len = blocks.length;
+					for ( index = 0; index < len; index++ ) {
+						option = blocks[ index ];
+						if ( settings[ option ] ) {
+							abelt[ option ] = $.extend( true, {}, settings[ option ], abelt[ option ] );
+						}
+					}
+				}
+			}
+		},
+
+
 		add : function( widget, replaceWidget ) {
 			if ( widget && widget.id ) {
 				var index, storedWidget,
@@ -133,6 +197,8 @@ $abelt = $.abelt = {
 							if ( $abelt.debug ) {
 								console.log( 'Replaced ' + widget.id + ' with a newly defined widget' );
 							}
+						} else if ( $abelt.debug ) {
+							console.log( widget.id + ' already exists!' );
 						}
 						isNew = false;
 					}
@@ -148,7 +214,7 @@ $abelt = $.abelt = {
 
 		get : function( id ) {
 			var index, widget,
-				name = id.toString(),
+				name = ( id || '' ).toString(),
 				len = $abelt.widgets.length;
 			for ( index = 0; index < len; index++ ) {
 				widget = $abelt.widgets[ index ];
@@ -159,20 +225,17 @@ $abelt = $.abelt = {
 			return false;
 		},
 
-		has : function( abelt, name ){
+		has : function( abelt, name ) {
 			return abelt.flags.widgetInit[ name ] || false;
 		},
 
 		apply : function( abelt, named, init, callback ) {
 			named = named || '';
-			var overall, time, applied, index, name, widgetsArray, widget, regex, len, widgetSettings, blocks,
-				option, optionIndex, optionLength,
+			var overall, time, applied, index, name, widgetsArray, widget, len,
 				o = abelt.options,
 				widgets = [],
 				// if named == string, then apply specific widget(s), otherwise apply them all
-				str = typeof named === 'string' && named !== '',
-				// add widget from table class name
-				tableClass = ' ' + abelt.table.className + ' ';
+				str = typeof named === 'string' && named !== '';
 
 			// prevent numerous consecutive widget applications - ** isUpdating is added by module-cache.js **
 			if ( init !== false && abelt.flags.init && ( abelt.flags.isApplyingWidgets || abelt.flags.isUpdating ) ) {
@@ -181,27 +244,9 @@ $abelt = $.abelt = {
 
 			if ( $abelt.debug && o.debug ) { overall = new Date(); }
 
-			// look for widgets to apply from in table class
-			// don't use \b otherwise this regex matches 'ui-widget-content' & adds a 'content' widget
-			regex = new RegExp( '\\s' + o.widgetClass.replace( /\{name\}/i, '([\\w-]+)' )+ '\\s', 'g' );
-			// extract out the widget id from the table class (widget id's can include dashes)
-			widget = tableClass.match( regex );
-			if ( widget ) {
-				len = widget.length;
-				for ( index = 0; index < len; index++ ) {
-					name = widget[ index ];
-					$abelt.widgets.push( nam.replace( regex, '$1' ) );
-				}
-			}
-
 			if ( o.widgets.length ) {
 
 				abelt.flags.isApplyingWidgets = true;
-
-				// ensure unique widget ids
-				o.widgets = $.grep( o.widgets, function( val, index ) {
-					return o.widgets.indexOf( val ) === index;
-				});
 
 				// named can contain multiple widgets names, separated by spaces (or commas)
 				// if named is an empty string, apply all widgets
@@ -217,6 +262,7 @@ $abelt = $.abelt = {
 						widgets[ index ] = widget;
 					}
 				}
+
 				// sort widgets by priority
 				widgets.sort(function( a, b ){
 					return a.priority < b.priority ? -1 : a.priority === b.priority ? 0 : 1;
@@ -240,27 +286,11 @@ $abelt = $.abelt = {
 						if ( init || !( abelt.flags.widgetInit[ name ] ) ) {
 							// set widget initialized flag by widget name/id
 							abelt.flags.widgetInit[ name ] = true;
-							// extend widget options
-							// e.g. { filter_ignoreCase :  true, filter_childRows :  false, ... }
-							if ( widget.options ) {
-								// options are specific to the widget - ( abelt.options.{widget-name} )
-								o[ name ] = $.extend( true, {}, widget.options, o[ name ] );
+							// extend widget options & settings
+							if ( abelt.flags.init ) {
+								$abelt.widget.addOptions( abelt, name );
 							}
-							// settings can be addded to the options, var, flags, etc
-							widgetSettings = widget.settings;
-							if ( widgetSettings ) {
-								// trying to extend abelt, then replace it with itself
-								// abelt = $.extend( true, {}, widgetSettings, abelt ); // -> breaks a bunch of options
-								// it just works better to extend abelt settings into each block...
-								blocks = abelt.vars.allowedBlocks;
-								optionLength = blocks.length
-								for ( optionIndex = 0; optionIndex < optionLength; optionIndex++ ) {
-									option = blocks[ optionIndex ];
-									if ( widgetSettings[ option ] ) {
-										abelt[ option ] = $.extend( true,  widgetSettings[ option ], abelt[ option ] );
-									}
-								}
-							}
+
 							if ( widget.init ) {
 								applied = true;
 								widget.init( abelt );
@@ -330,7 +360,9 @@ $abelt = $.abelt = {
 				widget = $abelt.widget.get( name[ index ] );
 				index = o.widgets.indexOf( name[ index ] );
 				if ( widget && 'remove' in widget ) {
-					if ( $abelt.debug && o.debug && index >= 0 ) { console.log( 'Removing "' + name[ index ] + '" widget' ); }
+					if ( $abelt.debug && o.debug && index >= 0 ) {
+						console.log( 'Removing "' + name[ index ] + '" widget' );
+					}
 					widget.remove( abelt, refreshing );
 					abelt.flags.widgetInit[ widget.id ] = false;
 				}
@@ -397,8 +429,7 @@ $abelt = $.abelt = {
 
 		// add internal constants
 		setConstants : function( abelt ) {
-			var index, $header,
-				o = abelt.options,
+			var o = abelt.options,
 				// join ignore class names
 				ignoreClass = '.' + o.css.ignore.split( $abelt.regex.lists ).join( ',.' );
 
@@ -575,7 +606,7 @@ $abelt = $.abelt = {
 				.on( events.widgetApplyAll, function( e, init ) {
 					e.stopPropagation();
 					// apply all widgets
-					$abelt.widget.apply( abelt, true, init);
+					$abelt.widget.apply( abelt, true, init );
 				})
 				.on( events.widgetsRefresh, function( e, doAll, dontApply ) {
 					e.stopPropagation();
@@ -658,7 +689,7 @@ $abelt = $.abelt = {
 				// widget initialization flags
 				widgetInit : [],
 			},
-			// misc functions (e.g. pager appender)
+			// misc functions (e.g. pager appender, etc)
 			functions : {}
 		},
 		o = options;
@@ -680,6 +711,9 @@ $abelt = $.abelt = {
 		// fixate columns if the users supplies the fixedWidth option
 		// do this after theme has been applied
 		$abelt.utility.fixColumnWidth( abelt );
+
+		// add widget options before parsing (e.g. grouping widget has parser settings)
+		$abelt.widget.setup( abelt );
 
 		// add data-column indexing to targetted rows
 		$rows = abelt.$table.children( 'thead:eq(0), tfoot' ).children('tr');
@@ -708,8 +742,8 @@ $abelt = $.abelt = {
 
 		if ( o.css.headerHover ) {
 			hover = 'mouseenter mouseleave '.split( $abelt.regex.lists ).join( abelt.namespace + ' ' );
-			abelt.$headers.on( hover, function(e) {
-				$( this ).toggleClass( o.css.headerHover, e.type === 'mouseenter' );
+			abelt.$headers.on( hover, function( event ) {
+				$( this ).toggleClass( o.css.headerHover, event.type === 'mouseenter' );
 			});
 		}
 
@@ -764,11 +798,6 @@ $abelt = $.abelt = {
 				''
 			];
 
-		if ( removeClasses === false && $abelt.widget.has( abelt, 'uitheme' ) ) {
-			// reapply uitheme classes, in case we want to maintain appearance
-			$abelt.widget.apply( abelt, 'uitheme', true );
-			$abelt.widget.apply( abelt, 'zebra', true );
-		}
 		// remove widget added rows, just in case
 		$thead.children( 'tr' ).not( $rows ).remove();
 

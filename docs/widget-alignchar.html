@@ -68,7 +68,8 @@ td:nth-child(4) .abelt-align-right i {
 
 	$("table").abelt({debug: true,
 		theme: 'blue',
-		widgets: ['zebra', 'alignChar'],
+		// alignChar added by table class name
+		widgets: ['zebra'],
 		alignChar : {
 			wrap         : '<i/>',
 			charAttrib   : 'data-align-char',
@@ -93,7 +94,7 @@ td:nth-child(4) .abelt-align-right i {
 <span class="demo-label">Sites align index:</span> <div id="slider1"></div> <span class="bright">1</span> (only indexes of 1 - 3 will work<br>
 <span class="demo-label">Sites adjust value:</span> <div id="slider2"></div> <span class="bright">0</span>
 
-	<div id="demo"><table class="abelt">
+	<div id="demo"><table class="abelt widget-alignChar">
 	<thead>
 		<tr>
 			<th data-align-char="&nbsp;">AlphaNumeric</th>
