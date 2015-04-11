@@ -27,7 +27,7 @@ $abeltColSel = $abelt.columnSelector = {
 		$t = $( o.columnSelector.layout );
 		if ( !$t.find( 'input' ).add( $t.filter( 'input' ) ).length ) {
 			if ( $abelt.debug && o.debug ) {
-				console.error( '*** ERROR: Column Selector aborting, no input found in the layout! ***' );
+				console.error( 'ColumnSelector: >> ERROR: Column Selector aborting, no input found in the layout! ***' );
 			}
 			return;
 		}
@@ -53,6 +53,8 @@ $abeltColSel = $abelt.columnSelector = {
 		colSel.isInitializing = false;
 		if ( colSel.$container.length ) {
 			$abeltColSel.updateCols( abelt );
+		} else if ( $abelt.debug && o.debug ) {
+			console.error( 'ColumnSelector: >> ERROR: Container not found' );
 		}
 
 		abelt.$table
