@@ -20,11 +20,21 @@ $.extend( true, $abelt, {
 		// detect (#) = negative number
 		isNegative     : /^\s*\([.\d]+\)/,
 		// regex used by replace function to change () into a negative
-		makeNegative   : /^\s*\(([.\d]+)\)/
+		makeNegative   : /^\s*\(([.\d]+)\)/,
+		// regex targetting temporary placeholder (\u0000)
+		placeholder    : /\\u0000/g,
+		// target spaces for removal
+		spaces         : /\s+/g
 	},
 
 	defaults : {
-		usNumberFormat : true // false for German '1.234.567,89' or French '1 234 567,89'
+		// set to match the jQuery Globalize format;
+		// if installed, set this option to Globalize.cultures[ {language} ].numberFormat
+		// where {language} is the selected language, e.g. 'en' is English, 'fr' is French, etc
+		numberFormat : {
+			'.' : '.',
+			',' : ','
+		}
 	},
 
 /*   _   _ _ _ _
@@ -94,21 +104,27 @@ $.extend( true, $abelt, {
 
 		formatFloat : function( str, abelt ) {
 			if ( typeof( str ) !== 'string' || str === '' ) { return str; }
-			var numbr;
+			var reformat, numbr, regexDecimal, regexComma,
+				// follow http://github.com/jquery/globalize formatting, so the
+				// numberFormat option can be set from Globalize.cultures['en'].numberFormat
+				format = abelt !== false ? { '.' : '.', ',' : ',' } : { '.' : ',', ',' : '.' };
 			// allow using formatFloat without set options; defaults to US number format
-			if ( abelt ? abelt.options.usNumberFormat !== false : abelt !== undefined ? abelt : true ) {
-				// US Format - 1,234,567.89 -> 1234567.89
-				str = str.replace( /,/g, '' );
-			} else {
-				// German Format = 1.234.567,89 -> 1234567.89
-				// French Format = 1 234 567,89 -> 1234567.89
-				str = str.replace( /[\s.]/g, '' ).replace( /,/g, '.' );
-			}
-			if ( $abelt.regex.isNegative.test( str ) ) {
+			format = !$.isEmptyObject( abelt && abelt.options && abelt.options.numberFormat ) ? abelt.options.numberFormat || format : format;
+
+			// save regexp
+			regexDecimal = $abelt.regex[ format[ '.' ] ] = $abelt.regex[ format[ '.' ] ] || ( new RegExp( '\\' + format['.'], 'g') );
+			regexComma = $abelt.regex[ format[ ',' ] ] = $abelt.regex[ format[ ',' ] ] || ( new RegExp( '\\' + format[','], 'g') );
+
+			reformat = str
+				.replace( $abelt.regex.spaces, '' ) // remove spaces
+				.replace( regexDecimal, '\\u0000' ) // decimal placeholder
+				.replace( regexComma, '' ) // remove comma(s)
+				.replace( $abelt.regex.placeholder, '.' ); // add decimal back
+			if ( $abelt.regex.isNegative.test( reformat ) ) {
 				// make (#) into a negative number -> (10) = -10
-				str = str.replace( $abelt.regex.makeNegative, '-$1' );
+				reformat = reformat.replace( $abelt.regex.makeNegative, '-$1' );
 			}
-			numbr = parseFloat( str );
+			numbr = parseFloat( reformat);
 			// return the text instead of zero
 			return isNaN( numbr ) ? $.trim( str ) : numbr;
 		},
