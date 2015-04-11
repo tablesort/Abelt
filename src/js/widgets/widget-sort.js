@@ -131,7 +131,7 @@ $.extend( true, $abelt, {
 					o.events.updateComplete,
 					o.events.sortDestroy,
 					''
-				].join( abelt.namespace + 'sort,' ).split(','),
+				].join( abelt.namespace + 'sort,' ).split( ',' ),
 				userEvents = [
 					o.events.mousedown,
 					o.events.mouseup,

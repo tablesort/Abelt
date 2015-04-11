@@ -18,7 +18,7 @@ $abeltAlignChar = $abelt.alignChar = {
 		var o = abelt.options;
 
 		if ( $.isEmptyObject( abelt.vars.cache ) ) {
-			if ( $abelt.debug && o.debug ) {
+			if ( typeof $abelt.build.update !== 'function' && $abelt.debug && o.debug ) {
 				console.warn( 'Cache not found. Can not continue alignChar widget setup' );
 			}
 			return;
@@ -152,7 +152,7 @@ $abelt.widget.add({
 		});
 		// build the cache <- ignores the sort.delayInit option
 		if ( $.isEmptyObject( abelt.vars.cache ) && $abelt.build.update ) {
-				$abelt.build.update( abelt );
+			$abelt.build.update( abelt );
 		}
 	},
 	update : function( abelt ) {

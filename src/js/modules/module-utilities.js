@@ -81,19 +81,21 @@ $.extend( true, $abelt, {
 		getColumnData : function( abelt, obj, index, getCell, $headers ) {
 			if ( $.isEmptyObject( obj ) ) { return index; }
 			var $header, key,
-				$cells = ( $headers || abelt.$headers );
+				$cells = ( $headers || abelt.$headers ),
+				$cell = abelt.$headerIndexed && abelt.$headerIndexed[ index ] ||
+					$cells.filter( '[data-column="' + index + '"]:last' );
 			if ( obj[ index ] ) {
 				return getCell ?
 					obj[ index ] :
-					obj[ $cells.index( $cells.filter( '[data-column="' + index + '"]:last' ) ) ];
+					obj[ $cells.index( abelt.$headerIndexed[ index ] ) ];
 			}
 			for ( key in obj ) {
 				if ( typeof key === 'string' ) {
-					$header = $cells.filter( '[data-column="' + index + '"]:last' )
+					$header = $cell
 						// header cell with class/id
 						.filter( key )
 						// find elements within the header cell with cell/id
-						.add( $cells.filter( '[data-column="' + index + '"]:last' ).find( key ) );
+						.add( $cell ).find( key );
 					if ( $header.length ) {
 						return obj[ key ];
 					}

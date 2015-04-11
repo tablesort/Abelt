@@ -302,7 +302,7 @@ $.extend( true, $abelt, {
 
 		// previously buildParserCache
 		parserCache: function( abelt ) {
-			var rows, cols, columnIndex, $cell, optionHeaders, noparser, parser, extractor, time,
+			var rows, cols, columnIndex, $cell, optionHeaders, noparser, parser, extractor, time, index, $header,
 				o = abelt.options,
 				v = abelt.vars,
 				// update table bodies in case we start with an empty table
@@ -315,19 +315,32 @@ $.extend( true, $abelt, {
 				},
 				len = $tbodies.length;
 			if ( !$abelt.utility.getColumnData ) {
-				return $abelt.debug && o.debug ? console.warn( '-> The module-utilities.js file is required to parse the table' ) : '';
+				return $abelt.debug && o.debug ?
+					console.warn( '-> The module-utilities.js file is required to parse the table' ) : '';
 			} else if ( len === 0 ) {
-				return $abelt.debug && o.debug ? console.warn( '-> Warning: *Empty table!* Not building a parser cache' ) : '';
+				return $abelt.debug && o.debug ?
+					console.warn( '-> Warning: *Empty table!* Not building a parser cache' ) : '';
 			} else if ( $abelt.debug && o.debug ) {
 				time = new Date();
 				console[ console.group ? 'group' : 'log' ]( 'Detecting parsers for each column' );
 			}
+
+			// define $headersIndex to cache targetting last data-column
+			abelt.$headerIndexed = [];
+			for ( index = 0; index < abelt.vars.columns; index++ ) {
+				$header = abelt.$headers.filter( '[data-column="' + index + '"]' );
+				// target sortable column cells, unless there are none, then use non-sortable cells
+				abelt.$headerIndexed[ index ] = $header.not( '.sorter-false' ).length ?
+					$header.not( '.sorter-false' ).last() :
+					$header.last();
+			}
+
 			while ( tbodyIndex < len ) {
 				rows = $tbodies[ tbodyIndex ].rows;
 				if ( rows.length ) {
 					cols = v.columns; // rows[j].cells.length;
 					for ( columnIndex = 0; columnIndex < cols; columnIndex++ ) {
-						$cell = abelt.$headers.filter( '[data-column="' + columnIndex + '"]:last' );
+						$cell = abelt.$headerIndexed[ columnIndex ];
 						// get column indexed table cell
 						optionHeaders = $abelt.utility.getColumnData( abelt, optionHeaders, columnIndex );
 						// get column parser/extractor

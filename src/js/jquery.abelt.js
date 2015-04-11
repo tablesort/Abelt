@@ -270,11 +270,15 @@ $abelt = $.abelt = {
 							applied = true;
 							widget.update( abelt );
 						}
-
 						if ( applied ) {
 							abelt.flags.widgetInit[ name ] = true;
 							if ( $abelt.debug && o.debug ) {
 								console.log( 'Completed ' + ( init ? 'initializing ' : 'applying ' ) + name + ' widget' + $abelt.benchmark( time ) );
+								if ( console.groupEnd ) { console.groupEnd(); }
+							}
+						} else {
+							if ( $abelt.debug && o.debug ) {
+								console.warn( init ? 'no init function found' : name + ' widget not applied!' );
 								if ( console.groupEnd ) { console.groupEnd(); }
 							}
 						}
@@ -393,7 +397,8 @@ $abelt = $.abelt = {
 
 		// add internal constants
 		setConstants : function( abelt ) {
-			var o = abelt.options,
+			var index, $header,
+				o = abelt.options,
 				// join ignore class names
 				ignoreClass = '.' + o.css.ignore.split( $abelt.regex.lists ).join( ',.' );
 
