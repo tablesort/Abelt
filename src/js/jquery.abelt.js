@@ -533,9 +533,7 @@ $abelt = $.abelt = {
 			var indexRow, indexCell, indexMatrix, indexMatrixCol,
 				$cell, cell, cells, rowIndex, cellId, rowSpan, colSpan, firstAvailCol, matrixrow,
 				matrix = [],
-				lookup = {},
-				// determine the number of columns
-				cols = 0;
+				lookup = {};
 			for ( indexRow = 0; indexRow < $rows.length; indexRow++ ) {
 				cells = $rows[ indexRow ].cells;
 				for ( indexCell = 0; indexCell < cells.length; indexCell++ ) {
@@ -556,7 +554,6 @@ $abelt = $.abelt = {
 						}
 					}
 					lookup[ cellId ] = firstAvailCol;
-					cols = Math.max( firstAvailCol, cols );
 					// add data-column; .attr({ 'data-row' : rowIndex })
 					$cell.attr({ 'data-column' : firstAvailCol });
 					cell.column = firstAvailCol;
@@ -571,8 +568,9 @@ $abelt = $.abelt = {
 					}
 				}
 			}
-			// may not be accurate if # header columns !== # tbody columns
-			return cols + 1; // add one because it's a zero-based index
+			// may not be accurate if # header columns !== # tbody columns, or if an info
+			// only tbody contains a colspan that does not match the actual # of columns
+			return matrixrow.length;
 		},
 
 		// ***********************************

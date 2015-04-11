@@ -814,7 +814,10 @@ $.extend( true, $abelt, {
 			icon = o.css.icon ? '<i class="' +
 				( o.css.icon === $abelt.css.icon ? $abelt.css.icon : o.css.icon + ' ' + $abelt.css.icon ) + '"></i>' : '';
 			// redefine abelt.$headers here in case of an updateAll that replaces or adds an entire header cell
-			abelt.$headers = abelt.$table.children( 'thead' ).children( 'tr' ).not( ignoreClass ).children( o.selectors.headers ).each( function( columnIndex ) {
+			abelt.$headers = abelt.$table.children( 'thead' )
+			.children( 'tr' ).not( ignoreClass )
+			.children( o.selectors.headers )
+			.each( function( columnIndex ) {
 				var header,
 					template = o.sort.headerTemplate,
 					$cell = $(this),
