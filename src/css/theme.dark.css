@@ -84,6 +84,7 @@
 }
 
 /* hovered row colors */
+.abelt-dark tbody > tr.hover > td,
 .abelt-dark tbody > tr:hover > td,
 .abelt-dark tbody > tr.even:hover > td,
 .abelt-dark tbody > tr.odd:hover > td {

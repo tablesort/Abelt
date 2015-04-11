@@ -61,7 +61,8 @@
 }
 
 /* hovered row colors */
-.abelt-jui tbody > tr:hover td {
+.abelt-jui tbody > tr.hover > td,
+.abelt-jui tbody > tr:hover > td {
 	opacity: 0.7;
 	filter: alpha(opacity=70);
 }

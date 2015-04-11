@@ -53,6 +53,7 @@
 .abelt-bootstrap > tbody > tr.abelt-hasChildRow.odd:hover ~ tr.abelt-hasChildRow.odd ~ .abelt-childRow.odd > td {
 	background-color: #f9f9f9;
 }
+.abelt-bootstrap > tbody > tr.hover > td,
 .abelt-bootstrap > tbody > tr.odd:hover > td,
 .abelt-bootstrap > tbody > tr.even:hover > td,
 .abelt-bootstrap > tbody > tr.abelt-hasChildRow.odd:hover ~ .abelt-childRow.odd > td,

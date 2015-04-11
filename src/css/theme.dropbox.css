@@ -88,6 +88,7 @@
 }
 
 /* hovered row colors */
+.abelt-dropbox tbody > tr.hover > td,
 .abelt-dropbox tbody > tr:hover > td,
 .abelt-dropbox tbody > tr.even:hover > td,
 .abelt-dropbox tbody > tr.odd:hover > td {

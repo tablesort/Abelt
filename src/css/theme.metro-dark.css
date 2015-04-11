@@ -92,6 +92,7 @@ Metro Dark Theme
 }
 
 /* hovered row colors */
+.abelt-metro-dark tbody > tr.hover > td,
 .abelt-metro-dark tbody > tr:hover > td,
 .abelt-metro-dark tbody > tr.even:hover > td,
 .abelt-metro-dark tbody > tr.odd:hover > td {

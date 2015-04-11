@@ -62,6 +62,7 @@
 .abelt-bootstrap tr.odd > td {
 	background-color: #f9f9f9;
 }
+.abelt-bootstrap tbody > tr.hover > td,
 .abelt-bootstrap tbody > .odd:hover > td,
 .abelt-bootstrap tbody > .even:hover > td {
 	background-color: #f5f5f5;

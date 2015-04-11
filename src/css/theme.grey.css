@@ -114,14 +114,17 @@
  you'll need to add additional lines for
  rows with more than 2 child rows
  */
+.abelt-grey tbody > tr.hover > td,
 .abelt-grey tbody > tr:hover > td,
 .abelt-grey tbody > tr:hover + tr.abelt-childRow > td,
 .abelt-grey tbody > tr:hover + tr.abelt-childRow + tr.abelt-childRow > td,
+.abelt-grey tbody > tr.even.hover > td,
 .abelt-grey tbody > tr.even:hover > td,
 .abelt-grey tbody > tr.even:hover + tr.abelt-childRow > td,
 .abelt-grey tbody > tr.even:hover + tr.abelt-childRow + tr.abelt-childRow > td {
 	background: #134b78;
 }
+.abelt-grey tbody > tr.odd.hover > td,
 .abelt-grey tbody > tr.odd:hover > td,
 .abelt-grey tbody > tr.odd:hover + tr.abelt-childRow > td,
 .abelt-grey tbody > tr.odd:hover + tr.abelt-childRow + tr.abelt-childRow > td {

@@ -90,6 +90,7 @@ Default Theme
 }
 
 /* hovered row colors */
+.abelt-default tbody > tr.hover > td,
 .abelt-default tbody > tr:hover > td,
 .abelt-default tbody > tr.even:hover > td,
 .abelt-default tbody > tr.odd:hover > td {
