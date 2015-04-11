@@ -76,30 +76,30 @@ $.extend( true, $abelt, {
 		},
 
 		// obj = options.headers, filter.functions, filter.defaultFilter, etc
-		// indx = current column index
+		// index = current column index
 		// getCell = flag to return resulting object
-		getColumnData : function( abelt, obj, indx, getCell, $headers ) {
-			if ( $.isEmptyObject( obj ) ) { return indx; }
+		getColumnData : function( abelt, obj, index, getCell, $headers ) {
+			if ( $.isEmptyObject( obj ) ) { return index; }
 			var $header, key,
 				$cells = ( $headers || abelt.$headers );
-			if ( obj[ indx ] ) {
+			if ( obj[ index ] ) {
 				return getCell ?
-					obj[ indx ] :
-					obj[ $cells.index( $cells.filter( '[data-column="' + indx + '"]:last' ) ) ];
+					obj[ index ] :
+					obj[ $cells.index( $cells.filter( '[data-column="' + index + '"]:last' ) ) ];
 			}
 			for ( key in obj ) {
 				if ( typeof key === 'string' ) {
-					$header = $cells.filter( '[data-column="' + indx + '"]:last' )
+					$header = $cells.filter( '[data-column="' + index + '"]:last' )
 						// header cell with class/id
 						.filter( key )
 						// find elements within the header cell with cell/id
-						.add( $cells.filter( '[data-column="' + indx + '"]:last' ).find( key ) );
+						.add( $cells.filter( '[data-column="' + index + '"]:last' ).find( key ) );
 					if ( $header.length ) {
 						return obj[ key ];
 					}
 				}
 			}
-			return indx;
+			return index;
 		},
 
 		formatFloat : function( str, abelt ) {
@@ -135,11 +135,11 @@ $.extend( true, $abelt, {
 		},
 
 		isValueInArray : function( value, arry ) {
-			var indx,
+			var index,
 				len = arry.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				if ( arry[ indx ][ 0 ] === value ) {
-					return indx;
+			for ( index = 0; index < len; index++ ) {
+				if ( arry[ index ][ 0 ] === value ) {
+					return index;
 				}
 			}
 			return -1;

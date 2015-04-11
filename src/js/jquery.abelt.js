@@ -116,14 +116,17 @@ $abelt = $.abelt = {
 
 		add : function( widget, replaceWidget ) {
 			if ( widget && widget.id ) {
-				var isNew = true;
+				var index, storedWidget,
+					storedWidgetsLength = $abelt.widgets.length,
+					isNew = true;
 				widget.id = widget.id;
 				// set priority to 10, if not defined
 				if ( widget.priority === undef ) {
 					widget.priority = 10;
 				}
 				// make sure widget doesn't already exist
-				$.each( $abelt.widgets, function( index, storedWidget ) {
+				for ( index = 0; index < storedWidgetsLength; index++ ) {
+					storedWidget = $abelt.widgets[ index ];
 					if ( storedWidget && storedWidget.id && storedWidget.id === widget.id ) {
 						if ( replaceWidget ) {
 							$abelt.widgets[ index ] = widget;
@@ -133,7 +136,7 @@ $abelt = $.abelt = {
 						}
 						isNew = false;
 					}
-				});
+				}
 				if ( isNew ) {
 					$abelt.widgets.push( widget );
 					if ( $abelt.debug ) {
@@ -144,11 +147,11 @@ $abelt = $.abelt = {
 		},
 
 		get : function( id ) {
-			var indx, widget,
+			var index, widget,
 				name = id.toString(),
 				len = $abelt.widgets.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				widget = $abelt.widgets[ indx ];
+			for ( index = 0; index < len; index++ ) {
+				widget = $abelt.widgets[ index ];
 				if ( widget && widget.id && widget.id === name ) {
 					return widget;
 				}
@@ -162,7 +165,8 @@ $abelt = $.abelt = {
 
 		apply : function( abelt, named, init, callback ) {
 			named = named || '';
-			var overall, time, applied, indx, name, widgetsArray, widget, regex, len, widgetSettings, blocks,
+			var overall, time, applied, index, name, widgetsArray, widget, regex, len, widgetSettings, blocks,
+				option, optionIndex, optionLength,
 				o = abelt.options,
 				widgets = [],
 				// if named == string, then apply specific widget(s), otherwise apply them all
@@ -183,9 +187,11 @@ $abelt = $.abelt = {
 			// extract out the widget id from the table class (widget id's can include dashes)
 			widget = tableClass.match( regex );
 			if ( widget ) {
-				$.each( widget, function( index, nam ){
+				len = widget.length;
+				for ( index = 0; index < len; index++ ) {
+					name = widget[ index ];
 					$abelt.widgets.push( nam.replace( regex, '$1' ) );
-				});
+				}
 			}
 
 			if ( o.widgets.length ) {
@@ -194,7 +200,7 @@ $abelt = $.abelt = {
 
 				// ensure unique widget ids
 				o.widgets = $.grep( o.widgets, function( val, index ) {
-					return $.inArray( val, o.widgets ) === index;
+					return o.widgets.indexOf( val ) === index;
 				});
 
 				// named can contain multiple widgets names, separated by spaces (or commas)
@@ -203,22 +209,24 @@ $abelt = $.abelt = {
 				len = widgetsArray.length;
 
 				// build widget array
-				$.each( widgetsArray || [], function( index, nam ) {
-					widget = $abelt.widget.get( nam );
+				len = widgetsArray.length;
+				for ( index = 0; index < len; index++ ) {
+					name = widgetsArray[ index ];
+					widget = $abelt.widget.get( name );
 					if ( widget && widget.id ) {
 						widgets[ index ] = widget;
 					}
-				});
+				}
 				// sort widgets by priority
 				widgets.sort(function( a, b ){
 					return a.priority < b.priority ? -1 : a.priority === b.priority ? 0 : 1;
 				});
 				// add/update selected widgets
-				for ( indx = 0; indx < len; indx++ ) {
-					widget = widgets[ indx ];
+				for ( index = 0; index < len; index++ ) {
+					widget = widgets[ index ];
 					name = widget ? widget.id : '';
 					// make sure applied widget is added to options.widgets
-					if ( name && $.inArray( name, widgetsArray) < 0 ) {
+					if ( name && widgetsArray.indexOf( name ) < 0 ) {
 						o.widgets.push( name );
 					}
 					applied = false;
@@ -245,12 +253,13 @@ $abelt = $.abelt = {
 								// abelt = $.extend( true, {}, widgetSettings, abelt ); // -> breaks a bunch of options
 								// it just works better to extend abelt settings into each block...
 								blocks = abelt.vars.allowedBlocks;
-								/*jshint loopfunc : true */
-								$.each( blocks, function( index, option ) {
+								optionLength = blocks.length
+								for ( optionIndex = 0; optionIndex < optionLength; optionIndex++ ) {
+									option = blocks[ optionIndex ];
 									if ( widgetSettings[ option ] ) {
-										abelt[ option ] = $.extend( true,  widgetSettings[ option ], abelt[option] );
+										abelt[ option ] = $.extend( true,  widgetSettings[ option ], abelt[ option ] );
 									}
-								});
+								}
 							}
 							if ( widget.init ) {
 								applied = true;
@@ -294,40 +303,43 @@ $abelt = $.abelt = {
 		},
 
 		remove : function( abelt, named, refreshing ) {
-			var widget, len,
+			var widget, len, storedWidget,
 				o = abelt.options,
-				indx = 0;
+				index = 0;
 			// if name === true, add all widgets from $.tablesorter.widgets
 			if (named === true) {
 				named = [];
-				$.each( $abelt.widgets, function( index, storedWidget ) {
+				len = $abelt.widgets.length;
+				for ( index = 0; index < len; index++ ) {
+					storedWidget = $abelt.widgets[ index ];
 					if ( storedWidget && storedWidget.id ) {
 						named.push( storedWidget.id );
 					}
-				});
+				}
 			} else {
 				// named can be either an array of widgets names,
 				// or a space/comma separated list of widget names
 				named = ( $.isArray( named ) ? named.join( ',' ) : named || '' ).toLowerCase().split( abelt.regex.lists );
 			}
 			len = named.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				widget = $abelt.widget.get( name[ indx ] );
-				indx = $.inArray( name[ indx ], o.widgets );
+			for ( index = 0; index < len; index++ ) {
+				widget = $abelt.widget.get( name[ index ] );
+				index = o.widgets.indexOf( name[ index ] );
 				if ( widget && 'remove' in widget ) {
-					if ( $abelt.debug && o.debug && indx >= 0 ) { console.log( 'Removing "' + name[ indx ] + '" widget' ); }
+					if ( $abelt.debug && o.debug && index >= 0 ) { console.log( 'Removing "' + name[ index ] + '" widget' ); }
 					widget.remove( abelt, refreshing );
 					abelt.flags.widgetInit[ widget.id ] = false;
 				}
 				// don't remove the widget from options.widget if refreshing
-				if ( indx >= 0 && refreshing !== true ) {
-					o.widgets.splice( indx, 1 );
+				if ( index >= 0 && refreshing !== true ) {
+					o.widgets.splice( index, 1 );
 				}
 			}
 		},
 
 		refresh : function( abelt, doAll, dontApply ) {
-			var o = abelt.options,
+			var index, len, widget,
+				o = abelt.options,
 				list = [],
 				initializedWidgets = o.widgets,
 				callback = function( abelt ) {
@@ -335,11 +347,13 @@ $abelt = $.abelt = {
 					abelt.$table.trigger( o.events.widgetsRefreshed );
 				};
 			// remove widgets not defined in config.widgets, unless doAll is true
-			$.each( $abelt.widgets, function( index, widget ) {
-				if ( widget && widget.id && ( doAll || $.inArray( widget.id, initializedWidgets ) < 0)) {
+			len = $abelt.widgets.length;
+			for ( index = 0; index < len; index++ ) {
+				widget = $abelt.widgets[ index ];
+				if ( widget && widget.id && ( doAll || initializedWidgets.indexOf( widget.id ) < 0)) {
 					list.push( widget.id );
 				}
-			});
+			}
 			$abelt.widget.remove( abelt, list.join( ',' ), true );
 			if ( dontApply !== true ) {
 				// trigger widget init

@@ -58,19 +58,21 @@ $abeltColSel = $abelt.columnSelector = {
 		abelt.$table
 			.off( 'refreshColumnSelector' + colSel.namespace )
 			.on( 'refreshColumnSelector' + colSel.namespace, function(e, option) {
-				var indx,
+				var index, len, val,
 					isArray = $.isArray( option ),
 					$container = v.columnSelector.$container;
 				if ( option && $container.length ) {
 					if ( isArray ) {
 						// make sure array contains numbers
-						$.each( option, function( indx, val ) {
-							option[ indx ] = parseInt( val, 10 );
-						});
-						for ( indx = 0; indx < v.columns; indx++ ) {
+						len = option.length;
+						for ( index = 0; index < len; index++ ) {
+							val = option[ index ];
+							option[ index ] = parseInt( val, 10 );
+						}
+						for ( index = 0; index < v.columns; index++ ) {
 							$container
-								.find( 'input[data-column=' + indx + ']' )
-								.prop( 'checked', $.inArray( indx, option ) >= 0 );
+								.find( 'input[data-column=' + index + ']' )
+								.prop( 'checked', option.indexOf( index ) >= 0 );
 						}
 					}
 					// if passing an array, set auto to false to allow manual column selection & update columns
@@ -185,15 +187,18 @@ $abeltColSel = $abelt.columnSelector = {
 	},
 
 	updateAuto: function( abelt, $el ) {
-		var o = abelt.options,
-			colSel = abelt.vars.columnSelector;
+		var index, $cbox,
+			o = abelt.options,
+			colSel = abelt.vars.columnSelector,
+			len = colSel.$checkbox.length;
 		colSel.auto = $el.prop('checked') || false;
-		$.each( colSel.$checkbox, function( indx, $cbox ) {
+		for ( index = 0; index < len; index++ ) {
+			$cbox = colSel.$checkbox[ index ];
 			if ( $cbox ) {
 				$cbox[ 0 ].disabled = colSel.auto;
-				colSel.$wrapper[ indx ].toggleClass( 'disabled', colSel.auto );
+				colSel.$wrapper[ index ].toggleClass( 'disabled', colSel.auto );
 			}
-		});
+		}
 		if ( o.columnSelector.mediaquery ) {
 			$abeltColSel.updateBreakpoints( abelt );
 		}
@@ -204,8 +209,8 @@ $abeltColSel = $abelt.columnSelector = {
 				.html( colSel.$container.html() )
 				.find( 'input' ).each( function() {
 					var $this = $( this ),
-						indx = $this.attr('data-column');
-					$this.prop( 'checked', indx === 'auto' ? colSel.auto : colSel.states[ indx ] );
+						index = $this.attr('data-column');
+					$this.prop( 'checked', index === 'auto' ? colSel.auto : colSel.states[ index ] );
 				});
 		}
 		if ( o.columnSelector.saveColumns && $abelt.storage ) {
@@ -299,7 +304,7 @@ $abeltColSel = $abelt.columnSelector = {
 
 	attachTo : function( $table, elm ) {
 		$table = $( $table );
-		var indx,
+		var index,
 			abelt = $table[ 0 ].abelt,
 			colSel = abelt.vars.columnSelector,
 			$popup = $( elm );
@@ -312,17 +317,17 @@ $abeltColSel = $abelt.columnSelector = {
 				.html( colSel.$container.html() )
 				.find( 'input' ).each( function() {
 					var $this = $( this ),
-						indx = $this.data( 'column' ),
-						isChecked = indx === 'auto' ? colSel.auto : colSel.states[ indx ];
+						index = $this.data( 'column' ),
+						isChecked = index === 'auto' ? colSel.auto : colSel.states[ index ];
 					$this
 						.toggleClass( abelt.options.columnSelector.cssChecked, isChecked )
 						.prop( 'checked', isChecked );
 				});
 			colSel.$popup = $popup.on( 'change', 'input', function() {
 				// data input
-				indx = $( this ).data( 'column' );
+				index = $( this ).data( 'column' );
 				// update original popup
-				colSel.$container.find( 'input[data-column="' + indx + '"]' )
+				colSel.$container.find( 'input[data-column="' + index + '"]' )
 					.prop( 'checked', this.checked )
 					.trigger( 'change' );
 			});

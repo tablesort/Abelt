@@ -104,14 +104,14 @@ $.extend( true, $abelt, {
 		},
 
 		add : function( parser, replaceParser ) {
-			var indx,
+			var index,
 				len = $abelt.parsers.length,
 				name = parser.id.toString().toLowerCase(),
 				isNew = true;
-			for ( indx = 0; indx < len; indx++ ) {
-				if ( $abelt.parsers[ indx ].id.toLowerCase() === name ) {
+			for ( index = 0; index < len; index++ ) {
+				if ( $abelt.parsers[ index ].id.toLowerCase() === name ) {
 					if ( replaceParser ) {
-						$abelt.parsers[ indx ] = parser;
+						$abelt.parsers[ index ] = parser;
 						if ( $abelt.debug ) {
 							console.log( 'Replaced ' + parser.id + ' with a newly defined parser' );
 						}
@@ -128,12 +128,12 @@ $.extend( true, $abelt, {
 		},
 
 		get : function( id ) {
-			var indx,
+			var index,
 				name = id.toString().toLowerCase(),
 				len = $abelt.parsers.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				if ( $abelt.parsers[ indx ].id.toLowerCase() === name ) {
-					return $abelt.parsers[ indx ];
+			for ( index = 0; index < len; index++ ) {
+				if ( $abelt.parsers[ index ].id.toLowerCase() === name ) {
+					return $abelt.parsers[ index ];
 				}
 			}
 			return false;
@@ -142,7 +142,7 @@ $.extend( true, $abelt, {
 		detect: function( abelt, rows, rowIndex, cellIndex ) {
 			var parser, $node,
 				o = abelt.options,
-				indx = $abelt.parsers.length,
+				index = $abelt.parsers.length,
 				node = false,
 				nodeValue = '',
 				keepLooking = true;
@@ -160,8 +160,8 @@ $.extend( true, $abelt, {
 					keepLooking = false;
 				}
 			}
-			while ( --indx >= 0 ) {
-				parser = $abelt.parsers[ indx ];
+			while ( --index >= 0 ) {
+				parser = $abelt.parsers[ index ];
 				// ignore the default text parser because it will always be true
 				if ( parser && parser.id !== 'text' && parser.is && parser.is( nodeValue, abelt, node, $node ) ) {
 					return parser;

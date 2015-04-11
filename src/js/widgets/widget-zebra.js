@@ -22,7 +22,7 @@ $.abelt.widget.add({
 	},
 	priority: 90,
 	update: function( abelt ) {
-		var $tbody, $trVisible, $tr, row, even, tbodyIndex,
+		var $tbody, $trVisible, $tr, row, even, tbodyIndex, rowLength, rowIndex,
 			o = abelt.options,
 			zebra = [ o.css.even, o.css.odd ],
 			childRegex = new RegExp( o.css.childRow, 'i' ),
@@ -31,16 +31,16 @@ $.abelt.widget.add({
 			// loop through the visible rows
 			row = 0;
 			$tbody = $tbodies.eq( tbodyIndex );
+			// we can't use processTbody because it detaches the rows - so we can't tell if they are visible
 			$trVisible = $tbody.children( 'tr:visible' ).not( o.selectors.remove );
-			// reverted to using jQuery each - strangely it's the fastest method
-			/*jshint loopfunc:true */
-			$trVisible.each(function(){
-				$tr = $( this );
+			rowLength = $trVisible.length;
+			for ( rowIndex = 0; rowIndex < rowLength; rowIndex++ ) {
+				$tr = $trVisible.eq( rowIndex );
 				// style child rows the same way the parent row was styled
-				if ( !childRegex.test( this.className ) ) { row++; }
+				if ( !childRegex.test( $tr[0].className ) ) { row++; }
 				even = ( row % 2 === 0 );
 				$tr.removeClass( zebra[ even ? 1 : 0 ] ).addClass( zebra[ even ? 0 : 1 ] );
-			});
+			}
 		}
 	},
 	remove: function( abelt, refreshing ) {
@@ -49,7 +49,7 @@ $.abelt.widget.add({
 			css = abelt.options.css,
 			$tb = abelt.$tbodies,
 			rmv = ( css.even + ' ' + css.odd );
-		for ( tbodyIndex = 0; tbodyIndex < $tb.length; tbodyIndex++  ){
+		for ( tbodyIndex = 0; tbodyIndex < $tb.length; tbodyIndex++ ) {
 			/*jshint loopfunc : true */
 			$.abelt.utility.processTbody( abelt, $tb.eq( tbodyIndex ), function( $tbody ) {
 				$tbody.children().removeClass( rmv );

@@ -295,12 +295,14 @@ $.extend( true, $abelt, {
 		},
 
 		updateSortCount: function( abelt, list ) {
-			var sort, direction, column, primary, order, count,
+			var sort, direction, column, primary, order, count, index, set,
 				o = abelt.options,
 				v = abelt.vars,
-				newSort = list || o.sort.list;
+				newSort = list || o.sort.list,
+				len = newSort.length;
 			o.sort.list = [];
-			$.each( newSort, function( index, set ) {
+			for ( index = 0; index < len; index++ ) {
+				set = newSort[ index ];
 				// ensure all sortList values are numeric - fixes #127
 				column = parseInt( set[ 0 ], 10 );
 
@@ -336,10 +338,10 @@ $.extend( true, $abelt, {
 					primary = index === 0 ? direction : primary;
 					sort = [ column, parseInt( direction, 10 ) || 0 ];
 					o.sort.list.push( sort );
-					direction = $.inArray( sort[ 1 ], order ); // fixes issue #167
+					direction = order.indexOf( sort[ 1 ] ); // fixes issue #167
 					v.sortCount[ column ] = direction >= 0 ? direction : sort[ 1 ] % ( o.sort.reset ? 3 : 2);
 				}
-			});
+			}
 		},
 
 		getCachedSortType: function( parsers, columnIndex ) {
@@ -426,7 +428,7 @@ $.extend( true, $abelt, {
 					$abelt.sort.initSort( abelt, columnIndex, event );
 				}, 50 );
 			}
-			var arry, col, order, indx,
+			var arry, col, order, index,
 				o = abelt.options,
 				v = abelt.vars,
 				key = !event[ o.sort.multiSortKey ],
@@ -476,9 +478,9 @@ $.extend( true, $abelt, {
 				// get rid of the sortAppend before adding more - fixes issue #115 & #523
 				if ( o.sort.append && o.sort.list.length > 1 ) {
 					for ( col = 0; col < o.sort.append.length; col++ ) {
-						indx = $abelt.utility.isValueInArray( o.sort.append[ col ][ 0 ], o.sort.list );
-						if ( indx >= 0 ) {
-							o.sort.list.splice( indx, 1 );
+						index = $abelt.utility.isValueInArray( o.sort.append[ col ][ 0 ], o.sort.list );
+						if ( index >= 0 ) {
+							o.sort.list.splice( index, 1 );
 						}
 					}
 				}
@@ -486,25 +488,25 @@ $.extend( true, $abelt, {
 				if ( $abelt.utility.isValueInArray( columnIndex, o.sort.list ) >= 0 ) {
 					// reverse the sorting direction
 					for ( col = 0; col < o.sort.list.length; col++ ) {
-						indx = o.sort.list[ col ];
-						if ( indx[ 0 ] === columnIndex ) {
+						index = o.sort.list[ col ];
+						if ( index[ 0 ] === columnIndex ) {
 							// order.count seems to be incorrect when compared to cell.count
-							indx[ 1 ] = v.sortOrder[ indx[ 0 ] ][ v.sortCount[ indx[ 0 ] ] ];
-							if ( indx[ 1 ] === 2 ) {
+							index[ 1 ] = v.sortOrder[ index[ 0 ] ][ v.sortCount[ index[ 0 ] ] ];
+							if ( index[ 1 ] === 2 ) {
 								o.sort.list.splice( col, 1 );
-								v.sortCount[ indx[ 0 ] ] = -1;
+								v.sortCount[ index[ 0 ] ] = -1;
 							}
 						}
 					}
 				} else {
 					// add column to sort list array
-					indx = v.sortOrder[ columnIndex ][ v.sortCount[ columnIndex ] ];
-					if ( indx < 2 ) {
-						o.sort.list.push( [ columnIndex, indx ] );
+					index = v.sortOrder[ columnIndex ][ v.sortCount[ columnIndex ] ];
+					if ( index < 2 ) {
+						o.sort.list.push( [ columnIndex, index ] );
 						// add other columns if header spans across multiple
 						if ( cell.colSpan > 1 ) {
 							for ( col = 1; col < cell.colSpan; col++ ) {
-								o.sort.list.push( [ columnIndex + col, indx ] );
+								o.sort.list.push( [ columnIndex + col, index ] );
 							}
 						}
 					}
@@ -533,7 +535,7 @@ $.extend( true, $abelt, {
 		// sort multiple columns
 		multisort: function( abelt ) {
 			/*jshint loopfunc:true */
-			var indx, tbodyIndex, num, col, time, colMax,
+			var index, tbodyIndex, num, col, time, colMax,
 				cache, order, sort, x, y,
 				dir = 0,
 				o = abelt.options,
@@ -554,9 +556,9 @@ $.extend( true, $abelt, {
 
 				cache.sort( function( a, b ) {
 					// cache is undefined here in IE, so don't use it!
-					for ( indx = 0; indx < len; indx++ ) {
-						col = list[ indx ][ 0 ];
-						order = list[ indx ][ 1 ];
+					for ( index = 0; index < len; index++ ) {
+						col = list[ index ][ 0 ];
+						order = list[ index ][ 1 ];
 						// sort direction, true = asc, false = desc
 						dir = order === 0;
 
@@ -638,12 +640,12 @@ $.extend( true, $abelt, {
 			var $cell,
 				o = abelt.options;
 			// don't use abelt.$headers here in case header cells were swapped
-			abelt.$table.children( 'thead' ).children( 'tr' ).children( o.selectors.headers ).each( function( indx ) {
+			abelt.$table.children( 'thead' ).children( 'tr' ).children( o.selectors.headers ).each( function( index ) {
 				$cell = $( this );
 				// only restore header cells if it is still wrapped
 				// because this is also used by the updateAll method
 				if ( $cell.find( '.' + $abelt.css.headerInner ).length ) {
-					$cell.html( abelt.vars.originalHeaders[ indx ] );
+					$cell.html( abelt.vars.originalHeaders[ index ] );
 				}
 			});
 		},
