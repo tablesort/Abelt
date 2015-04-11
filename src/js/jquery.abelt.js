@@ -593,7 +593,7 @@ $abelt = $.abelt = {
 					// values saved to storage.
 					abelt.flags.init = false;
 					// setup the entire table again
-					abelt.init( abelt.vars.originalSettings );
+					$abelt.setup( abelt.vars.originalSettings );
 				});
 		}
 
@@ -604,12 +604,12 @@ $abelt = $.abelt = {
 	  |___|___|_| |___|
 	*/
 
-	construct : function( table, settings, callback ) {
-		var abelt = $( table ).data( 'abelt' ),
+	init : function( table, settings, callback ) {
+		var abelt = $( table ).data( 'abelt' ) || {},
 			// build options list
 			options = $.extend( true, {}, $abelt.defaults, settings );
 		// create a table from data (build table widget)
-		if ( table.nodeName !== 'TABLE' && !abelt.flags.init && abelt.build.table ) {
+		if ( table.nodeName !== 'TABLE' && abelt.flags && !abelt.flags.init && abelt.build && abelt.build.table ) {
 			// return the table (in case the original target is the table's container)
 			$abelt.build.table( table, options );
 		}
@@ -819,7 +819,7 @@ $.fn.abelt = function( settings, callback ) {
 			}
 			$abelt.widget.update( this.abelt, callback );
 		} else {
-			$abelt.construct( this, settings, callback );
+			$abelt.init( this, settings, callback );
 		}
 	});
 };
