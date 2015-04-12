@@ -133,7 +133,9 @@ $.extend( true, $abelt, {
 
 		isDigit : function( str ) {
 			// replace all unwanted chars and match
-			return isNaN( str ) ? $abelt.regex.isDigit.test( str.toString().replace( $abelt.regex.nonDigitDetect, '' ) ) : true;
+			return isNaN( str ) ?
+				$abelt.regex.isDigit.test( str.toString().replace( $abelt.regex.nonDigitDetect, '' ) ) :
+				str !== '';
 		},
 
 		isValueInArray : function( value, arry ) {
