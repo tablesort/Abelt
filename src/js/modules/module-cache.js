@@ -246,6 +246,51 @@ $.extend( true, $abelt, {
 			return $.trim( node.textContent || $node.text() || '' );
 		},
 
+		getColumnText : function( abelt, column, callback ) {
+			var tbodyIndex, rowIndex, cache, row, tbodyLen, rowLen, raw, parsed, $cell, result,
+				hasCallback = typeof callback === 'function',
+				allColumns = column === 'all',
+				data = { raw : [], parsed: [], $cell: [] },
+				o = abelt.options,
+				v = abelt.vars;
+			if ( $.isEmptyObject( v.cache ) ) {
+				if ( $.abelt.debug && o.debug ) {
+					console.warn( 'No cache found - aborting' );
+				}
+			} else {
+				tbodyLen = abelt.$tbodies.length;
+				for ( tbodyIndex = 0; tbodyIndex < tbodyLen; tbodyIndex++ ) {
+					cache = v.cache[ tbodyIndex ].normalized;
+					rowLen = cache.length;
+					for ( rowIndex = 0; rowIndex < rowLen; rowIndex++ ) {
+						result = true;
+						row =	cache[ rowIndex ];
+						parsed = ( allColumns ) ? row.slice(0, v.columns) : row[ column ];
+						row = row[ v.columns ];
+						raw = ( allColumns ) ? row.raw : row.raw[ column ];
+						$cell = ( allColumns ) ? row.$row.children() : row.$row.children().eq( column );
+						if ( hasCallback ) {
+							result = callback({
+								tbodyIndex: tbodyIndex,
+								rowIndex: rowIndex,
+								parsed: parsed,
+								raw: raw,
+								$row: row.$row,
+								$cell: $cell
+							});
+						}
+						if ( result !== false ) {
+							data.parsed.push( parsed );
+							data.raw.push( raw );
+							data.$cell.push( $cell );
+						}
+					}
+				}
+				// return everything
+				return data;
+			}
+		},
+
 		// used when replacing accented characters for sorting & filtering
 		characterEquivalents : {
 			'a' : '\u00e1\u00e0\u00e2\u00e3\u00e4\u0105\u00e5', // áàâãäąå
@@ -665,7 +710,7 @@ $.extend( true, $abelt, {
 						if ( $.isFunction( callback ) ) {
 							callback( abelt );
 						}
-						abelt.$table.trigger('updateComplete', c.table);
+						abelt.$table.trigger( 'updateComplete', abelt );
 					}
 				}
 			}
