@@ -61,6 +61,7 @@ $abeltColSel = $abelt.columnSelector = {
 			.off( 'refreshColumnSelector' + colSel.namespace )
 			.on( 'refreshColumnSelector' + colSel.namespace, function(e, option) {
 				var index, len, val,
+					v = abelt.vars,
 					isArray = $.isArray( option ),
 					$container = v.columnSelector.$container;
 				if ( option && $container.length ) {
@@ -68,8 +69,7 @@ $abeltColSel = $abelt.columnSelector = {
 						// make sure array contains numbers
 						len = option.length;
 						for ( index = 0; index < len; index++ ) {
-							val = option[ index ];
-							option[ index ] = parseInt( val, 10 );
+							option[ index ] = parseInt( option[ index ], 10 );
 						}
 						for ( index = 0; index < v.columns; index++ ) {
 							$container
@@ -211,7 +211,7 @@ $abeltColSel = $abelt.columnSelector = {
 				.html( colSel.$container.html() )
 				.find( 'input' ).each( function() {
 					var $this = $( this ),
-						index = $this.attr('data-column');
+						index = $this.attr( 'data-column' );
 					$this.prop( 'checked', index === 'auto' ? colSel.auto : colSel.states[ index ] );
 				});
 		}
