@@ -1,6 +1,17 @@
+/*! Modified semver.js for node.js (v4.3.3, 3/27/2015) *//*
+ semver-mod.js by R.Garrison (@Mottie)
+ semver.js by @isaacs: https://github.com/isaacs/node-semver
+ ( all modifications have been labeled )
+ */
+// ***** MODIFIED LINE BELOW *****
+(function(){
+// ***** MODIFIED LINE BELOW *****
+var module = { exports : {} };
 // export the class if we are in a Node-like system.
-if (typeof module === 'object' && module.exports === exports)
-  exports = module.exports = SemVer;
+// ***** MODIFIED LINE BELOW *****
+// if (typeof module === 'object' && module.exports === exports)
+// ***** MODIFIED LINE BELOW *****
+var exports = module.exports = SemVer;
 
 // The debug function is excluded entirely from the minified version.
 /* nomin */ var debug;
@@ -269,7 +280,8 @@ function clean(version, loose) {
   return s ? s.version : null;
 }
 
-exports.SemVer = SemVer;
+// ***** MODIFIED LINE BELOW *****
+window.semver = exports.SemVer = SemVer;
 
 function SemVer(version, loose) {
   if (version instanceof SemVer) {
@@ -1200,3 +1212,6 @@ function outside(version, range, hilo, loose) {
 // Use the define() function if we're in AMD land
 if (typeof define === 'function' && define.amd)
   define(exports);
+
+// ***** MODIFIED LINE BELOW *****
+})();
