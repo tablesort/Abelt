@@ -21,7 +21,8 @@
 /* header */
 .abelt-blue th,
 .abelt-blue thead td {
-	font: bold 12px/18px Arial, Sans-serif;
+	font: 12px/18px Arial, Sans-serif;
+	font-weight: bold;
 	color: #000;
 	background-color: #99bfe6;
 	border-collapse: collapse;
