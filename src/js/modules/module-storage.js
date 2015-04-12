@@ -18,39 +18,55 @@
  // *** Save data (JSON format only) ***
  // val must be valid JSON... use http://jsonlint.com/ to ensure it is valid
  var val = { "mywidget" : "data1" }; // valid JSON uses double quotes
- // $.tablesorter.storage(table, key, val);
- $.tablesorter.storage(table, 'tablesorter-mywidget', val);
+ // $.abelt.storage(table, key, val);
+ $.abelt.storage(table, 'abelt-mywidget', val);
 
- // *** Get data: $.tablesorter.storage(table, key); ***
- v = $.tablesorter.storage(table, 'tablesorter-mywidget');
+ // *** Get data: $.abelt.storage(table, key); ***
+ v = $.abelt.storage(table, 'abelt-mywidget');
  // val may be empty, so also check for your data
  val = (v && v.hasOwnProperty('mywidget')) ? v.mywidget : '';
  alert(val); // "data1" if saved, or "" if not
 */
 $.abelt.storage = function( table, key, value, options ) {
 	table = $( table )[0];
-	var cookieIndex, cookies, date,
-		hasLocalStorage = false,
+	var id, url, cookieIndex, cookies, date, storageType,
+		hasStorage = false,
 		values = {},
-		abelt = $table.data( 'abelt' ),
 		$table = $( table ),
-		id = options && options.id || $table.attr( options && options.group ||
-			'data-table-group' ) || table.id || $( 'table.abelt' ).index( $table ),
-		url = options && options.url || $table.attr( options && options.page ||
-			'data-table-page' ) || abelt && abelt.options.fixedUrl ||
-			window.location.pathname;
+		abelt = $table.data( 'abelt' );
+
+	// get options from abelt.options.storage is not defined when called
+	options = options || abelt && abelt.options.storage || {};
+
+	storageType = options && options.useSessionStorage ? 'sessionStorage' : 'localStorage';
+
+	// id from (1) options ID, (2) table "data-table-group" attribute, (3) widgetOptions.storage_tableId,
+	// (4) table ID, then (5) table index
+	id = options && options.id ||
+		$table.attr( options && options.group || 'data-table-group' ) ||
+		options && options.tableId || table.id || $( 'table.abelt' ).index( $table );
+	// url from (1) options url, (2) table "data-table-page" attribute, (3) widgetOptions.storage_fixedUrl,
+	// then (4) window location path
+	url = options && options.url ||
+		$table.attr( options && options.page || 'data-table-page' ) ||
+		window.location.pathname;
+
 	// https://gist.github.com/paulirish/5558557
-	if ( 'localStorage' in window ) {
+	if ( storageType in window ) {
 		try {
-			window.localStorage.setItem( '_tmptest', 'temp' );
-			hasLocalStorage = true;
-			window.localStorage.removeItem( '_tmptest' );
-		} catch( error ) {}
+			window[ storageType ].setItem( '_tmptest', 'temp' );
+			hasStorage = true;
+			window[ storageType ].removeItem( '_tmptest' );
+		} catch( error ) {
+			if ( $.abelt.debug ) {
+				console.log( storageType + ' is not supported in this browser' );
+			}
+		}
 	}
 	// *** get value ***
 	if ( $.parseJSON ) {
-		if ( hasLocalStorage ) {
-			values = $.parseJSON(localStorage[key] || 'null');
+		if ( hasStorage ) {
+			values = $.parseJSON( window[ storageType ][ key ] || 'null' ) || {};
 		} else {
 			// old browser, using cookies
 			cookies = document.cookie.split( /[;\s|=]/ );
@@ -67,8 +83,8 @@ $.abelt.storage = function( table, key, value, options ) {
 		}
 		values[ url ][ id ] = value;
 		// *** set value ***
-		if ( hasLocalStorage ) {
-			localStorage[ key ] = JSON.stringify( values );
+		if ( hasStorage ) {
+			window[ storageType ][ key ] = JSON.stringify( values );
 		} else {
 			date = new Date();
 			date.setTime( date.getTime() + ( 31536e+6 ) ); // 365 days
